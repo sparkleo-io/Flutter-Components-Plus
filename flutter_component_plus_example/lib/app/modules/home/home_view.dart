@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
 import 'home_controller.dart';
 import '../theme/theme_controller.dart';
+import '../../../input_field_examples.dart';
+import '../../../card_examples.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -551,11 +553,11 @@ class HomeView extends GetView<HomeController> {
   }
 
   Widget _buildCardsTab(BuildContext context) {
-    return const Center(child: Text('Cards Tab - Coming Soon'));
+    return const CardExamples();
   }
 
   Widget _buildInputsTab(BuildContext context) {
-    return const Center(child: Text('Inputs Tab - Coming Soon'));
+    return const FCPInputFieldExamples();
   }
 
   Widget _buildNavigationTab(BuildContext context) {
