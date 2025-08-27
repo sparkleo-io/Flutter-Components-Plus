@@ -6,6 +6,7 @@ import '../../../input_field_examples.dart';
 import '../../../card_examples.dart';
 import '../../../dropdown_examples.dart';
 import '../../../multi_select_examples.dart';
+import '../../../bottom_navigation_examples.dart';
 
 class ComponentsView extends GetView<ComponentsController> {
   const ComponentsView({super.key});
@@ -13,7 +14,7 @@ class ComponentsView extends GetView<ComponentsController> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: 6,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Flutter Components Plus - Examples'),
@@ -26,6 +27,7 @@ class ComponentsView extends GetView<ComponentsController> {
               Tab(text: 'Cards', icon: Icon(Icons.credit_card)),
               Tab(text: 'Dropdowns', icon: Icon(Icons.arrow_drop_down)),
               Tab(text: 'Multi-Select', icon: Icon(Icons.checklist)),
+              Tab(text: 'Navigation', icon: Icon(Icons.navigation)),
             ],
             indicatorColor: Colors.white,
             labelColor: Colors.white,
@@ -39,6 +41,7 @@ class ComponentsView extends GetView<ComponentsController> {
             CardExamples(),
             FCPDropdownExamples(),
             FCPMultiSelectExamples(),
+            BottomNavigationExamples(),
           ],
         ),
       ),

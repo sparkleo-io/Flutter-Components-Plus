@@ -51,13 +51,13 @@ class HomeView extends GetView<HomeController> {
               ],
             );
           } else {
-            // Mobile layout
+            // Mobile layout with bottom navigation
             return Column(
               children: [
-                // Tab bar for mobile
-                _buildMobileTabBar(context),
                 // Main content
                 Expanded(child: _buildMainContent(context)),
+                // Bottom Navigation Bar
+                _buildBottomNavigationBar(context),
               ],
             );
           }
@@ -125,32 +125,58 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  Widget _buildMobileTabBar(BuildContext context) {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        border: Border(
-          bottom: BorderSide(
-            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.1),
+  Widget _buildBottomNavigationBar(BuildContext context) {
+    return Obx(
+      () => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          border: Border(
+            top: BorderSide(
+              color: Theme.of(
+                context,
+              ).colorScheme.outline.withValues(alpha: 0.1),
+            ),
           ),
-        ),
-      ),
-      child: Obx(
-        () => Row(
-          children: [
-            _buildMobileTabItem(context, 'Overview', Icons.dashboard, 0),
-            _buildMobileTabItem(context, 'Buttons', Icons.smart_button, 1),
-            _buildMobileTabItem(context, 'Cards', Icons.credit_card, 2),
-            _buildMobileTabItem(context, 'Dropdowns', Icons.arrow_drop_down, 4),
-            _buildMobileTabItem(context, 'Multi-Select', Icons.checklist, 5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 8,
+              offset: const Offset(0, -2),
+            ),
           ],
+        ),
+        child: SafeArea(
+          child: Container(
+            height: 60,
+            padding: const EdgeInsets.symmetric(
+              horizontal: FCPConstants.spacingMd,
+            ),
+            child: Row(
+              children: [
+                _buildBottomNavItem(context, 'Overview', Icons.dashboard, 0),
+                _buildBottomNavItem(context, 'Buttons', Icons.smart_button, 1),
+                _buildBottomNavItem(context, 'Cards', Icons.credit_card, 2),
+                _buildBottomNavItem(
+                  context,
+                  'Dropdowns',
+                  Icons.arrow_drop_down,
+                  4,
+                ),
+                _buildBottomNavItem(
+                  context,
+                  'Multi-Select',
+                  Icons.checklist,
+                  5,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildMobileTabItem(
+  Widget _buildBottomNavItem(
     BuildContext context,
     String title,
     IconData icon,
@@ -160,6 +186,7 @@ class HomeView extends GetView<HomeController> {
     return Expanded(
       child: InkWell(
         onTap: () => controller.changeTab(index),
+        borderRadius: BorderRadius.circular(FCPConstants.radiusMd),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -170,7 +197,7 @@ class HomeView extends GetView<HomeController> {
                   : Theme.of(
                       context,
                     ).colorScheme.onSurface.withValues(alpha: 0.7),
-              size: 20,
+              size: 24,
             ),
             const SizedBox(height: 4),
             Text(
