@@ -5,6 +5,8 @@ import 'home_controller.dart';
 import '../theme/theme_controller.dart';
 import '../../../input_field_examples.dart';
 import '../../../card_examples.dart';
+import '../../../dropdown_examples.dart';
+import '../../../multi_select_examples.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -73,9 +75,11 @@ class HomeView extends GetView<HomeController> {
         _buildSidebarItem(context, 'Buttons', Icons.smart_button, 1),
         _buildSidebarItem(context, 'Cards', Icons.credit_card, 2),
         _buildSidebarItem(context, 'Inputs', Icons.input, 3),
-        _buildSidebarItem(context, 'Navigation', Icons.navigation, 4),
-        _buildSidebarItem(context, 'Feedback', Icons.feedback, 5),
-        _buildSidebarItem(context, 'Layout', Icons.grid_on, 6),
+        _buildSidebarItem(context, 'Dropdowns', Icons.arrow_drop_down, 4),
+        _buildSidebarItem(context, 'Multi-Select', Icons.checklist, 5),
+        _buildSidebarItem(context, 'Navigation', Icons.navigation, 6),
+        _buildSidebarItem(context, 'Feedback', Icons.feedback, 7),
+        _buildSidebarItem(context, 'Layout', Icons.grid_on, 8),
       ],
     );
   }
@@ -138,7 +142,8 @@ class HomeView extends GetView<HomeController> {
             _buildMobileTabItem(context, 'Overview', Icons.dashboard, 0),
             _buildMobileTabItem(context, 'Buttons', Icons.smart_button, 1),
             _buildMobileTabItem(context, 'Cards', Icons.credit_card, 2),
-            _buildMobileTabItem(context, 'More', Icons.more_horiz, 3),
+            _buildMobileTabItem(context, 'Dropdowns', Icons.arrow_drop_down, 4),
+            _buildMobileTabItem(context, 'Multi-Select', Icons.checklist, 5),
           ],
         ),
       ),
@@ -198,10 +203,14 @@ class HomeView extends GetView<HomeController> {
         case 3:
           return _buildInputsTab(context);
         case 4:
-          return _buildNavigationTab(context);
+          return _buildDropdownsTab(context);
         case 5:
-          return _buildFeedbackTab(context);
+          return _buildMultiSelectTab(context);
         case 6:
+          return _buildNavigationTab(context);
+        case 7:
+          return _buildFeedbackTab(context);
+        case 8:
           return _buildLayoutTab(context);
         default:
           return _buildOverviewTab(context);
@@ -353,12 +362,24 @@ class HomeView extends GetView<HomeController> {
               iconPosition: IconPosition.start,
             ),
             FCPButton.medium.secondary(
+              text: 'All Components',
+              onPressed: () => Get.toNamed('/components'),
+              icon: Icons.widgets,
+              iconPosition: IconPosition.start,
+            ),
+            FCPButton.medium.outlined(
+              text: 'Multi-Select',
+              onPressed: () => controller.changeTab(5),
+              icon: Icons.checklist,
+              iconPosition: IconPosition.start,
+            ),
+            FCPButton.medium.outlined(
               text: 'Documentation',
               onPressed: () {},
               icon: Icons.description,
               iconPosition: IconPosition.start,
             ),
-            FCPButton.medium.outlined(
+            FCPButton.medium.ghost(
               text: 'GitHub',
               onPressed: () {},
               icon: Icons.code,
@@ -558,6 +579,14 @@ class HomeView extends GetView<HomeController> {
 
   Widget _buildInputsTab(BuildContext context) {
     return const FCPInputFieldExamples();
+  }
+
+  Widget _buildDropdownsTab(BuildContext context) {
+    return const FCPDropdownExamples();
+  }
+
+  Widget _buildMultiSelectTab(BuildContext context) {
+    return const FCPMultiSelectExamples();
   }
 
   Widget _buildNavigationTab(BuildContext context) {
