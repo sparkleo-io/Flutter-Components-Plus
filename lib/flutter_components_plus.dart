@@ -15,6 +15,9 @@ export 'src/components/dropdown_bottom_sheet/multi_select_dropdown.dart';
 // Navigation Components
 export 'src/components/navigation/navigation.dart';
 
+// PDF Viewer Components
+export 'src/components/pdf_viewer/pdf_viewer_exports.dart';
+
 // Custom Cards
 export 'src/components/custom_cards/custom_cards.dart';
 

@@ -274,7 +274,7 @@ class _FCPMultiSelectDropdownState extends State<FCPMultiSelectDropdown> {
   /// Show the bottom sheet with items
   void _showBottomSheet(BuildContext context) {
     FocusScope.of(context).unfocus();
-    showModalBottomSheet(
+    showModalBottomSheet<List<FCPMultiSelectItem>>(
       isScrollControlled: true,
       context: context,
       backgroundColor:
@@ -288,7 +288,12 @@ class _FCPMultiSelectDropdownState extends State<FCPMultiSelectDropdown> {
       builder: (context) => _MultiSelectBottomSheetContent(
         title: widget.title,
         items: _items,
-        onSelectionChanged: widget.onSelectionChanged,
+        onSelectionChanged: (selectedItems) {
+          // Update local state during selection
+          setState(() {
+            _items = selectedItems;
+          });
+        },
         heightFactor: widget.heightFactor,
         itemHeight: widget.itemHeight,
         itemSpacing: widget.itemSpacing,
@@ -311,7 +316,17 @@ class _FCPMultiSelectDropdownState extends State<FCPMultiSelectDropdown> {
         searchDebounceDuration: widget.searchDebounceDuration,
         customItemBuilder: widget.customItemBuilder,
       ),
-    );
+    ).then((result) {
+      // Handle the result when bottom sheet is closed
+      if (result != null) {
+        // Update the main component's state with the confirmed selection
+        setState(() {
+          _items = result;
+        });
+        // Call the parent's callback with the confirmed selection
+        widget.onSelectionChanged(result);
+      }
+    });
   }
 }
 
@@ -489,7 +504,7 @@ class _MultiSelectBottomSheetContentState
                 }
                 _updateFilteredItems();
               });
-              widget.onSelectionChanged(_items);
+              // Don't call onSelectionChanged here - only call it when confirm is pressed
             },
           ),
           const SizedBox(width: FCPConstants.spacingSm),
@@ -656,7 +671,7 @@ class _MultiSelectBottomSheetContentState
       _items[index] = _items[index].copyWith(isSelected: value);
       _updateFilteredItems();
     });
-    widget.onSelectionChanged(_items);
+    // Don't call onSelectionChanged here - only call it when confirm is pressed
   }
 
   /// Update filtered items based on current search
@@ -696,7 +711,10 @@ class _MultiSelectBottomSheetContentState
           const SizedBox(width: FCPConstants.spacingMd),
           Expanded(
             child: ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                // Return all items with their current selection state when confirming
+                Navigator.of(context).pop(_items);
+              },
               child: Text(widget.confirmText),
             ),
           ),

@@ -12,3 +12,17 @@
   - Accessibility features with proper labels and semantics
   - Flexible layout with customizable elevation
   - Comprehensive documentation and examples
+
+## 0.0.3
+
+### Added
+* **FCPPdfViewer**: A comprehensive PDF viewer component with enhanced features:
+  - Multiple source support (local files, network URLs, app assets)
+  - Built-in zoom controls, page navigation, and search functionality
+  - Customizable loading and error states with theme integration
+  - Interactive features (text selection, document links, hyperlink navigation)
+  - Comprehensive event callbacks for document loading, page changes, and zoom
+  - Accessibility support with proper semantics
+  - Robust error handling with retry functionality
+  - Professional documentation and examples
+  - Syncfusion Flutter PDF Viewer integration (requires license for commercial use)

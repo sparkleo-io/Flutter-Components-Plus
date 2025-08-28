@@ -7,6 +7,7 @@ import '../../../input_field_examples.dart';
 import '../../../card_examples.dart';
 import '../../../dropdown_examples.dart';
 import '../../../multi_select_examples.dart';
+import '../../../pdf_viewer_examples.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -77,9 +78,10 @@ class HomeView extends GetView<HomeController> {
         _buildSidebarItem(context, 'Inputs', Icons.input, 3),
         _buildSidebarItem(context, 'Dropdowns', Icons.arrow_drop_down, 4),
         _buildSidebarItem(context, 'Multi-Select', Icons.checklist, 5),
-        _buildSidebarItem(context, 'Navigation', Icons.navigation, 6),
-        _buildSidebarItem(context, 'Feedback', Icons.feedback, 7),
-        _buildSidebarItem(context, 'Layout', Icons.grid_on, 8),
+        _buildSidebarItem(context, 'PDF Viewer', Icons.picture_as_pdf, 6),
+        _buildSidebarItem(context, 'Navigation', Icons.navigation, 7),
+        _buildSidebarItem(context, 'Feedback', Icons.feedback, 8),
+        _buildSidebarItem(context, 'Layout', Icons.grid_on, 9),
       ],
     );
   }
@@ -168,6 +170,12 @@ class HomeView extends GetView<HomeController> {
                   Icons.checklist,
                   5,
                 ),
+                _buildBottomNavItem(
+                  context,
+                  'PDF Viewer',
+                  Icons.picture_as_pdf,
+                  6,
+                ),
               ],
             ),
           ),
@@ -234,10 +242,12 @@ class HomeView extends GetView<HomeController> {
         case 5:
           return _buildMultiSelectTab(context);
         case 6:
-          return _buildNavigationTab(context);
+          return _buildPdfViewerTab(context);
         case 7:
-          return _buildFeedbackTab(context);
+          return _buildNavigationTab(context);
         case 8:
+          return _buildFeedbackTab(context);
+        case 9:
           return _buildLayoutTab(context);
         default:
           return _buildOverviewTab(context);
@@ -286,7 +296,7 @@ class HomeView extends GetView<HomeController> {
       crossAxisCount: MediaQuery.of(context).size.width > 800 ? 4 : 2,
       crossAxisSpacing: FCPConstants.spacingMd,
       mainAxisSpacing: FCPConstants.spacingMd,
-      childAspectRatio: 2.5,
+      childAspectRatio: 2.0,
       children: [
         _buildStatCard(
           context,
@@ -339,17 +349,21 @@ class HomeView extends GetView<HomeController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
               Icon(icon, color: color, size: 20),
               const SizedBox(width: FCPConstants.spacingSm),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.7),
+              Expanded(
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.7),
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -361,6 +375,7 @@ class HomeView extends GetView<HomeController> {
               fontWeight: FontWeight.bold,
               color: color,
             ),
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
@@ -614,6 +629,10 @@ class HomeView extends GetView<HomeController> {
 
   Widget _buildMultiSelectTab(BuildContext context) {
     return const FCPMultiSelectExamples();
+  }
+
+  Widget _buildPdfViewerTab(BuildContext context) {
+    return const PdfViewerExamples();
   }
 
   Widget _buildNavigationTab(BuildContext context) {
