@@ -382,9 +382,20 @@ class _BottomSheetContentState extends State<_BottomSheetContent> {
 
         return Padding(
           padding: EdgeInsets.only(bottom: widget.itemSpacing),
-          child:
-              widget.customItemBuilder?.call(item, originalIndex, isSelected) ??
-              _buildDefaultItem(item, originalIndex, isSelected),
+          child: FCPCard(
+            height: widget.itemHeight,
+            onTap: () {
+              widget.onItemSelected(widget.indexed ? originalIndex : item);
+              Navigator.of(context).pop();
+            },
+            child:
+                widget.customItemBuilder?.call(
+                  item,
+                  originalIndex,
+                  isSelected,
+                ) ??
+                _buildDefaultItem(item, originalIndex, isSelected),
+          ),
         );
       },
     );

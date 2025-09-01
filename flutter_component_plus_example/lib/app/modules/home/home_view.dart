@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_component_plus_example/multi_inline_dropdown_examples.dart';
 import 'package:get/get.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
 import 'home_controller.dart';
@@ -7,6 +8,7 @@ import '../../../input_field_examples.dart';
 import '../../../card_examples.dart';
 import '../../../dropdown_examples.dart';
 import '../../../multi_select_examples.dart';
+import '../../../inline_dropdown_examples.dart';
 import '../../../pdf_viewer_examples.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -78,10 +80,17 @@ class HomeView extends GetView<HomeController> {
         _buildSidebarItem(context, 'Inputs', Icons.input, 3),
         _buildSidebarItem(context, 'Dropdowns', Icons.arrow_drop_down, 4),
         _buildSidebarItem(context, 'Multi-Select', Icons.checklist, 5),
-        _buildSidebarItem(context, 'PDF Viewer', Icons.picture_as_pdf, 6),
-        _buildSidebarItem(context, 'Navigation', Icons.navigation, 7),
-        _buildSidebarItem(context, 'Feedback', Icons.feedback, 8),
-        _buildSidebarItem(context, 'Layout', Icons.grid_on, 9),
+        _buildSidebarItem(context, 'Inline Dropdowns', Icons.expand_more, 6),
+        _buildSidebarItem(
+          context,
+          'Multi-Inline Dropdowns',
+          Icons.expand_more,
+          7,
+        ),
+        _buildSidebarItem(context, 'PDF Viewer', Icons.picture_as_pdf, 8),
+        _buildSidebarItem(context, 'Navigation', Icons.navigation, 9),
+        _buildSidebarItem(context, 'Feedback', Icons.feedback, 10),
+        _buildSidebarItem(context, 'Layout', Icons.grid_on, 11),
       ],
     );
   }
@@ -172,9 +181,15 @@ class HomeView extends GetView<HomeController> {
                 ),
                 _buildBottomNavItem(
                   context,
+                  'Inline Dropdowns',
+                  Icons.expand_more,
+                  6,
+                ),
+                _buildBottomNavItem(
+                  context,
                   'PDF Viewer',
                   Icons.picture_as_pdf,
-                  6,
+                  7,
                 ),
               ],
             ),
@@ -242,12 +257,16 @@ class HomeView extends GetView<HomeController> {
         case 5:
           return _buildMultiSelectTab(context);
         case 6:
-          return _buildPdfViewerTab(context);
+          return _buildInlineDropdownTab(context);
         case 7:
-          return _buildNavigationTab(context);
+          return _buildMultiInlineDropdownTab(context);
         case 8:
-          return _buildFeedbackTab(context);
+          return _buildPdfViewerTab(context);
         case 9:
+          return _buildNavigationTab(context);
+        case 10:
+          return _buildFeedbackTab(context);
+        case 11:
           return _buildLayoutTab(context);
         default:
           return _buildOverviewTab(context);
@@ -413,6 +432,12 @@ class HomeView extends GetView<HomeController> {
               text: 'Multi-Select',
               onPressed: () => controller.changeTab(5),
               icon: Icons.checklist,
+              iconPosition: IconPosition.start,
+            ),
+            FCPButton.medium.outlined(
+              text: 'Inline Dropdowns',
+              onPressed: () => controller.changeTab(6),
+              icon: Icons.expand_more,
               iconPosition: IconPosition.start,
             ),
             FCPButton.medium.outlined(
@@ -629,6 +654,14 @@ class HomeView extends GetView<HomeController> {
 
   Widget _buildMultiSelectTab(BuildContext context) {
     return const FCPMultiSelectExamples();
+  }
+
+  Widget _buildInlineDropdownTab(BuildContext context) {
+    return const FCPInlineDropdownExamples();
+  }
+
+  Widget _buildMultiInlineDropdownTab(BuildContext context) {
+    return const MultiInlineDropdownExamples();
   }
 
   Widget _buildPdfViewerTab(BuildContext context) {

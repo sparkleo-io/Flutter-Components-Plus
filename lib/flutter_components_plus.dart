@@ -11,6 +11,8 @@ export 'src/components/buttons/custom_button.dart';
 export 'src/components/custom_input_fields/custom_input_field.dart';
 export 'src/components/dropdown_bottom_sheet/dropdown_bottom_sheet.dart';
 export 'src/components/dropdown_bottom_sheet/multi_select_dropdown.dart';
+export 'src/components/dropdown_bottom_sheet/inline_dropdown.dart';
+export 'src/components/dropdown_bottom_sheet/multi_inline_dropdown.dart';
 
 // Navigation Components
 export 'src/components/navigation/navigation.dart';

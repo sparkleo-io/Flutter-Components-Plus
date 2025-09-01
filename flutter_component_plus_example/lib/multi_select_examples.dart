@@ -72,17 +72,21 @@ class _FCPMultiSelectExamplesState extends State<FCPMultiSelectExamples> {
 
             _buildSectionTitle('Multi-Select with Search and Select All'),
             const SizedBox(height: 8),
-            FCPMultiSelectDropdown(
-              title: 'Select Tags',
-              items: tags,
-              onSelectionChanged: (selectedItems) {
-                setState(() {
-                  tags = selectedItems;
-                });
-              },
-              showSelectAll: true,
-              isSearchEnabled: true,
-              searchHintText: 'Search tags...',
+            _buildExampleCard(
+              'With Search and Select All',
+              'Multi-select with optimized search functionality (100ms debounce, improved performance)',
+              FCPMultiSelectDropdown(
+                title: 'Select Tags',
+                items: tags,
+                onSelectionChanged: (selectedItems) {
+                  _updateItems(tags, selectedItems);
+                },
+                showSelectAll: true,
+                isSearchEnabled: true,
+                searchHintText: 'Search tags...',
+                selectAllText: 'Select All Tags',
+                deselectAllText: 'Clear All',
+              ),
             ),
             const SizedBox(height: 24),
 
@@ -200,6 +204,44 @@ class _FCPMultiSelectExamplesState extends State<FCPMultiSelectExamples> {
       title,
       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
     );
+  }
+
+  Widget _buildExampleCard(String title, String description, Widget widget) {
+    return Card(
+      elevation: 2.0,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              description,
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+            const SizedBox(height: 16),
+            widget,
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _updateItems(
+    List<FCPMultiSelectItem> items,
+    List<FCPMultiSelectItem> selectedItems,
+  ) {
+    setState(() {
+      for (int i = 0; i < items.length; i++) {
+        items[i] = items[i].copyWith(
+          isSelected: selectedItems.contains(items[i]),
+        );
+      }
+    });
   }
 
   Widget _buildSelectedValues(String label, List<FCPMultiSelectItem> items) {
