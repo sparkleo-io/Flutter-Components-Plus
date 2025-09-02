@@ -601,6 +601,8 @@ class _FCPButtonState extends State<FCPButton>
       case FCPButtonType.elevated:
       case FCPButtonType.contained:
         return _buildStandardButton(buttonSize, isDisabled);
+      default:
+        return _buildStandardButton(buttonSize, isDisabled);
     }
   }
 
@@ -703,7 +705,9 @@ class _FCPButtonState extends State<FCPButton>
                   : null,
             ),
             child: Center(
-              child: widget.isLoading ? _buildLoadingIndicator() : _buildIcon(),
+              child: widget.isLoading
+                  ? _buildLoadingIndicator()
+                  : (widget.icon != null ? _buildIcon() : const SizedBox()),
             ),
           ),
         ),
@@ -897,6 +901,18 @@ class _FCPButtonState extends State<FCPButton>
           ),
           side: WidgetStateProperty.all(BorderSide.none),
         );
+      default:
+        return ButtonStyle(
+          backgroundColor: WidgetStateProperty.all(
+            (widget.backgroundColor ?? FCPColorScheme.primary).withOpacity(
+              opacity,
+            ),
+          ),
+          foregroundColor: WidgetStateProperty.all(
+            widget.foregroundColor ?? Colors.white,
+          ),
+          side: WidgetStateProperty.all(BorderSide.none),
+        );
     }
   }
 
@@ -930,6 +946,13 @@ class _FCPButtonState extends State<FCPButton>
           borderRadius: FCPConstants.radiusXl,
           fontSize: FCPConstants.fontSizeXl,
         );
+      default:
+        return ButtonSize(
+          height: FCPConstants.buttonHeightMd,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          borderRadius: FCPConstants.radiusMd,
+          fontSize: FCPConstants.fontSizeMd,
+        );
     }
   }
 
@@ -950,6 +973,8 @@ class _FCPButtonState extends State<FCPButton>
       case FCPButtonVariant.outline:
       case FCPButtonVariant.ghost:
         return FCPColorScheme.primary;
+      default:
+        return Colors.white;
     }
   }
 
@@ -963,6 +988,8 @@ class _FCPButtonState extends State<FCPButton>
         return 20;
       case FCPButtonSize.extraLarge:
         return 22;
+      default:
+        return 18;
     }
   }
 
@@ -990,6 +1017,10 @@ class _FCPButtonState extends State<FCPButton>
         return (widget.backgroundColor ?? FCPColorScheme.primary).withOpacity(
           opacity,
         );
+      default:
+        return (widget.backgroundColor ?? FCPColorScheme.primary).withOpacity(
+          opacity,
+        );
     }
   }
 
@@ -1010,6 +1041,8 @@ class _FCPButtonState extends State<FCPButton>
       case FCPButtonVariant.ghost:
       case FCPButtonVariant.danger:
       case FCPButtonVariant.floating:
+        return null;
+      default:
         return null;
     }
   }

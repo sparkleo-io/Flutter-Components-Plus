@@ -10,6 +10,7 @@ import '../../../dropdown_examples.dart';
 import '../../../multi_select_examples.dart';
 import '../../../inline_dropdown_examples.dart';
 import '../../../pdf_viewer_examples.dart';
+import '../../../table_examples.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -87,10 +88,12 @@ class HomeView extends GetView<HomeController> {
           Icons.expand_more,
           7,
         ),
-        _buildSidebarItem(context, 'PDF Viewer', Icons.picture_as_pdf, 8),
-        _buildSidebarItem(context, 'Navigation', Icons.navigation, 9),
-        _buildSidebarItem(context, 'Feedback', Icons.feedback, 10),
-        _buildSidebarItem(context, 'Layout', Icons.grid_on, 11),
+        _buildSidebarItem(context, 'Tables', Icons.table_chart, 8),
+
+        _buildSidebarItem(context, 'PDF Viewer', Icons.picture_as_pdf, 9),
+        _buildSidebarItem(context, 'Navigation', Icons.navigation, 10),
+        _buildSidebarItem(context, 'Feedback', Icons.feedback, 11),
+        _buildSidebarItem(context, 'Layout', Icons.grid_on, 12),
       ],
     );
   }
@@ -191,6 +194,7 @@ class HomeView extends GetView<HomeController> {
                   Icons.picture_as_pdf,
                   7,
                 ),
+                _buildBottomNavItem(context, 'Tables', Icons.table_chart, 8),
               ],
             ),
           ),
@@ -263,10 +267,12 @@ class HomeView extends GetView<HomeController> {
         case 8:
           return _buildPdfViewerTab(context);
         case 9:
-          return _buildNavigationTab(context);
+          return _buildTablesTab(context);
         case 10:
-          return _buildFeedbackTab(context);
+          return _buildNavigationTab(context);
         case 11:
+          return _buildFeedbackTab(context);
+        case 12:
           return _buildLayoutTab(context);
         default:
           return _buildOverviewTab(context);
@@ -662,6 +668,10 @@ class HomeView extends GetView<HomeController> {
 
   Widget _buildMultiInlineDropdownTab(BuildContext context) {
     return const MultiInlineDropdownExamples();
+  }
+
+  Widget _buildTablesTab(BuildContext context) {
+    return const TableExamples();
   }
 
   Widget _buildPdfViewerTab(BuildContext context) {

@@ -15,60 +15,90 @@ class FCPButtonExamples extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildSection('Primary Buttons', [
-              FCPButton.small.primary(text: 'Small Primary'),
+              FCPButton.small.primary(text: 'Small Primary', onPressed: () {}),
               const SizedBox(height: 8),
-              FCPButton.medium.primary(text: 'Medium Primary'),
+              FCPButton.medium.primary(
+                text: 'Medium Primary',
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.large.primary(text: 'Large Primary'),
+              FCPButton.large.primary(text: 'Large Primary', onPressed: () {}),
               const SizedBox(height: 8),
-              FCPButton.extraLarge.primary(text: 'Extra Large Primary'),
+              FCPButton.extraLarge.primary(
+                text: 'Extra Large Primary',
+                onPressed: () {},
+              ),
             ]),
 
             const SizedBox(height: 24),
             _buildSection('Secondary Buttons', [
-              FCPButton.small.secondary(text: 'Small Secondary'),
+              FCPButton.small.secondary(
+                text: 'Small Secondary',
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.medium.secondary(text: 'Medium Secondary'),
+              FCPButton.medium.secondary(
+                text: 'Medium Secondary',
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.large.secondary(text: 'Large Secondary'),
+              FCPButton.large.secondary(
+                text: 'Large Secondary',
+                onPressed: () {},
+              ),
             ]),
 
             const SizedBox(height: 24),
             _buildSection('Outlined Buttons', [
-              FCPButton.small.outlined(text: 'Small Outlined'),
+              FCPButton.small.outlined(
+                text: 'Small Outlined',
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.medium.outlined(text: 'Medium Outlined'),
+              FCPButton.medium.outlined(
+                text: 'Medium Outlined',
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.large.outlined(text: 'Large Outlined'),
+              FCPButton.large.outlined(
+                text: 'Large Outlined',
+                onPressed: () {},
+              ),
             ]),
 
             const SizedBox(height: 24),
             _buildSection('Ghost Buttons', [
-              FCPButton.small.ghost(text: 'Small Ghost'),
+              FCPButton.small.ghost(text: 'Small Ghost', onPressed: () {}),
               const SizedBox(height: 8),
-              FCPButton.medium.ghost(text: 'Medium Ghost'),
+              FCPButton.medium.ghost(text: 'Medium Ghost', onPressed: () {}),
               const SizedBox(height: 8),
-              FCPButton.large.ghost(text: 'Large Ghost'),
+              FCPButton.large.ghost(text: 'Large Ghost', onPressed: () {}),
             ]),
 
             const SizedBox(height: 24),
             _buildSection('Danger Buttons', [
-              FCPButton.small.danger(text: 'Small Danger'),
+              FCPButton.small.danger(text: 'Small Danger', onPressed: () {}),
               const SizedBox(height: 8),
-              FCPButton.medium.danger(text: 'Medium Danger'),
+              FCPButton.medium.danger(text: 'Medium Danger', onPressed: () {}),
               const SizedBox(height: 8),
-              FCPButton.large.danger(text: 'Large Danger'),
+              FCPButton.large.danger(text: 'Large Danger', onPressed: () {}),
             ]),
 
             const SizedBox(height: 24),
             _buildSection('Icon Buttons', [
               Row(
                 children: [
-                  FCPButton.small.iconButton(icon: Icons.add),
+                  FCPButton.small.iconButton(icon: Icons.add, onPressed: () {}),
                   const SizedBox(width: 8),
-                  FCPButton.medium.iconButton(icon: Icons.edit),
+                  FCPButton.medium.iconButton(
+                    icon: Icons.edit,
+                    onPressed: () {},
+                  ),
                   const SizedBox(width: 8),
-                  FCPButton.large.iconButton(icon: Icons.delete),
+                  FCPButton.large.iconButton(
+                    icon: Icons.delete,
+                    onPressed: () {},
+                  ),
                 ],
               ),
             ]),
@@ -79,64 +109,117 @@ class FCPButtonExamples extends StatelessWidget {
                 text: 'Add Item',
                 icon: Icons.add,
                 iconPosition: IconPosition.start,
+                onPressed: () {},
               ),
               const SizedBox(height: 8),
               FCPButton.medium.secondary(
                 text: 'Edit Profile',
                 icon: Icons.edit,
                 iconPosition: IconPosition.end,
+                onPressed: () {},
               ),
               const SizedBox(height: 8),
               FCPButton.large.outlined(
                 text: 'Download',
                 icon: Icons.download,
                 iconPosition: IconPosition.start,
+                onPressed: () {},
               ),
             ]),
 
             const SizedBox(height: 24),
             _buildSection('Floating Buttons', [
-              FCPButton.small.floating(icon: Icons.add),
+              FCPButton.small.floating(icon: Icons.add, onPressed: () {}),
               const SizedBox(height: 8),
-              FCPButton.medium.floating(text: 'Add', icon: Icons.add),
+              FCPButton.medium.floating(
+                text: 'Add',
+                icon: Icons.add,
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.large.floating(text: 'Create New', icon: Icons.create),
+              FCPButton.large.floating(
+                text: 'Create New',
+                icon: Icons.create,
+                onPressed: () {},
+              ),
             ]),
 
             const SizedBox(height: 24),
             _buildSection('Elevated Buttons', [
-              FCPButton.small.elevated(text: 'Small Elevated'),
+              FCPButton.small.elevated(
+                text: 'Small Elevated',
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.medium.elevated(text: 'Medium Elevated'),
+              FCPButton.medium.elevated(
+                text: 'Medium Elevated',
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.large.elevated(text: 'Large Elevated'),
+              FCPButton.large.elevated(
+                text: 'Large Elevated',
+                onPressed: () {},
+              ),
             ]),
 
             const SizedBox(height: 24),
             _buildSection('Contained Buttons', [
-              FCPButton.small.contained(text: 'Small Contained'),
+              FCPButton.small.contained(
+                text: 'Small Contained',
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.medium.contained(text: 'Medium Contained'),
+              FCPButton.medium.contained(
+                text: 'Medium Contained',
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.large.contained(text: 'Large Contained'),
+              FCPButton.large.contained(
+                text: 'Large Contained',
+                onPressed: () {},
+              ),
             ]),
 
             const SizedBox(height: 24),
             _buildSection('Loading States', [
-              FCPButton.medium.primary(text: 'Loading...', isLoading: true),
+              FCPButton.medium.primary(
+                text: 'Loading...',
+                isLoading: true,
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.medium.outlined(text: 'Loading...', isLoading: true),
+              FCPButton.medium.outlined(
+                text: 'Loading...',
+                isLoading: true,
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.medium.iconButton(icon: Icons.refresh, isLoading: true),
+              FCPButton.medium.iconButton(
+                icon: Icons.refresh,
+                isLoading: true,
+                onPressed: () {},
+              ),
             ]),
 
             const SizedBox(height: 24),
             _buildSection('Disabled States', [
-              FCPButton.medium.primary(text: 'Disabled', isDisabled: true),
+              FCPButton.medium.primary(
+                text: 'Disabled',
+                isDisabled: true,
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.medium.outlined(text: 'Disabled', isDisabled: true),
+              FCPButton.medium.outlined(
+                text: 'Disabled',
+                isDisabled: true,
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.medium.iconButton(icon: Icons.delete, isDisabled: true),
+              FCPButton.medium.iconButton(
+                icon: Icons.delete,
+                isDisabled: true,
+                onPressed: () {},
+              ),
             ]),
 
             const SizedBox(height: 24),

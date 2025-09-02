@@ -23,6 +23,9 @@ export 'src/components/pdf_viewer/pdf_viewer_exports.dart';
 // Custom Cards
 export 'src/components/custom_cards/custom_cards.dart';
 
+// Table Components
+export 'src/components/tables/tables_exports.dart';
+
 // Utilities
 export 'src/utils/extensions/widget_extensions.dart';
 export 'src/utils/extensions/string_extensions.dart';

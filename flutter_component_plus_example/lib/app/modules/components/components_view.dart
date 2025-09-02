@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_component_plus_example/table_examples.dart';
 import 'package:get/get.dart';
 import 'components_controller.dart';
+import '../../controllers/table_examples_controller.dart';
 import '../../../button_examples.dart';
 import '../../../input_field_examples.dart';
 import '../../../card_examples.dart';
@@ -17,7 +19,7 @@ class ComponentsView extends GetView<ComponentsController> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 9,
+      length: 10,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Flutter Components Plus - Examples'),
@@ -34,13 +36,14 @@ class ComponentsView extends GetView<ComponentsController> {
               Tab(text: 'Multi Inline', icon: Icon(Icons.checklist_rtl)),
               Tab(text: 'Navigation', icon: Icon(Icons.navigation)),
               Tab(text: 'PDF Viewer', icon: Icon(Icons.picture_as_pdf)),
+              Tab(text: 'Tables', icon: Icon(Icons.table_chart)),
             ],
             indicatorColor: Colors.white,
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white70,
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
             FCPButtonExamples(),
             FCPInputFieldExamples(),
@@ -51,6 +54,10 @@ class ComponentsView extends GetView<ComponentsController> {
             MultiInlineDropdownExamples(),
             BottomNavigationExamples(),
             PdfViewerExamples(),
+            GetBuilder<TableExamplesController>(
+              init: TableExamplesController(),
+              builder: (controller) => TableExamples(),
+            ),
           ],
         ),
       ),
