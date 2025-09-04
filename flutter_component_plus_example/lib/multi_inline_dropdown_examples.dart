@@ -188,6 +188,7 @@ class _MultiInlineDropdownExamplesState
               enableBorder: true,
               showSelectAll: true,
               prefixIcon: Icons.palette,
+              showDivider: false,
             ),
             const SizedBox(height: 24),
 

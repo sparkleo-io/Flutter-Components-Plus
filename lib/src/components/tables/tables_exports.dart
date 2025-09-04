@@ -8,3 +8,15 @@ export 'datatable/components/paginator.dart';
 export 'datatable/extensions/table_extensions.dart';
 export 'datatable/types/table_types.dart';
 export 'datatable/table_theme_config.dart';
+
+// Re-export syncfusion types for convenience
+export 'package:syncfusion_flutter_datagrid/datagrid.dart'
+    show
+        ColumnResizeMode,
+        ColumnWidthMode,
+        ColumnWidthCalculationRange,
+        GridLinesVisibility,
+        SelectionMode,
+        GridNavigationMode,
+        EditingGestureType,
+        ColumnSizer;

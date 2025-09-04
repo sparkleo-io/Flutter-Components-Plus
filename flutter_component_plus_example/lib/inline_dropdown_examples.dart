@@ -267,6 +267,7 @@ class _FCPInlineDropdownExamplesState extends State<FCPInlineDropdownExamples> {
                   selectedCustomItem = value as String;
                 });
               },
+
               indexed: false,
               prefixIcon: Icons.settings,
               enableBorder: true,
@@ -278,6 +279,9 @@ class _FCPInlineDropdownExamplesState extends State<FCPInlineDropdownExamples> {
             _buildSectionTitle('Compact Inline Dropdown'),
             const SizedBox(height: 8),
             FCPInlineDropdown(
+              dropdownWidth: 200,
+              buttonWidth: 250,
+              showDivider: false,
               title: 'Select Size',
               items: sizes,
               selectedIndex: selectedSizeIndex,
@@ -307,32 +311,31 @@ class _FCPInlineDropdownExamplesState extends State<FCPInlineDropdownExamples> {
             ),
             const SizedBox(height: 24),
 
-            const SizedBox(height: 24),
+            // const SizedBox(height: 24),
 
-            _buildSectionTitle('Extension Method Example'),
-            const SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () {
-                final layerLink = LayerLink();
-                context.showFCPDropdownOverlay(
-                  layerLink: layerLink,
-                  items: ['Item A', 'Item B', 'Item C', 'Item D'],
-                  onItemSelected: (value) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Selected: $value'),
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
-                  },
-                  isSearchEnabled: true,
-                  searchHintText: 'Search items...',
-                );
-              },
-              child: const Text('Show Dropdown via Extension'),
-            ),
-            const SizedBox(height: 24),
-
+            // _buildSectionTitle('Extension Method Example'),
+            // const SizedBox(height: 8),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     final layerLink = LayerLink();
+            //     context.showFCPDropdownOverlay(
+            //       layerLink: layerLink,
+            //       items: ['Item A', 'Item B', 'Item C', 'Item D'],
+            //       onItemSelected: (value) {
+            //         ScaffoldMessenger.of(context).showSnackBar(
+            //           SnackBar(
+            //             content: Text('Selected: $value'),
+            //             duration: const Duration(seconds: 2),
+            //           ),
+            //         );
+            //       },
+            //       isSearchEnabled: true,
+            //       searchHintText: 'Search items...',
+            //     );
+            //   },
+            //   child: const Text('Show Dropdown via Extension'),
+            // ),
+            // const SizedBox(height: 24),
             _buildSectionTitle('Selected Values'),
             const SizedBox(height: 16),
             _buildSelectedValue('Country', selectedCountryIndex, countries),

@@ -585,20 +585,14 @@ class _MultiSelectBottomSheetContentState
 
         return Padding(
           padding: EdgeInsets.only(bottom: widget.itemSpacing),
-          child: FCPCard(
-            height: widget.itemHeight,
-            onTap: item.disabled
-                ? null
-                : () => _onItemChanged(originalIndex, !item.isSelected),
-            child:
-                widget.customItemBuilder?.call(
-                  item,
-                  originalIndex,
-                  item.isSelected,
-                  (value) => _onItemChanged(originalIndex, value),
-                ) ??
-                _buildDefaultItem(item, originalIndex),
-          ),
+          child:
+              widget.customItemBuilder?.call(
+                item,
+                originalIndex,
+                item.isSelected,
+                (value) => _onItemChanged(originalIndex, value),
+              ) ??
+              _buildDefaultItem(item, originalIndex),
         );
       },
     );

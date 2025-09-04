@@ -161,41 +161,44 @@ class HomeView extends GetView<HomeController> {
         ),
         child: SafeArea(
           child: Container(
-            height: 60,
-            padding: const EdgeInsets.symmetric(
-              horizontal: FCPConstants.spacingMd,
-            ),
-            child: Row(
-              children: [
-                _buildBottomNavItem(context, 'Overview', Icons.dashboard, 0),
-                _buildBottomNavItem(context, 'Buttons', Icons.smart_button, 1),
-                _buildBottomNavItem(context, 'Cards', Icons.credit_card, 2),
-                _buildBottomNavItem(
-                  context,
-                  'Dropdowns',
-                  Icons.arrow_drop_down,
-                  4,
-                ),
-                _buildBottomNavItem(
-                  context,
-                  'Multi-Select',
-                  Icons.checklist,
-                  5,
-                ),
-                _buildBottomNavItem(
-                  context,
-                  'Inline Dropdowns',
-                  Icons.expand_more,
-                  6,
-                ),
-                _buildBottomNavItem(
-                  context,
-                  'PDF Viewer',
-                  Icons.picture_as_pdf,
-                  7,
-                ),
-                _buildBottomNavItem(context, 'Tables', Icons.table_chart, 8),
-              ],
+            height: 70,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  _buildBottomNavItem(context, 'Overview', Icons.dashboard, 0),
+                  _buildBottomNavItem(
+                    context,
+                    'Buttons',
+                    Icons.smart_button,
+                    1,
+                  ),
+                  _buildBottomNavItem(context, 'Cards', Icons.credit_card, 2),
+                  _buildBottomNavItem(context, 'Inputs', Icons.input, 3),
+                  _buildBottomNavItem(
+                    context,
+                    'Dropdowns',
+                    Icons.arrow_drop_down,
+                    4,
+                  ),
+                  _buildBottomNavItem(
+                    context,
+                    'Multi-Select',
+                    Icons.checklist,
+                    5,
+                  ),
+                  _buildBottomNavItem(context, 'Inline', Icons.expand_more, 6),
+                  _buildBottomNavItem(
+                    context,
+                    'Multi-Inline',
+                    Icons.expand_more,
+                    7,
+                  ),
+                  _buildBottomNavItem(context, 'PDF', Icons.picture_as_pdf, 8),
+                  _buildBottomNavItem(context, 'Tables', Icons.table_chart, 9),
+                ],
+              ),
             ),
           ),
         ),
@@ -210,36 +213,51 @@ class HomeView extends GetView<HomeController> {
     int index,
   ) {
     final isSelected = controller.selectedTabIndex == index;
-    return Expanded(
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 8,
+      ), // Add spacing between items
       child: InkWell(
         onTap: () => controller.changeTab(index),
         borderRadius: BorderRadius.circular(FCPConstants.radiusMd),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: isSelected
-                  ? FCPColorScheme.primary
-                  : Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.7),
-              size: 24,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 12,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min, // Added to prevent overflow
+            children: [
+              Icon(
+                icon,
                 color: isSelected
                     ? FCPColorScheme.primary
                     : Theme.of(
                         context,
                       ).colorScheme.onSurface.withValues(alpha: 0.7),
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                size: 22, // Slightly reduced icon size
               ),
-            ),
-          ],
+              const SizedBox(height: 2), // Reduced spacing
+              Flexible(
+                // Added Flexible to handle text overflow
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 10, // Reduced font size
+                    color: isSelected
+                        ? FCPColorScheme.primary
+                        : Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.7),
+                    fontWeight: isSelected
+                        ? FontWeight.w600
+                        : FontWeight.normal,
+                  ),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis, // Added overflow handling
+                  maxLines: 1, // Limit to single line
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -315,43 +333,74 @@ class HomeView extends GetView<HomeController> {
   }
 
   Widget _buildStatsGrid(BuildContext context) {
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: MediaQuery.of(context).size.width > 800 ? 4 : 2,
-      crossAxisSpacing: FCPConstants.spacingMd,
-      mainAxisSpacing: FCPConstants.spacingMd,
-      childAspectRatio: 2.0,
-      children: [
-        _buildStatCard(
-          context,
-          'Components',
-          '50+',
-          Icons.widgets,
-          FCPColorScheme.primary,
-        ),
-        _buildStatCard(
-          context,
-          'Variants',
-          '200+',
-          Icons.style,
-          FCPColorScheme.secondary,
-        ),
-        _buildStatCard(
-          context,
-          'Themes',
-          '10+',
-          Icons.palette,
-          FCPColorScheme.success,
-        ),
-        _buildStatCard(
-          context,
-          'Examples',
-          '100+',
-          Icons.code,
-          FCPColorScheme.warning,
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Responsive grid configuration
+        int crossAxisCount;
+        double childAspectRatio;
+        double spacing;
+
+        if (constraints.maxWidth < 400) {
+          // Very small mobile
+          crossAxisCount = 1;
+          childAspectRatio = 3.5;
+          spacing = 8.0;
+        } else if (constraints.maxWidth < 600) {
+          // Small mobile
+          crossAxisCount = 2;
+          childAspectRatio = 2.8;
+          spacing = 12.0;
+        } else if (constraints.maxWidth < 800) {
+          // Medium mobile/tablet
+          crossAxisCount = 2;
+          childAspectRatio = 2.5;
+          spacing = 16.0;
+        } else {
+          // Desktop
+          crossAxisCount = 4;
+          childAspectRatio = 2.0;
+          spacing = 16.0;
+        }
+
+        return GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: crossAxisCount,
+          crossAxisSpacing: spacing,
+          mainAxisSpacing: spacing,
+          childAspectRatio: childAspectRatio,
+          children: [
+            _buildStatCard(
+              context,
+              'Components',
+              '50+',
+              Icons.widgets,
+              FCPColorScheme.primary,
+            ),
+            _buildStatCard(
+              context,
+              'Variants',
+              '200+',
+              Icons.style,
+              FCPColorScheme.secondary,
+            ),
+            _buildStatCard(
+              context,
+              'Themes',
+              '10+',
+              Icons.palette,
+              FCPColorScheme.success,
+            ),
+            _buildStatCard(
+              context,
+              'Examples',
+              '100+',
+              Icons.code,
+              FCPColorScheme.warning,
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -389,6 +438,7 @@ class HomeView extends GetView<HomeController> {
                     ).colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                   overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
               ),
             ],
@@ -401,6 +451,7 @@ class HomeView extends GetView<HomeController> {
               color: color,
             ),
             overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
         ],
       ),

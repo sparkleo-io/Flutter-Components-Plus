@@ -76,6 +76,11 @@ class FCPMultiInlineDropdown extends StatefulWidget {
     this.customItemBuilder,
     this.onSearchChanged,
     this.searchDebounceDuration = const Duration(milliseconds: 300),
+    this.dividerColor,
+    this.dividerExtent = 0.9,
+    this.showDivider = true,
+    this.buttonWidth,
+    this.dropdownWidth,
   });
 
   /// The title displayed in the dropdown trigger
@@ -165,6 +170,21 @@ class FCPMultiInlineDropdown extends StatefulWidget {
   /// Debounce duration for search input
   final Duration searchDebounceDuration;
 
+  /// Color for the divider between items
+  final Color? dividerColor;
+
+  /// Extent of the divider (0.0 to 1.0)
+  final double dividerExtent;
+
+  /// Whether to show dividers between items
+  final bool showDivider;
+
+  /// Width of the dropdown button (null means auto-width)
+  final double? buttonWidth;
+
+  /// Width of the dropdown menu (null means same as button width)
+  final double? dropdownWidth;
+
   @override
   State<FCPMultiInlineDropdown> createState() => _FCPMultiInlineDropdownState();
 }
@@ -213,53 +233,56 @@ class _FCPMultiInlineDropdownState extends State<FCPMultiInlineDropdown> {
 
     return CompositedTransformTarget(
       link: _layerLink,
-      child: FCPCard(
-        border: widget.enableBorder
-            ? Border.all(
-                color: isDark
-                    ? colorScheme.outline.withValues(alpha: 0.2)
-                    : colorScheme.outline.withValues(alpha: 0.1),
-              )
-            : null,
-        borderRadius: FCPConstants.radiusSm,
-        onTap: widget.disabled ? null : _toggleDropdown,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: FCPConstants.spacingSm,
-            vertical: FCPConstants.spacingMd,
-          ),
-          child: Row(
-            children: [
-              if (widget.prefixIcon != null) ...[
-                Icon(
-                  widget.prefixIcon,
-                  color: colorScheme.onSurface.withValues(alpha: 0.6),
-                  size: 20,
-                ),
-                const SizedBox(width: FCPConstants.spacingMd),
-              ],
-              Expanded(
-                child: Text(
-                  _getDisplayText(selectedCount),
-                  style: (widget.titleStyle ?? FCPTextStyles.getBodyMedium())
-                      .copyWith(
-                        color: selectedCount == 0
-                            ? colorScheme.onSurface.withValues(alpha: 0.6)
-                            : null,
-                      ),
-                ),
-              ),
-              if (!widget.disabled)
-                AnimatedRotation(
-                  turns: _isOpen ? 0.5 : 0.0,
-                  duration: const Duration(milliseconds: 200),
-                  child: Icon(
-                    Icons.keyboard_arrow_down,
+      child: SizedBox(
+        width: widget.buttonWidth,
+        child: FCPCard(
+          border: widget.enableBorder
+              ? Border.all(
+                  color: isDark
+                      ? colorScheme.outline.withValues(alpha: 0.2)
+                      : colorScheme.outline.withValues(alpha: 0.1),
+                )
+              : null,
+          borderRadius: FCPConstants.radiusSm,
+          onTap: widget.disabled ? null : _toggleDropdown,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: FCPConstants.spacingSm,
+              vertical: FCPConstants.spacingMd,
+            ),
+            child: Row(
+              children: [
+                if (widget.prefixIcon != null) ...[
+                  Icon(
+                    widget.prefixIcon,
                     color: colorScheme.onSurface.withValues(alpha: 0.6),
                     size: 20,
                   ),
+                  const SizedBox(width: FCPConstants.spacingMd),
+                ],
+                Expanded(
+                  child: Text(
+                    _getDisplayText(selectedCount),
+                    style: (widget.titleStyle ?? FCPTextStyles.getBodyMedium())
+                        .copyWith(
+                          color: selectedCount == 0
+                              ? colorScheme.onSurface.withValues(alpha: 0.6)
+                              : null,
+                        ),
+                  ),
                 ),
-            ],
+                if (!widget.disabled)
+                  AnimatedRotation(
+                    turns: _isOpen ? 0.5 : 0.0,
+                    duration: const Duration(milliseconds: 200),
+                    child: Icon(
+                      Icons.keyboard_arrow_down,
+                      color: colorScheme.onSurface.withValues(alpha: 0.6),
+                      size: 20,
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
@@ -293,6 +316,10 @@ class _FCPMultiInlineDropdownState extends State<FCPMultiInlineDropdown> {
 
     // Calculate smart positioning before creating the overlay
     final smartOffset = _calculateSmartOffset();
+
+    // Calculate dropdown width (use button width if dropdown width is null)
+    final effectiveDropdownWidth =
+        widget.dropdownWidth ?? widget.buttonWidth ?? 300.0;
 
     _overlayEntry = OverlayEntry(
       builder: (context) => _MultiDropdownOverlay(
@@ -329,6 +356,10 @@ class _FCPMultiInlineDropdownState extends State<FCPMultiInlineDropdown> {
         onSearchInputChanged: _onSearchChanged,
         originalItems: widget.items,
         smartOffset: smartOffset,
+        dividerColor: widget.dividerColor,
+        dividerExtent: widget.dividerExtent,
+        showDivider: widget.showDivider,
+        dropdownWidth: effectiveDropdownWidth,
       ),
     );
 
@@ -393,13 +424,16 @@ class _FCPMultiInlineDropdownState extends State<FCPMultiInlineDropdown> {
         final spaceBelow = screenHeight - buttonBottom;
         final spaceAbove = buttonPosition.dy;
 
-        // Determine positioning
-        if (spaceBelow >= estimatedHeight + 8) {
+        // Always try to position below first, with a small margin
+        if (spaceBelow >= estimatedHeight + 16) {
           // Enough space below - position below the button
-          return const Offset(0, 8);
-        } else if (spaceAbove >= estimatedHeight + 8) {
+          return Offset(0, buttonHeight + 4);
+        } else if (spaceAbove >= estimatedHeight + 16) {
           // Not enough space below, but enough above - position above the button
-          return Offset(0, -(estimatedHeight + 8));
+          return Offset(0, -(estimatedHeight + 4));
+        } else {
+          // Not enough space in either direction - position below but allow scrolling
+          return Offset(0, buttonHeight + 4);
         }
       }
     } catch (e) {
@@ -407,7 +441,7 @@ class _FCPMultiInlineDropdownState extends State<FCPMultiInlineDropdown> {
     }
 
     // Default - position below the button
-    return const Offset(0, 8);
+    return const Offset(0, 52); // Default button height + small margin
   }
 
   /// Estimate the dropdown height based on content
@@ -482,6 +516,10 @@ class _MultiDropdownOverlay extends StatefulWidget {
     required this.onSearchInputChanged,
     required this.originalItems,
     required this.smartOffset,
+    this.dividerColor,
+    this.dividerExtent = 0.9,
+    this.showDivider = true,
+    required this.dropdownWidth,
   });
 
   final LayerLink layerLink;
@@ -518,6 +556,10 @@ class _MultiDropdownOverlay extends StatefulWidget {
   final Function(String) onSearchInputChanged;
   final List<FCPMultiInlineItem> originalItems;
   final Offset smartOffset;
+  final Color? dividerColor;
+  final double dividerExtent;
+  final bool showDivider;
+  final double dropdownWidth;
 
   @override
   State<_MultiDropdownOverlay> createState() => _MultiDropdownOverlayState();
@@ -571,7 +613,7 @@ class _MultiDropdownOverlayState extends State<_MultiDropdownOverlay> {
     final colorScheme = theme.colorScheme;
 
     return Positioned(
-      width: 300, // Increased width for better usability
+      width: widget.dropdownWidth,
       child: CompositedTransformFollower(
         link: widget.layerLink,
         showWhenUnlinked: false,
@@ -678,44 +720,96 @@ class _MultiDropdownOverlayState extends State<_MultiDropdownOverlay> {
       return _buildEmptyState();
     }
 
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: FCPConstants.spacingSm),
-      shrinkWrap: true,
-      itemCount: _localFilteredItems.length,
-      itemBuilder: (context, index) {
-        final item = _localFilteredItems[index];
-        // Find the index in the current local items by stable key (label)
-        final originalIndex = _localItems.indexWhere(
-          (it) => it.label == item.label,
-        );
-        if (originalIndex < 0) {
-          // Item not found in local list; skip rendering to prevent RangeError
-          return const SizedBox.shrink();
-        }
-        final isSelected = _localItems[originalIndex].isSelected;
+    if (widget.showDivider) {
+      return ListView.separated(
+        padding: const EdgeInsets.symmetric(vertical: FCPConstants.spacingSm),
+        shrinkWrap: true,
+        itemCount: _localFilteredItems.length,
+        separatorBuilder: (context, index) {
+          return Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              width: widget.dropdownWidth * widget.dividerExtent,
+              child: Divider(
+                color: widget.dividerColor ?? Theme.of(context).dividerColor,
+                height: widget.itemSpacing,
+              ),
+            ),
+          );
+        },
+        itemBuilder: (context, index) {
+          final item = _localFilteredItems[index];
+          // Find the index in the current local items by stable key (label)
+          final originalIndex = _localItems.indexWhere(
+            (it) => it.label == item.label,
+          );
+          if (originalIndex < 0) {
+            // Item not found in local list; skip rendering to prevent RangeError
+            return const SizedBox.shrink();
+          }
+          final isSelected = _localItems[originalIndex].isSelected;
 
-        return Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: FCPConstants.spacingSm,
-            vertical: widget.itemSpacing / 2,
-          ),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(FCPConstants.radiusSm),
-            onTap: () {
-              _onItemChanged(originalIndex, !isSelected);
-            },
-            child:
-                widget.customItemBuilder?.call(
-                  item,
-                  originalIndex,
-                  isSelected,
-                  (value) => _onItemChanged(originalIndex, value),
-                ) ??
-                _buildDefaultItem(item, originalIndex, isSelected),
-          ),
-        );
-      },
-    );
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: FCPConstants.spacingSm,
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(FCPConstants.radiusSm),
+              onTap: () {
+                _onItemChanged(originalIndex, !isSelected);
+              },
+              child:
+                  widget.customItemBuilder?.call(
+                    item,
+                    originalIndex,
+                    isSelected,
+                    (value) => _onItemChanged(originalIndex, value),
+                  ) ??
+                  _buildDefaultItem(item, originalIndex, isSelected),
+            ),
+          );
+        },
+      );
+    } else {
+      return ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: FCPConstants.spacingSm),
+        shrinkWrap: true,
+        itemCount: _localFilteredItems.length,
+        itemBuilder: (context, index) {
+          final item = _localFilteredItems[index];
+          // Find the index in the current local items by stable key (label)
+          final originalIndex = _localItems.indexWhere(
+            (it) => it.label == item.label,
+          );
+          if (originalIndex < 0) {
+            // Item not found in local list; skip rendering to prevent RangeError
+            return const SizedBox.shrink();
+          }
+          final isSelected = _localItems[originalIndex].isSelected;
+
+          return Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: FCPConstants.spacingSm,
+              vertical: widget.itemSpacing / 2,
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(FCPConstants.radiusSm),
+              onTap: () {
+                _onItemChanged(originalIndex, !isSelected);
+              },
+              child:
+                  widget.customItemBuilder?.call(
+                    item,
+                    originalIndex,
+                    isSelected,
+                    (value) => _onItemChanged(originalIndex, value),
+                  ) ??
+                  _buildDefaultItem(item, originalIndex, isSelected),
+            ),
+          );
+        },
+      );
+    }
   }
 
   /// Build the default item widget
@@ -867,10 +961,18 @@ extension FCPMultiDropdownOverlayExtension on BuildContext {
     customItemBuilder,
     Function(String)? onSearchChanged,
     Duration searchDebounceDuration = const Duration(milliseconds: 300),
+    Color? dividerColor,
+    double dividerExtent = 0.9,
+    bool showDivider = true,
+    double? buttonWidth,
+    double? dropdownWidth,
   }) {
     final completer = Completer<List<FCPMultiInlineItem>?>();
     final searchController = TextEditingController();
     late OverlayEntry overlayEntry;
+
+    // Calculate dropdown width (use button width if dropdown width is null)
+    final effectiveDropdownWidth = dropdownWidth ?? buttonWidth ?? 300.0;
 
     overlayEntry = OverlayEntry(
       builder: (context) => _MultiDropdownOverlay(
@@ -910,7 +1012,14 @@ extension FCPMultiDropdownOverlayExtension on BuildContext {
           // Handle search changes
         },
         originalItems: items,
-        smartOffset: const Offset(0, 8), // Default for extension
+        smartOffset: const Offset(
+          0,
+          52,
+        ), // Default button height + small margin
+        dividerColor: dividerColor,
+        dividerExtent: dividerExtent,
+        showDivider: showDivider,
+        dropdownWidth: effectiveDropdownWidth,
       ),
     );
 

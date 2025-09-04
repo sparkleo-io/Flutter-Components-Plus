@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
-import '../chi_data_table.dart';
-import '../extensions/table_extensions.dart';
-import '../table_theme_config.dart';
 
 class TableHeader extends StatefulWidget {
   final Widget? suffix;
@@ -64,72 +61,76 @@ class _TableHeaderState extends State<TableHeader> {
       color:
           themeConfig.headerBackgroundColor ??
           themeConfig.getTableBackgroundColor(Theme.of(context)),
-      // Colors.transparent,
-      child: Row(
-        children: [
-          if (widget.suffix != null)
-            Padding(
-              padding: context.locale == const Locale('ar', 'SA')
-                  ? const EdgeInsets.only(left: 8)
-                  : const EdgeInsets.only(right: 8),
-              child: widget.suffix,
-            ),
-          Text(
-            widget.title,
-            style: themeConfig.useAppTheme
-                ? (theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ) ??
-                      const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ))
-                : CHIStyles.lgBoldStyle,
-          ),
-          16.spaceX,
-          if (widget.search)
-            SizedBox(
-              width: context.kWidth / 4,
-              child: FCPInputField(
-                hint: 'Search',
-                // enableBorder: true,
-                suffixIcon: Icon(
-                  Icons.search_outlined,
-                  color: themeConfig.getIconColor(theme),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: themeConfig.borderColor ?? theme.dividerColor,
-                  ),
-                ),
-                onChanged: (query) {
-                  timer?.cancel();
-                  timer = Timer(const Duration(seconds: 1), () {
-                    if (widget.onSearch != null) {
-                      widget.onSearch!(query);
-                    }
-                  });
-                },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (widget.suffix != null)
+              Padding(
+                padding: context.locale == const Locale('ar', 'SA')
+                    ? const EdgeInsets.only(left: 8)
+                    : const EdgeInsets.only(right: 8),
+                child: widget.suffix,
               ),
+            Text(
+              widget.title,
+              style: themeConfig.useAppTheme
+                  ? (theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ) ??
+                        const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ))
+                  : CHIStyles.lgBoldStyle,
+              overflow: TextOverflow.ellipsis,
             ),
-          const Spacer(),
-          if (isSelected && widget.actions != null) ...widget.actions!,
-          12.spaceX,
-          FCPButton.small.outlined(
-            onPressed: widget.onAddItem,
-            icon: Icons.add,
-          ),
-          12.spaceX,
-          FCPButton.small.primary(
-            onPressed: widget.onReload,
-            icon: Icons.refresh,
-          ),
-          // CHIActionButton(
-          //   onTap: widget.onReload,
-          //   child: const Icon(Icons.refresh),
-          // ),
-        ],
+            16.spaceY,
+            Row(
+              children: [
+                if (widget.search)
+                  SizedBox(
+                    width: 200,
+                    child: FCPInputField(
+                      hint: 'Search',
+                      suffixIcon: Icon(
+                        Icons.search_outlined,
+                        color: themeConfig.getIconColor(theme),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          color: themeConfig.borderColor ?? theme.dividerColor,
+                        ),
+                      ),
+                      onChanged: (query) {
+                        timer?.cancel();
+                        timer = Timer(const Duration(seconds: 1), () {
+                          if (widget.onSearch != null) {
+                            widget.onSearch!(query);
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                const Spacer(),
+                if (isSelected && widget.actions != null) ...widget.actions!,
+                // const SizedBox(width: 12),
+                // FCPButton.small.outlined(
+                //   onPressed: widget.onAddItem,
+                //   icon: Icons.add,
+                // ),
+                const SizedBox(width: 12),
+                FCPButton.small.primary(
+                  onPressed: widget.onReload,
+                  icon: Icons.refresh,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

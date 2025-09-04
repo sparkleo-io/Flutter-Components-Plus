@@ -382,20 +382,9 @@ class _BottomSheetContentState extends State<_BottomSheetContent> {
 
         return Padding(
           padding: EdgeInsets.only(bottom: widget.itemSpacing),
-          child: FCPCard(
-            height: widget.itemHeight,
-            onTap: () {
-              widget.onItemSelected(widget.indexed ? originalIndex : item);
-              Navigator.of(context).pop();
-            },
-            child:
-                widget.customItemBuilder?.call(
-                  item,
-                  originalIndex,
-                  isSelected,
-                ) ??
-                _buildDefaultItem(item, originalIndex, isSelected),
-          ),
+          child:
+              widget.customItemBuilder?.call(item, originalIndex, isSelected) ??
+              _buildDefaultItem(item, originalIndex, isSelected),
         );
       },
     );
@@ -413,9 +402,9 @@ class _BottomSheetContentState extends State<_BottomSheetContent> {
       backgroundColor: isSelected
           ? colorScheme.primaryContainer.withOpacity(0.1)
           : null,
-      border: isSelected
-          ? Border.all(color: colorScheme.primary.withOpacity(0.3), width: 1)
-          : null,
+      // border: isSelected
+      //     ? Border.all(color: colorScheme.primary.withOpacity(0.3), width: 1)
+      //     : null,
       onTap: () {
         widget.onItemSelected(widget.indexed ? index : item);
         Navigator.of(context).pop();

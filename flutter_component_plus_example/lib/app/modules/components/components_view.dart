@@ -18,6 +18,9 @@ class ComponentsView extends GetView<ComponentsController> {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize table examples controller when this view is built
+    Get.lazyPut<TableExamplesController>(() => TableExamplesController());
+
     return DefaultTabController(
       length: 10,
       child: Scaffold(
@@ -25,22 +28,35 @@ class ComponentsView extends GetView<ComponentsController> {
           title: const Text('Flutter Components Plus - Examples'),
           backgroundColor: Theme.of(context).colorScheme.primary,
           foregroundColor: Colors.white,
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Buttons', icon: Icon(Icons.smart_button)),
-              Tab(text: 'Input Fields', icon: Icon(Icons.input)),
-              Tab(text: 'Cards', icon: Icon(Icons.credit_card)),
-              Tab(text: 'Dropdowns', icon: Icon(Icons.arrow_drop_down)),
-              Tab(text: 'Multi-Select', icon: Icon(Icons.checklist)),
-              Tab(text: 'Inline Dropdowns', icon: Icon(Icons.expand_more)),
-              Tab(text: 'Multi Inline', icon: Icon(Icons.checklist_rtl)),
-              Tab(text: 'Navigation', icon: Icon(Icons.navigation)),
-              Tab(text: 'PDF Viewer', icon: Icon(Icons.picture_as_pdf)),
-              Tab(text: 'Tables', icon: Icon(Icons.table_chart)),
-            ],
-            indicatorColor: Colors.white,
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.white70,
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(48),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: TabBar(
+                isScrollable: true, // Make tabs scrollable on small screens
+                tabs: [
+                  Tab(text: 'Buttons', icon: Icon(Icons.smart_button)),
+                  Tab(text: 'Inputs', icon: Icon(Icons.input)), // Shortened
+                  Tab(text: 'Cards', icon: Icon(Icons.credit_card)),
+                  Tab(text: 'Dropdowns', icon: Icon(Icons.arrow_drop_down)),
+                  Tab(text: 'Multi-Select', icon: Icon(Icons.checklist)),
+                  Tab(
+                    text: 'Inline',
+                    icon: Icon(Icons.expand_more),
+                  ), // Shortened
+                  Tab(text: 'Multi Inline', icon: Icon(Icons.checklist_rtl)),
+                  Tab(text: 'Navigation', icon: Icon(Icons.navigation)),
+                  Tab(
+                    text: 'PDF',
+                    icon: Icon(Icons.picture_as_pdf),
+                  ), // Shortened
+                  Tab(text: 'Tables', icon: Icon(Icons.table_chart)),
+                ],
+                indicatorColor: Colors.white,
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.white70,
+              ),
+            ),
           ),
         ),
         body: TabBarView(
@@ -54,10 +70,7 @@ class ComponentsView extends GetView<ComponentsController> {
             MultiInlineDropdownExamples(),
             BottomNavigationExamples(),
             PdfViewerExamples(),
-            GetBuilder<TableExamplesController>(
-              init: TableExamplesController(),
-              builder: (controller) => TableExamples(),
-            ),
+            TableExamples(),
           ],
         ),
       ),

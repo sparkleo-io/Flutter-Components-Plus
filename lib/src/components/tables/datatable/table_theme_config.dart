@@ -153,7 +153,7 @@ class TableThemeConfig {
     }
 
     if (useAppTheme) {
-      return theme.textTheme.bodyMedium ?? const TextStyle();
+      return theme.textTheme.bodySmall ?? const TextStyle();
     }
 
     return const TextStyle();

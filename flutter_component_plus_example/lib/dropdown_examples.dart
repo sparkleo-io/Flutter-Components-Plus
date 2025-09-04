@@ -145,67 +145,66 @@ class _FCPDropdownExamplesState extends State<FCPDropdownExamples> {
             ),
             const SizedBox(height: 24),
 
-            _buildSectionTitle('Custom Item Builder'),
-            const SizedBox(height: 8),
-            FCPDropdownBottomSheet(
-              title: 'Select User with Avatar',
-              items: users,
-              selectedIndex: selectedUserIndex,
-              onItemSelected: (value) {
-                setState(() {
-                  selectedUserIndex = value as int;
-                });
-              },
-              customItemBuilder: (item, index, isSelected) {
-                return Container(
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.only(bottom: 8),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? Colors.blue.withValues(alpha: 0.1)
-                        : null,
-                    borderRadius: BorderRadius.circular(8),
-                    border: isSelected
-                        ? Border.all(color: Colors.blue, width: 1)
-                        : null,
-                  ),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.blue[100],
-                        child: Text(
-                          item[0].toUpperCase(),
-                          style: const TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          item,
-                          style: TextStyle(
-                            fontWeight: isSelected
-                                ? FontWeight.w600
-                                : FontWeight.normal,
-                            color: isSelected ? Colors.blue : null,
-                          ),
-                        ),
-                      ),
-                      if (isSelected)
-                        const Icon(
-                          Icons.check_circle,
-                          color: Colors.blue,
-                          size: 20,
-                        ),
-                    ],
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 24),
-
+            // _buildSectionTitle('Custom Item Builder'),
+            // const SizedBox(height: 8),
+            // FCPDropdownBottomSheet(
+            //   title: 'Select User with Avatar',
+            //   items: users,
+            //   selectedIndex: selectedUserIndex,
+            //   onItemSelected: (value) {
+            //     setState(() {
+            //       selectedUserIndex = value as int;
+            //     });
+            //   },
+            //   customItemBuilder: (item, index, isSelected) {
+            //     return Container(
+            //       padding: const EdgeInsets.all(12),
+            //       margin: const EdgeInsets.only(bottom: 8),
+            //       decoration: BoxDecoration(
+            //         color: isSelected
+            //             ? Colors.blue.withValues(alpha: 0.1)
+            //             : null,
+            //         borderRadius: BorderRadius.circular(8),
+            //         border: isSelected
+            //             ? Border.all(color: Colors.blue, width: 1)
+            //             : null,
+            //       ),
+            //       child: Row(
+            //         children: [
+            //           CircleAvatar(
+            //             backgroundColor: Colors.blue[100],
+            //             child: Text(
+            //               item[0].toUpperCase(),
+            //               style: const TextStyle(
+            //                 color: Colors.blue,
+            //                 fontWeight: FontWeight.bold,
+            //               ),
+            //             ),
+            //           ),
+            //           const SizedBox(width: 12),
+            //           Expanded(
+            //             child: Text(
+            //               item,
+            //               style: TextStyle(
+            //                 fontWeight: isSelected
+            //                     ? FontWeight.w600
+            //                     : FontWeight.normal,
+            //                 color: isSelected ? Colors.blue : null,
+            //               ),
+            //             ),
+            //           ),
+            //           if (isSelected)
+            //             const Icon(
+            //               Icons.check_circle,
+            //               color: Colors.blue,
+            //               size: 20,
+            //             ),
+            //         ],
+            //       ),
+            //     );
+            //   },
+            // ),
+            // const SizedBox(height: 24),
             _buildSectionTitle('Extension Method Example'),
             const SizedBox(height: 8),
             ElevatedButton(
@@ -234,7 +233,7 @@ class _FCPDropdownExamplesState extends State<FCPDropdownExamples> {
             _buildSelectedValue('Country', selectedCountryIndex, countries),
             _buildSelectedValue('City', selectedCityIndex, cities),
             _buildSelectedValue('User', selectedUserIndex, users),
-            _buildSelectedValue('Custom', null, null, selectedCustomItem),
+            // _buildSelectedValue('Custom', null, null, selectedCustomItem),
           ],
         ),
       ),

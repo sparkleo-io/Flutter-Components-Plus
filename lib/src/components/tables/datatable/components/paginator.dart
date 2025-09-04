@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../extensions/table_extensions.dart';
+import 'package:flutter_components_plus/flutter_components_plus.dart';
 import '../table_theme_config.dart';
 
 class Paginator extends StatelessWidget {
@@ -29,100 +29,117 @@ class Paginator extends StatelessWidget {
 
     return ColoredBox(
       color: themeConfig.getTableBackgroundColor(theme),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            'items per page:',
-            style: themeConfig.getPaginationTextStyle(theme),
-          ),
-          16.spaceX,
-          DropdownButton(
-            elevation: 0,
-            focusColor: Colors.transparent,
-            hint: Text(
-              '$rowsPerPage',
-              style: themeConfig.getPaginationTextStyle(theme),
-            ),
-            underline: const SizedBox(),
-            items: availableRowsPerPage
-                .map(
-                  (item) => DropdownMenuItem(
-                    value: item,
-                    child: Text(
-                      '$item',
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'items per page:',
+                    style: themeConfig.getPaginationTextStyle(theme),
+                  ),
+                  const SizedBox(width: 16),
+                  Text(
+                    '${((rowsPerPage * page) - rowsPerPage) + 1} - ${rowsPerPage * page >= totalRecords ? totalRecords : rowsPerPage * page} of $totalRecords',
+                    style: themeConfig.getPaginationTextStyle(theme),
+                  ),
+                ],
+              ),
+              // 16.spaceY,
+              Row(
+                children: [
+                  DropdownButton(
+                    elevation: 0,
+                    focusColor: Colors.transparent,
+                    hint: Text(
+                      '$rowsPerPage',
                       style: themeConfig.getPaginationTextStyle(theme),
                     ),
+                    underline: const SizedBox(),
+                    items: availableRowsPerPage
+                        .map(
+                          (item) => DropdownMenuItem(
+                            value: item,
+                            child: Text(
+                              '$item',
+                              style: themeConfig.getPaginationTextStyle(theme),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      if (onRowsPageChanged != null) {
+                        onRowsPageChanged!(value);
+                      }
+                    },
                   ),
-                )
-                .toList(),
-            onChanged: (value) {
-              if (onRowsPageChanged != null) {
-                onRowsPageChanged!(value);
-              }
-            },
+                  IconButton(
+                    onPressed: page < 2
+                        ? null
+                        : () {
+                            if (onPageChanged != null) {
+                              onPageChanged!(1);
+                            }
+                          },
+                    icon: Icon(
+                      Icons.first_page,
+                      color: themeConfig.getIconColor(theme),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: page < 2
+                        ? null
+                        : () {
+                            if (onPageChanged != null) {
+                              final decPage = page - 1;
+                              onPageChanged!(decPage);
+                            }
+                          },
+                    icon: Icon(
+                      Icons.arrow_back_ios,
+                      size: 18,
+                      color: themeConfig.getIconColor(theme),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: rowsPerPage * page >= totalRecords
+                        ? null
+                        : () {
+                            if (onPageChanged != null) {
+                              final incPage = page + 1;
+                              onPageChanged!(incPage);
+                            }
+                          },
+                    icon: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 18,
+                      color: themeConfig.getIconColor(theme),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: rowsPerPage * page >= totalRecords
+                        ? null
+                        : () {
+                            if (onPageChanged != null) {
+                              final lastPage = (totalRecords / rowsPerPage)
+                                  .ceil();
+                              onPageChanged!(lastPage);
+                            }
+                          },
+                    icon: Icon(
+                      Icons.last_page,
+                      color: themeConfig.getIconColor(theme),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          12.spaceX,
-          Text(
-            '${((rowsPerPage * page) - rowsPerPage) + 1} - ${rowsPerPage * page >= totalRecords ? totalRecords : rowsPerPage * page} of $totalRecords',
-            style: themeConfig.getPaginationTextStyle(theme),
-          ),
-          16.spaceX,
-          IconButton(
-            onPressed: page < 2
-                ? null
-                : () {
-                    if (onPageChanged != null) {
-                      onPageChanged!(1);
-                    }
-                  },
-            icon: Icon(
-              Icons.first_page,
-              color: themeConfig.getIconColor(theme),
-            ),
-          ),
-          IconButton(
-            onPressed: page < 2
-                ? null
-                : () {
-                    if (onPageChanged != null) {
-                      final decPage = page - 1;
-                      onPageChanged!(decPage);
-                    }
-                  },
-            icon: Icon(
-              Icons.arrow_back_ios,
-              size: 18,
-              color: themeConfig.getIconColor(theme),
-            ),
-          ),
-          IconButton(
-            onPressed: rowsPerPage * page >= totalRecords
-                ? null
-                : () {
-                    if (onPageChanged != null) {
-                      final incPage = page + 1;
-                      onPageChanged!(incPage);
-                    }
-                  },
-            icon: Icon(
-              Icons.arrow_forward_ios,
-              size: 18,
-              color: themeConfig.getIconColor(theme),
-            ),
-          ),
-          IconButton(
-            onPressed: rowsPerPage * page >= totalRecords
-                ? null
-                : () {
-                    if (onPageChanged != null) {
-                      final lastPage = (totalRecords / rowsPerPage).ceil();
-                      onPageChanged!(lastPage);
-                    }
-                  },
-            icon: Icon(Icons.last_page, color: themeConfig.getIconColor(theme)),
-          ),
-        ],
+        ),
       ),
     );
   }

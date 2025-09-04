@@ -13,6 +13,7 @@ class TableExamplesController extends GetxController {
   final _sortOrder = Rxn<String>();
   final _selectedRowIndex = Rxn<int>();
   final _selectedTheme = AppTableThemes.defaultTheme.obs;
+  final currentTheme = ''.obs;
 
   // Getters
   int get currentPage => _currentPage.value;
@@ -172,11 +173,17 @@ class TableExamplesController extends GetxController {
 
   // Column definitions
   final List<Map<String, dynamic>> _columns = [
-    {'columnName': 'ID', 'key': 'id', 'sort': true},
-    {'columnName': 'Name', 'key': 'name', 'sort': true},
-    {'columnName': 'Email', 'key': 'email', 'sort': true},
+    {'columnName': 'id', 'displayName': 'ID', 'key': 'id', 'sort': true},
+    {'columnName': 'name', 'displayName': 'Name', 'key': 'name', 'sort': true},
     {
-      'columnName': 'Department',
+      'columnName': 'email',
+      'displayName': 'Email',
+      'key': 'email',
+      'sort': true,
+    },
+    {
+      'columnName': 'department',
+      'displayName': 'Department',
       'key': 'department',
       'sort': true,
       'filter': {
@@ -189,9 +196,15 @@ class TableExamplesController extends GetxController {
         ],
       },
     },
-    {'columnName': 'Salary', 'key': 'salary', 'sort': true},
     {
-      'columnName': 'Status',
+      'columnName': 'salary',
+      'displayName': 'Salary',
+      'key': 'salary',
+      'sort': true,
+    },
+    {
+      'columnName': 'status',
+      'displayName': 'Status',
       'key': 'status',
       'sort': true,
       'filter': {
@@ -201,7 +214,12 @@ class TableExamplesController extends GetxController {
         ],
       },
     },
-    {'columnName': 'Join Date', 'key': 'joinDate', 'sort': true},
+    {
+      'columnName': 'joinDate',
+      'displayName': 'Join Date',
+      'key': 'joinDate',
+      'sort': true,
+    },
   ];
 
   List<Map<String, dynamic>> get columns => _columns;
@@ -341,11 +359,16 @@ class TableExamplesController extends GetxController {
   }
 
   String getCurrentThemeName() {
-    if (_selectedTheme.value == AppTableThemes.defaultTheme) {
+    if (identical(_selectedTheme.value, AppTableThemes.defaultTheme)) {
       return 'App Default';
     }
-    if (_selectedTheme.value == AppTableThemes.light) return 'App Light';
-    if (_selectedTheme.value == AppTableThemes.dark) return 'App Dark';
+    if (identical(_selectedTheme.value, AppTableThemes.light)) {
+      return 'App Light';
+    }
+    if (identical(_selectedTheme.value, AppTableThemes.dark)) {
+      return 'App Dark';
+    }
+
     return 'Custom';
   }
 }

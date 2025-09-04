@@ -20,6 +20,15 @@ class App extends StatelessWidget {
         Get.lazyPut<ThemeController>(() => ThemeController());
       }),
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return GestureDetector(
+          onTap: () {
+            // Unfocus to hide keyboard when tapping outside of input fields
+            FocusScope.of(context).unfocus();
+          },
+          child: child!,
+        );
+      },
     );
   }
 }

@@ -331,8 +331,10 @@ class CHIDataTable<T> extends StatelessWidget {
               // onFilterChanging: onFilterChanging,
               // onFilterChanged: onFilterChanged,
               checkboxShape: checkboxShape,
-              showHorizontalScrollbar: showHorizontalScrollbar,
+              showHorizontalScrollbar:
+                  true, // Always show horizontal scrollbar for better UX
               showVerticalScrollbar: showVerticalScrollbar,
+              // Ensure proper horizontal scrolling behavior
               // showFilterIconOnHover: showFilterIconOnHover,
               allowColumnsDragging: allowColumnsDragging,
               onColumnDragging: onColumnDragging,
@@ -390,11 +392,19 @@ class CHIDataTable<T> extends StatelessWidget {
     final theme = Theme.of(context);
     final themeConfig = this.themeConfig ?? TableThemes.defaultTheme;
 
+    // Mobile-optimized column width calculation
+    double columnWidth = 180.0; // Default width
+    if (fitToScreen) {
+      columnWidth = double.nan; // Let the table handle sizing
+    } else if (!defaultColumnWidth.isNaN) {
+      columnWidth = defaultColumnWidth;
+    }
+
     return GridColumn(
       columnName: column['columnName']?.toString() ?? 'unknown',
       // allowSorting: false, //column['sort'],
       // allowFiltering: false, //column['filter'],
-      width: fitToScreen ? double.nan : 180,
+      width: columnWidth,
       label: Container(
         padding: const EdgeInsets.only(left: 8),
         color: themeConfig.getHeaderBackgroundColor(theme),
@@ -402,8 +412,12 @@ class CHIDataTable<T> extends StatelessWidget {
           children: [
             Flexible(
               child: Text(
-                column['columnName']?.toString() ?? 'unknown',
+                column['displayName']?.toString() ??
+                    column['columnName']?.toString() ??
+                    'unknown',
                 style: themeConfig.getHeaderTextStyle(theme),
+                overflow:
+                    TextOverflow.ellipsis, // Prevent text overflow on mobile
               ),
             ),
             if (column['sort'] ?? false)
