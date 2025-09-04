@@ -279,7 +279,7 @@ class TableExamples extends StatelessWidget {
       () => Container(
         height: 600, // Fixed height for consistency
         width: double.infinity,
-        child: CHIDataTable(
+        child: FCPDataTable(
           key: ValueKey('basic_table_${controller.selectedTheme.hashCode}'),
           dataList: controller.filteredData,
           columns: controller.columns,
@@ -314,7 +314,7 @@ class TableExamples extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: CHIDataTable(
+        child: FCPDataTable(
           key: ValueKey('advanced_table_${controller.selectedTheme.hashCode}'),
           dataList: controller.filteredData,
           columns: controller.columns,
@@ -381,7 +381,7 @@ class TableExamples extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: CHIDataTable(
+        child: FCPDataTable(
           key: ValueKey('themed_table_${controller.selectedTheme.hashCode}'),
           dataList: controller.filteredData,
           columns: controller.columns,
@@ -421,7 +421,7 @@ class TableExamples extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: CHIDataTable(
+        child: FCPDataTable(
           key: ValueKey(
             'selectable_table_${controller.selectedTheme.hashCode}',
           ),
@@ -463,7 +463,7 @@ class TableExamples extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: CHIDataTable(
+        child: FCPDataTable(
           key: ValueKey('compact_table_${controller.selectedTheme.hashCode}'),
           dataList: controller.filteredData,
           columns: controller.columns,

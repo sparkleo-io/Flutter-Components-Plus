@@ -26,6 +26,9 @@ export 'src/components/custom_cards/custom_cards.dart';
 // Table Components
 export 'src/components/tables/tables_exports.dart';
 
+// Switch Components
+export 'src/components/switches/switches.dart';
+
 // Utilities
 export 'src/utils/extensions/widget_extensions.dart';
 export 'src/utils/extensions/string_extensions.dart';

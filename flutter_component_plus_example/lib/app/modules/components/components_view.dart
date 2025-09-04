@@ -12,6 +12,7 @@ import '../../../inline_dropdown_examples.dart';
 import '../../../multi_inline_dropdown_examples.dart';
 import '../../../bottom_navigation_examples.dart';
 import '../../../pdf_viewer_examples.dart';
+import '../../../switch_examples.dart';
 
 class ComponentsView extends GetView<ComponentsController> {
   const ComponentsView({super.key});
@@ -22,7 +23,7 @@ class ComponentsView extends GetView<ComponentsController> {
     Get.lazyPut<TableExamplesController>(() => TableExamplesController());
 
     return DefaultTabController(
-      length: 10,
+      length: 11,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Flutter Components Plus - Examples'),
@@ -46,6 +47,7 @@ class ComponentsView extends GetView<ComponentsController> {
                   ), // Shortened
                   Tab(text: 'Multi Inline', icon: Icon(Icons.checklist_rtl)),
                   Tab(text: 'Navigation', icon: Icon(Icons.navigation)),
+                  Tab(text: 'Switches', icon: Icon(Icons.toggle_on)),
                   Tab(
                     text: 'PDF',
                     icon: Icon(Icons.picture_as_pdf),
@@ -69,6 +71,7 @@ class ComponentsView extends GetView<ComponentsController> {
             FCPInlineDropdownExamples(),
             MultiInlineDropdownExamples(),
             BottomNavigationExamples(),
+            SwitchExamplesPage(),
             PdfViewerExamples(),
             TableExamples(),
           ],

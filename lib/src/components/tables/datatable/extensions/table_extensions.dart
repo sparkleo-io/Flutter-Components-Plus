@@ -17,20 +17,20 @@ extension TableContextExtensions on BuildContext {
 }
 
 // Simple theme extension for table styling
-class CHITheme extends ThemeExtension<CHITheme> {
+class FCPTheme extends ThemeExtension<FCPTheme> {
   final Color? cardColor;
   final Color? primaryColor;
   final Color? secondaryColor;
 
-  const CHITheme({this.cardColor, this.primaryColor, this.secondaryColor});
+  const FCPTheme({this.cardColor, this.primaryColor, this.secondaryColor});
 
   @override
-  CHITheme copyWith({
+  FCPTheme copyWith({
     Color? cardColor,
     Color? primaryColor,
     Color? secondaryColor,
   }) {
-    return CHITheme(
+    return FCPTheme(
       cardColor: cardColor ?? this.cardColor,
       primaryColor: primaryColor ?? this.primaryColor,
       secondaryColor: secondaryColor ?? this.secondaryColor,
@@ -38,11 +38,11 @@ class CHITheme extends ThemeExtension<CHITheme> {
   }
 
   @override
-  CHITheme lerp(ThemeExtension<CHITheme>? other, double t) {
-    if (other is! CHITheme) {
+  FCPTheme lerp(ThemeExtension<FCPTheme>? other, double t) {
+    if (other is! FCPTheme) {
       return this;
     }
-    return CHITheme(
+    return FCPTheme(
       cardColor: Color.lerp(cardColor, other.cardColor, t),
       primaryColor: Color.lerp(primaryColor, other.primaryColor, t),
       secondaryColor: Color.lerp(secondaryColor, other.secondaryColor, t),
@@ -51,7 +51,7 @@ class CHITheme extends ThemeExtension<CHITheme> {
 }
 
 // Simple text styles
-class CHIStyles {
+class FCPStyles {
   static const TextStyle lgBoldStyle = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.bold,
@@ -59,11 +59,11 @@ class CHIStyles {
 }
 
 // Simple progress indicator
-class CHIProgressIndicator extends StatelessWidget {
+class FCPProgressIndicator extends StatelessWidget {
   final bool isBusy;
   final LoaderType? loaderType;
 
-  const CHIProgressIndicator(this.isBusy, {this.loaderType, super.key});
+  const FCPProgressIndicator(this.isBusy, {this.loaderType, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -76,14 +76,14 @@ class CHIProgressIndicator extends StatelessWidget {
 enum LoaderType { circular, linear }
 
 // Simple card widget
-class CHICard extends StatelessWidget {
+class FCPTableCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
   final Color? color;
   final double? elevation;
 
-  const CHICard({
+  const FCPTableCard({
     super.key,
     required this.child,
     this.padding,
@@ -110,14 +110,14 @@ class CHICard extends StatelessWidget {
 }
 
 // Simple text field
-class CHITextField extends StatelessWidget {
+class FCPTextField extends StatelessWidget {
   final String? hintText;
   final bool enableBorder;
   final Widget? suffixIcon;
   final void Function(String)? onChanged;
   final TextEditingController? controller;
 
-  const CHITextField({
+  const FCPTextField({
     super.key,
     this.hintText,
     this.enableBorder = false,
@@ -143,13 +143,13 @@ class CHITextField extends StatelessWidget {
 }
 
 // Simple action button
-class CHIActionButton extends StatelessWidget {
+class FCPActionButton extends StatelessWidget {
   final Widget child;
   final void Function()? onTap;
   final Color? backgroundColor;
   final Color? foregroundColor;
 
-  const CHIActionButton({
+  const FCPActionButton({
     super.key,
     required this.child,
     this.onTap,

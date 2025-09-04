@@ -1,2 +1,2 @@
 // PDF Viewer Components
-export 'pdf_viewer.dart';
+export 'fcp_pdf_viewer.dart';

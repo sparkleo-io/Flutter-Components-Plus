@@ -1,6 +1,6 @@
 // Table Components
-export 'datatable/chi_data_table.dart';
-export 'datatable/chi_data_source.dart';
+export 'datatable/fcp_data_table.dart';
+export 'datatable/fcp_data_source.dart';
 export 'datatable/service/table_vm.dart';
 export 'datatable/components/table_header.dart';
 export 'datatable/components/table_loader.dart';

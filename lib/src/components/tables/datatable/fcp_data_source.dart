@@ -4,7 +4,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'types/table_types.dart';
 import 'table_theme_config.dart';
 
-class CHIDataSource extends DataGridSource {
+class FCPDataSource extends DataGridSource {
   final BuildContext context;
   final DataObject dataList;
   final TableThemeConfig? themeConfig;
@@ -18,7 +18,7 @@ class CHIDataSource extends DataGridSource {
   int _currentPage = 1;
   int _rowsPerPage = 10;
 
-  CHIDataSource(this.context, {required this.dataList, this.themeConfig}) {
+  FCPDataSource(this.context, {required this.dataList, this.themeConfig}) {
     _buildDataList();
   }
 

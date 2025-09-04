@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'dart:async';
-import 'chi_data_source.dart';
+import 'fcp_data_source.dart';
 import 'components/table_header.dart';
 import 'components/paginator.dart';
 import 'extensions/table_extensions.dart';
@@ -9,7 +9,7 @@ import 'types/table_types.dart';
 import 'table_theme_config.dart';
 
 // ignore: must_be_immutable
-class CHIDataTable<T> extends StatelessWidget {
+class FCPDataTable<T> extends StatelessWidget {
   final DataObject dataList;
   final List<Map<String, dynamic>> columns;
   final double rowHeight;
@@ -105,7 +105,7 @@ class CHIDataTable<T> extends StatelessWidget {
   final bool showColumnHeaderIconOnHover;
   final TableThemeConfig? themeConfig;
 
-  CHIDataTable({
+  FCPDataTable({
     // required this.source,
     // required this.columns,
     super.key,
@@ -216,7 +216,7 @@ class CHIDataTable<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dataSource = CHIDataSource(
+    final dataSource = FCPDataSource(
       context,
       dataList: dataList,
       themeConfig: themeConfig,
@@ -248,7 +248,7 @@ class CHIDataTable<T> extends StatelessWidget {
             onReload: onReload,
             themeConfig: themeConfig,
           ),
-          CHIProgressIndicator(isBusy),
+          FCPProgressIndicator(isBusy),
           if (!isBusy) 4.spaceY,
           Expanded(
             child: SfDataGrid(
@@ -365,7 +365,7 @@ class CHIDataTable<T> extends StatelessWidget {
 
   List<GridColumn> getColumns(
     BuildContext context, {
-    CHIDataSource? dataSource,
+    FCPDataSource? dataSource,
   }) {
     final List<GridColumn> tempColumns = [];
     for (final column in columns) {
@@ -387,7 +387,7 @@ class CHIDataTable<T> extends StatelessWidget {
   GridColumn _gridColumn(
     BuildContext context,
     Map<String, dynamic> column, {
-    CHIDataSource? dataSource,
+    FCPDataSource? dataSource,
   }) {
     final theme = Theme.of(context);
     final themeConfig = this.themeConfig ?? TableThemes.defaultTheme;

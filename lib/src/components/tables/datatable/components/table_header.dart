@@ -37,7 +37,7 @@ class _TableHeaderState extends State<TableHeader> {
   @override
   initState() {
     super.initState();
-    _subscription = CHIDataTable.stream.stream.listen((isSelected) {
+    _subscription = FCPDataTable.stream.stream.listen((isSelected) {
       setState(() {
         this.isSelected = isSelected;
       });
@@ -47,7 +47,7 @@ class _TableHeaderState extends State<TableHeader> {
   @override
   dispose() {
     _subscription.cancel();
-    CHIDataTable.stream.close();
+    FCPDataTable.stream.close();
     super.dispose();
   }
 
@@ -56,7 +56,7 @@ class _TableHeaderState extends State<TableHeader> {
     final theme = Theme.of(context);
     final themeConfig = widget.themeConfig ?? TableThemes.defaultTheme;
 
-    return CHICard(
+    return FCPTableCard(
       elevation: 0,
       color:
           themeConfig.headerBackgroundColor ??
@@ -84,7 +84,7 @@ class _TableHeaderState extends State<TableHeader> {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ))
-                  : CHIStyles.lgBoldStyle,
+                  : FCPStyles.lgBoldStyle,
               overflow: TextOverflow.ellipsis,
             ),
             16.spaceY,
