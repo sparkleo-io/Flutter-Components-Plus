@@ -612,36 +612,51 @@ class _MultiDropdownOverlayState extends State<_MultiDropdownOverlay> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Positioned(
-      width: widget.dropdownWidth,
-      child: CompositedTransformFollower(
-        link: widget.layerLink,
-        showWhenUnlinked: false,
-        offset: widget.smartOffset,
-        child: Material(
-          elevation: 8,
-          borderRadius: BorderRadius.circular(widget.borderRadius),
-          color: widget.backgroundColor ?? colorScheme.surface,
-          child: Container(
-            constraints: BoxConstraints(maxHeight: widget.maxHeight),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(widget.borderRadius),
-              border: Border.all(
-                color: colorScheme.outline.withValues(alpha: 0.1),
-                width: 1,
+    return Stack(
+      children: [
+        // Invisible overlay to capture taps outside
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: widget.onClose,
+            child: Container(color: Colors.transparent),
+          ),
+        ),
+        // Dropdown content
+        Positioned(
+          width: widget.dropdownWidth,
+          child: CompositedTransformFollower(
+            link: widget.layerLink,
+            showWhenUnlinked: false,
+            offset: widget.smartOffset,
+            child: GestureDetector(
+              onTap: () {}, // Prevent tap from propagating to parent
+              child: Material(
+                elevation: 8,
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                color: widget.backgroundColor ?? colorScheme.surface,
+                child: Container(
+                  constraints: BoxConstraints(maxHeight: widget.maxHeight),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(widget.borderRadius),
+                    border: Border.all(
+                      color: colorScheme.outline.withValues(alpha: 0.1),
+                      width: 1,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (widget.showSelectAll) _buildSelectAllSection(),
+                      if (widget.isSearchEnabled) _buildSearchField(),
+                      Flexible(child: _buildItemsList()),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (widget.showSelectAll) _buildSelectAllSection(),
-                if (widget.isSearchEnabled) _buildSearchField(),
-                Flexible(child: _buildItemsList()),
-              ],
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 
