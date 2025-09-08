@@ -13,6 +13,7 @@ import '../../../multi_inline_dropdown_examples.dart';
 import '../../../bottom_navigation_examples.dart';
 import '../../../pdf_viewer_examples.dart';
 import '../../../switch_examples.dart';
+import '../../../chart_examples.dart';
 
 class ComponentsView extends GetView<ComponentsController> {
   const ComponentsView({super.key});
@@ -23,7 +24,7 @@ class ComponentsView extends GetView<ComponentsController> {
     Get.lazyPut<TableExamplesController>(() => TableExamplesController());
 
     return DefaultTabController(
-      length: 11,
+      length: 12,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Flutter Components Plus - Examples'),
@@ -52,6 +53,7 @@ class ComponentsView extends GetView<ComponentsController> {
                     text: 'PDF',
                     icon: Icon(Icons.picture_as_pdf),
                   ), // Shortened
+                  Tab(text: 'Charts', icon: Icon(Icons.bar_chart)),
                   Tab(text: 'Tables', icon: Icon(Icons.table_chart)),
                 ],
                 indicatorColor: Colors.white,
@@ -73,6 +75,7 @@ class ComponentsView extends GetView<ComponentsController> {
             BottomNavigationExamples(),
             SwitchExamplesPage(),
             PdfViewerExamples(),
+            FCPChartExamples(),
             TableExamples(),
           ],
         ),

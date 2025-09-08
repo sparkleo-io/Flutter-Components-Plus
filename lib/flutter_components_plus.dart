@@ -29,6 +29,9 @@ export 'src/components/tables/tables_exports.dart';
 // Switch Components
 export 'src/components/switches/switches.dart';
 
+// Chart Components
+export 'src/components/charts/charts_exports.dart';
+
 // Utilities
 export 'src/utils/extensions/widget_extensions.dart';
 export 'src/utils/extensions/string_extensions.dart';

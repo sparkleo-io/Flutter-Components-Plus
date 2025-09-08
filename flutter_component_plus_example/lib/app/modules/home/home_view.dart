@@ -12,6 +12,7 @@ import '../../../inline_dropdown_examples.dart';
 import '../../../pdf_viewer_examples.dart';
 import '../../../table_examples.dart';
 import '../../../switch_examples.dart';
+import '../../../chart_examples.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -92,9 +93,10 @@ class HomeView extends GetView<HomeController> {
         _buildSidebarItem(context, 'Tables', Icons.table_chart, 8),
         _buildSidebarItem(context, 'Switches', Icons.toggle_on, 9),
         _buildSidebarItem(context, 'PDF Viewer', Icons.picture_as_pdf, 10),
-        _buildSidebarItem(context, 'Navigation', Icons.navigation, 11),
-        _buildSidebarItem(context, 'Feedback', Icons.feedback, 12),
-        _buildSidebarItem(context, 'Layout', Icons.grid_on, 13),
+        _buildSidebarItem(context, 'Charts', Icons.bar_chart, 11),
+        _buildSidebarItem(context, 'Navigation', Icons.navigation, 12),
+        _buildSidebarItem(context, 'Feedback', Icons.feedback, 13),
+        _buildSidebarItem(context, 'Layout', Icons.grid_on, 14),
       ],
     );
   }
@@ -199,6 +201,7 @@ class HomeView extends GetView<HomeController> {
                   _buildBottomNavItem(context, 'Tables', Icons.table_chart, 8),
                   _buildBottomNavItem(context, 'Switches', Icons.toggle_on, 9),
                   _buildBottomNavItem(context, 'PDF', Icons.picture_as_pdf, 10),
+                  _buildBottomNavItem(context, 'Charts', Icons.bar_chart, 11),
                 ],
               ),
             ),
@@ -291,10 +294,12 @@ class HomeView extends GetView<HomeController> {
         case 10:
           return _buildPdfViewerTab(context);
         case 11:
-          return _buildNavigationTab(context);
+          return _buildChartsTab(context);
         case 12:
-          return _buildFeedbackTab(context);
+          return _buildNavigationTab(context);
         case 13:
+          return _buildFeedbackTab(context);
+        case 14:
           return _buildLayoutTab(context);
         default:
           return _buildOverviewTab(context);
@@ -377,7 +382,7 @@ class HomeView extends GetView<HomeController> {
             _buildStatCard(
               context,
               'Components',
-              '50+',
+              '60+',
               Icons.widgets,
               FCPColorScheme.primary,
             ),
@@ -499,6 +504,12 @@ class HomeView extends GetView<HomeController> {
               text: 'Inline Dropdowns',
               onPressed: () => controller.changeTab(6),
               icon: Icons.expand_more,
+              iconPosition: IconPosition.start,
+            ),
+            FCPButton.medium.outlined(
+              text: 'Charts',
+              onPressed: () => controller.changeTab(11),
+              icon: Icons.bar_chart,
               iconPosition: IconPosition.start,
             ),
             FCPButton.medium.outlined(
@@ -735,6 +746,10 @@ class HomeView extends GetView<HomeController> {
 
   Widget _buildPdfViewerTab(BuildContext context) {
     return const PdfViewerExamples();
+  }
+
+  Widget _buildChartsTab(BuildContext context) {
+    return const FCPChartExamples();
   }
 
   Widget _buildNavigationTab(BuildContext context) {
