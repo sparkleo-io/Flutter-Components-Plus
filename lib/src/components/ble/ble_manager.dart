@@ -71,6 +71,17 @@ class BLEManager {
   bool _androidUsesFineLocation = true;
   bool _saveScanDevices = false;
 
+  // Reconnect functionality
+  bool _reconnectEnabled = false;
+  Timer? _reconnectTimer;
+  int _reconnectAttempts = 0;
+  static const int _maxReconnectAttempts = 5;
+  static const Duration _reconnectDelay = Duration(seconds: 3);
+
+  // MTU configuration
+  int _requestedMtu = 23; // Default BLE MTU
+  int _currentMtu = 23; // Current negotiated MTU
+
   // Getters
   BLEConnectionState get connectionState => _connectionState;
   BLEScanState get scanState => _scanState;
@@ -81,6 +92,8 @@ class BLEManager {
       List.unmodifiable(_discoveredServices);
   bool get isConnected => _connectionState == BLEConnectionState.connected;
   bool get isScanning => _scanState == BLEScanState.scanning;
+  int get requestedMtu => _requestedMtu;
+  int get currentMtu => _currentMtu;
 
   /// Initialize the BLE manager
   Future<void> initialize({
@@ -93,6 +106,7 @@ class BLEManager {
     bool alwaysScan = false,
     bool androidUsesFineLocation = true,
     bool saveScanDevices = false,
+    int requestedMtu = 23,
   }) async {
     _scanDuration = scanDuration;
     _autoConnect = autoConnect;
@@ -103,6 +117,7 @@ class BLEManager {
     _alwaysScan = alwaysScan;
     _androidUsesFineLocation = androidUsesFineLocation;
     _saveScanDevices = saveScanDevices;
+    _requestedMtu = requestedMtu;
 
     // Initialize storage if using preferences
     if (_usePrefs) {
@@ -118,8 +133,21 @@ class BLEManager {
       } else if (state == BluetoothAdapterState.on) {
         _updateScanState(BLEScanState.idle);
         _updateConnectionState(BLEConnectionState.disconnected);
+
+        // Auto-connect to last connected device if enabled
+        if (_autoConnect && _usePrefs) {
+          _attemptAutoConnect();
+        }
       }
     });
+
+    // Auto-connect to last connected device if enabled and Bluetooth is already on
+    if (_autoConnect && _usePrefs) {
+      final bluetoothState = await FlutterBluePlus.adapterState.first;
+      if (bluetoothState == BluetoothAdapterState.on) {
+        _attemptAutoConnect();
+      }
+    }
   }
 
   /// Start scanning for BLE devices
@@ -184,12 +212,19 @@ class BLEManager {
   }
 
   /// Connect to a BLE device
-  Future<void> connectToDevice(BLEDeviceModel device) async {
+  Future<void> connectToDevice(
+    BLEDeviceModel device, {
+    bool reconnect = false,
+  }) async {
     try {
       if (_connectionState == BLEConnectionState.connected ||
           _connectionState == BLEConnectionState.connecting) {
         return;
       }
+
+      // Set reconnect mode
+      _reconnectEnabled = reconnect;
+      _reconnectAttempts = 0;
 
       _updateConnectionState(BLEConnectionState.connecting);
 
@@ -205,12 +240,22 @@ class BLEManager {
         switch (state) {
           case BluetoothConnectionState.connected:
             _updateConnectionState(BLEConnectionState.connected);
+            _negotiateMtu(bluetoothDevice);
             _discoverServices(bluetoothDevice);
+            // Reset reconnect attempts on successful connection
+            _reconnectAttempts = 0;
+            _reconnectTimer?.cancel();
             break;
           case BluetoothConnectionState.disconnected:
             _updateConnectionState(BLEConnectionState.disconnected);
             _connectedDevice = null;
             _discoveredServices.clear();
+
+            // Attempt reconnect if enabled
+            if (_reconnectEnabled &&
+                _reconnectAttempts < _maxReconnectAttempts) {
+              _scheduleReconnect(device);
+            }
             break;
           case BluetoothConnectionState.connecting:
             _updateConnectionState(BLEConnectionState.connecting);
@@ -228,6 +273,11 @@ class BLEManager {
     } catch (e) {
       _emitError('Failed to connect to device: $e');
       _updateConnectionState(BLEConnectionState.error);
+
+      // Attempt reconnect if enabled and not at max attempts
+      if (_reconnectEnabled && _reconnectAttempts < _maxReconnectAttempts) {
+        _scheduleReconnect(device);
+      }
     }
   }
 
@@ -237,6 +287,11 @@ class BLEManager {
       if (_connectedDevice == null) {
         return;
       }
+
+      // Cancel any pending reconnect attempts
+      _reconnectTimer?.cancel();
+      _reconnectEnabled = false;
+      _reconnectAttempts = 0;
 
       _updateConnectionState(BLEConnectionState.disconnecting);
       await _connectedDevice!.disconnect();
@@ -439,6 +494,34 @@ class BLEManager {
     }
   }
 
+  /// Negotiate MTU with connected device
+  Future<void> _negotiateMtu(BluetoothDevice device) async {
+    try {
+      if (_requestedMtu > 23) {
+        if (_debugMode) {
+          print('BLE MTU: Requesting MTU size of $_requestedMtu');
+        }
+
+        final negotiatedMtu = await device.requestMtu(_requestedMtu);
+        _currentMtu = negotiatedMtu;
+
+        if (_debugMode) {
+          print('BLE MTU: Negotiated MTU size: $_currentMtu');
+        }
+      } else {
+        _currentMtu = 23; // Default BLE MTU
+        if (_debugMode) {
+          print('BLE MTU: Using default MTU size: $_currentMtu');
+        }
+      }
+    } catch (e) {
+      _currentMtu = 23; // Fallback to default
+      if (_debugMode) {
+        print('BLE MTU: Failed to negotiate MTU, using default: $e');
+      }
+    }
+  }
+
   /// Discover services for connected device
   Future<void> _discoverServices(BluetoothDevice device) async {
     try {
@@ -488,8 +571,96 @@ class BLEManager {
     }
   }
 
+  /// Attempt to auto-connect to the last connected device
+  Future<void> _attemptAutoConnect() async {
+    try {
+      final lastConnectedDevice = await BLEStorageManager.getConnectedDevice();
+      if (lastConnectedDevice != null &&
+          _connectionState == BLEConnectionState.disconnected) {
+        if (_debugMode) {
+          print(
+            'BLE Auto-Connect: Attempting to connect to last device: ${lastConnectedDevice.name}',
+          );
+        }
+        await connectToDevice(lastConnectedDevice, reconnect: true);
+      }
+    } catch (e) {
+      if (_debugMode) {
+        print('BLE Auto-Connect: Failed to auto-connect: $e');
+      }
+    }
+  }
+
+  /// Schedule a reconnect attempt
+  void _scheduleReconnect(BLEDeviceModel device) {
+    _reconnectTimer?.cancel();
+    _reconnectAttempts++;
+
+    if (_debugMode) {
+      print(
+        'BLE Reconnect: Scheduling reconnect attempt $_reconnectAttempts/$_maxReconnectAttempts for ${device.name}',
+      );
+    }
+
+    _reconnectTimer = Timer(_reconnectDelay, () async {
+      if (_reconnectEnabled && _reconnectAttempts <= _maxReconnectAttempts) {
+        try {
+          await connectToDevice(device, reconnect: true);
+        } catch (e) {
+          if (_debugMode) {
+            print('BLE Reconnect: Attempt $_reconnectAttempts failed: $e');
+          }
+        }
+      } else if (_reconnectAttempts >= _maxReconnectAttempts) {
+        _emitError('Max reconnect attempts reached for ${device.name}');
+        _reconnectEnabled = false;
+      }
+    });
+  }
+
+  /// Stop reconnect attempts
+  void stopReconnect() {
+    _reconnectTimer?.cancel();
+    _reconnectEnabled = false;
+    _reconnectAttempts = 0;
+  }
+
+  /// Get reconnect status
+  bool get isReconnectEnabled => _reconnectEnabled;
+  int get reconnectAttempts => _reconnectAttempts;
+  int get maxReconnectAttempts => _maxReconnectAttempts;
+
+  /// Request MTU size for connected device
+  Future<bool> requestMtu(int mtuSize) async {
+    try {
+      if (_connectedDevice == null) {
+        _emitError('No device connected');
+        return false;
+      }
+
+      if (mtuSize < 23 || mtuSize > 512) {
+        _emitError('MTU size must be between 23 and 512');
+        return false;
+      }
+
+      final negotiatedMtu = await _connectedDevice!.requestMtu(mtuSize);
+      _currentMtu = negotiatedMtu;
+      _requestedMtu = mtuSize;
+
+      if (_debugMode) {
+        print('BLE MTU: Successfully negotiated MTU size: $_currentMtu');
+      }
+
+      return true;
+    } catch (e) {
+      _emitError('Failed to request MTU: $e');
+      return false;
+    }
+  }
+
   /// Dispose resources
   void dispose() {
+    _reconnectTimer?.cancel();
     _deviceFoundController.close();
     _connectionStateController.close();
     _scanStateController.close();

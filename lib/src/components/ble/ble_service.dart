@@ -36,6 +36,11 @@ class BLEService {
   bool get isScanning => _bleManager.isScanning;
   bool get isInitialized => _isInitialized;
   bool get permissionsGranted => _permissionsGranted;
+  bool get isReconnectEnabled => _bleManager.isReconnectEnabled;
+  int get reconnectAttempts => _bleManager.reconnectAttempts;
+  int get maxReconnectAttempts => _bleManager.maxReconnectAttempts;
+  int get requestedMtu => _bleManager.requestedMtu;
+  int get currentMtu => _bleManager.currentMtu;
 
   /// Initialize the BLE service
   Future<bool> initialize({
@@ -47,6 +52,7 @@ class BLEService {
     bool alwaysScan = false,
     bool androidUsesFineLocation = true,
     bool saveScanDevices = false,
+    int requestedMtu = 23,
   }) async {
     try {
       // Check and request permissions (without context for programmatic usage)
@@ -68,6 +74,7 @@ class BLEService {
         alwaysScan: alwaysScan,
         androidUsesFineLocation: androidUsesFineLocation,
         saveScanDevices: saveScanDevices,
+        requestedMtu: requestedMtu,
       );
 
       _isInitialized = true;
@@ -89,6 +96,7 @@ class BLEService {
     bool alwaysScan = false,
     bool androidUsesFineLocation = true,
     bool saveScanDevices = false,
+    int requestedMtu = 23,
     String? title,
     String? message,
     String? confirmText,
@@ -118,6 +126,7 @@ class BLEService {
         alwaysScan: alwaysScan,
         androidUsesFineLocation: androidUsesFineLocation,
         saveScanDevices: saveScanDevices,
+        requestedMtu: requestedMtu,
       );
 
       _isInitialized = true;
@@ -145,11 +154,14 @@ class BLEService {
   }
 
   /// Connect to a device
-  Future<void> connectToDevice(BLEDeviceModel device) async {
+  Future<void> connectToDevice(
+    BLEDeviceModel device, {
+    bool reconnect = false,
+  }) async {
     if (!_isInitialized) {
       throw Exception('BLE service not initialized');
     }
-    await _bleManager.connectToDevice(device);
+    await _bleManager.connectToDevice(device, reconnect: reconnect);
   }
 
   /// Disconnect from current device
@@ -196,6 +208,22 @@ class BLEService {
       throw Exception('BLE service not initialized');
     }
     return await _bleManager.getSavedDevices();
+  }
+
+  /// Stop reconnect attempts
+  void stopReconnect() {
+    if (!_isInitialized) {
+      throw Exception('BLE service not initialized');
+    }
+    _bleManager.stopReconnect();
+  }
+
+  /// Request MTU size for connected device
+  Future<bool> requestMtu(int mtuSize) async {
+    if (!_isInitialized) {
+      throw Exception('BLE service not initialized');
+    }
+    return await _bleManager.requestMtu(mtuSize);
   }
 
   /// Dispose resources
