@@ -24,6 +24,8 @@ class _BLEServiceExamplesState extends State<BLEServiceExamples> {
 
   // Configuration
   int _requestedMtu = 23; // Default BLE MTU
+  bool _filterUnknownDevices =
+      true; // Filter out devices with empty/unknown names
 
   // Stream subscriptions
   StreamSubscription<BLEDeviceModel>? _deviceSubscription;
@@ -58,12 +60,14 @@ class _BLEServiceExamplesState extends State<BLEServiceExamples> {
         // scanDuration: const Duration(seconds: 15), // Longer scan duration
         autoConnect: false,
         deviceFilters: ["Leo"], // Filter for devices containing "Leo"
-        usePrefs: true, // Enable SharedPreferences for device storage
-        debugMode: true, // Enable debug logging
-        alwaysScan: true, // Set to true for continuous scanning
-        androidUsesFineLocation: true, // Use fine location for better accuracy
+        usePrefs: false, // Enable SharedPreferences for device storage
+        debugMode: false, // Enable debug logging
+        alwaysScan: false, // Set to true for continuous scanning
+        androidUsesFineLocation: false, // Use fine location for better accuracy
         saveScanDevices: false, // Automatically save discovered devices
         requestedMtu: _requestedMtu, // MTU size for data transfer
+        filterUnknownDevices:
+            _filterUnknownDevices, // Filter out unknown devices
         title: 'BLE Service Setup',
         message:
             'This example demonstrates BLE service with device filtering, automatic saving, and enhanced scanning options.',
@@ -250,6 +254,37 @@ class _BLEServiceExamplesState extends State<BLEServiceExamples> {
     }
   }
 
+  /// Reinitialize BLE service with new configuration
+  Future<void> _reinitializeBLE() async {
+    try {
+      // Dispose current service
+      await _bleService.dispose();
+
+      // Reset state
+      setState(() {
+        _isInitialized = false;
+        _isScanning = false;
+        _isConnected = false;
+        _devices.clear();
+        _services.clear();
+        _error = null;
+        _connectionStatus = null;
+      });
+
+      // Cancel subscriptions
+      _deviceSubscription?.cancel();
+      _connectionSubscription?.cancel();
+      _scanSubscription?.cancel();
+      _servicesSubscription?.cancel();
+      _errorSubscription?.cancel();
+
+      // Reinitialize with new configuration
+      await _initializeBLE();
+    } catch (e) {
+      _showSnackBar('Failed to reinitialize BLE: $e', Colors.red);
+    }
+  }
+
   /// Get connection state text
   String _getConnectionStateText(BLEConnectionState state) {
     switch (state) {
@@ -400,6 +435,9 @@ class _BLEServiceExamplesState extends State<BLEServiceExamples> {
             const SizedBox(height: 8),
             Text('Requested MTU: ${_bleService.requestedMtu}'),
             Text('Current MTU: ${_bleService.currentMtu}'),
+            Text(
+              'Filter Unknown Devices: ${_bleService.filterUnknownDevices ? 'Enabled' : 'Disabled'}',
+            ),
             if (_error != null) ...[
               const SizedBox(height: 8),
               Text('Error: $_error', style: const TextStyle(color: Colors.red)),
@@ -580,6 +618,22 @@ class _BLEServiceExamplesState extends State<BLEServiceExamples> {
                 ],
               ),
             ],
+            const SizedBox(height: 8),
+            // Filter Unknown Devices Toggle
+            SwitchListTile(
+              title: const Text('Filter Unknown Devices'),
+              subtitle: const Text('Hide devices with empty or unknown names'),
+              value: _filterUnknownDevices,
+              onChanged: (value) {
+                setState(() {
+                  _filterUnknownDevices = value;
+                });
+                // Reinitialize BLE service with new configuration
+                if (_isInitialized) {
+                  _reinitializeBLE();
+                }
+              },
+            ),
           ],
         ),
       ),

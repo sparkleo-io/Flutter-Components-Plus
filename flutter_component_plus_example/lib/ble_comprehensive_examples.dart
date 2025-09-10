@@ -26,6 +26,8 @@ class _BLEComprehensiveExamplesState extends State<BLEComprehensiveExamples> {
   bool _debugMode = true;
   bool _autoConnect = false;
   int _requestedMtu = 23; // Default BLE MTU
+  bool _filterUnknownDevices =
+      true; // Filter out devices with empty/unknown names
   Duration _scanDuration = const Duration(seconds: 15);
   List<String> _deviceFilters = ["Leo"];
 
@@ -78,6 +80,7 @@ class _BLEComprehensiveExamplesState extends State<BLEComprehensiveExamples> {
         androidUsesFineLocation: _androidUsesFineLocation,
         saveScanDevices: _saveScanDevices,
         requestedMtu: _requestedMtu,
+        filterUnknownDevices: _filterUnknownDevices,
         title: 'Comprehensive BLE Setup',
         message:
             'This example demonstrates all BLE features including device filtering, automatic saving, enhanced scanning, and permission handling.',
@@ -380,6 +383,9 @@ class _BLEComprehensiveExamplesState extends State<BLEComprehensiveExamples> {
                     Text('Discovered Services: ${_services.length}'),
                     Text('Requested MTU: ${_bleService.requestedMtu}'),
                     Text('Current MTU: ${_bleService.currentMtu}'),
+                    Text(
+                      'Filter Unknown Devices: ${_bleService.filterUnknownDevices ? 'Enabled' : 'Disabled'}',
+                    ),
                   ],
                 ),
               ),
@@ -493,6 +499,22 @@ class _BLEComprehensiveExamplesState extends State<BLEComprehensiveExamples> {
                           : (value) {
                               setState(() {
                                 _autoConnect = value;
+                              });
+                            },
+                    ),
+
+                    // Filter Unknown Devices
+                    SwitchListTile(
+                      title: const Text('Filter Unknown Devices'),
+                      subtitle: const Text(
+                        'Hide devices with empty or unknown names',
+                      ),
+                      value: _filterUnknownDevices,
+                      onChanged: _isInitialized
+                          ? null
+                          : (value) {
+                              setState(() {
+                                _filterUnknownDevices = value;
                               });
                             },
                     ),

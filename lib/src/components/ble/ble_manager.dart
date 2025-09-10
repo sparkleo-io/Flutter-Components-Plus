@@ -82,6 +82,10 @@ class BLEManager {
   int _requestedMtu = 23; // Default BLE MTU
   int _currentMtu = 23; // Current negotiated MTU
 
+  // Device filtering
+  bool _filterUnknownDevices =
+      false; // Filter out devices with empty/unknown names
+
   // Getters
   BLEConnectionState get connectionState => _connectionState;
   BLEScanState get scanState => _scanState;
@@ -94,6 +98,7 @@ class BLEManager {
   bool get isScanning => _scanState == BLEScanState.scanning;
   int get requestedMtu => _requestedMtu;
   int get currentMtu => _currentMtu;
+  bool get filterUnknownDevices => _filterUnknownDevices;
 
   /// Initialize the BLE manager
   Future<void> initialize({
@@ -107,6 +112,7 @@ class BLEManager {
     bool androidUsesFineLocation = true,
     bool saveScanDevices = false,
     int requestedMtu = 23,
+    bool filterUnknownDevices = false,
   }) async {
     _scanDuration = scanDuration;
     _autoConnect = autoConnect;
@@ -118,6 +124,7 @@ class BLEManager {
     _androidUsesFineLocation = androidUsesFineLocation;
     _saveScanDevices = saveScanDevices;
     _requestedMtu = requestedMtu;
+    _filterUnknownDevices = filterUnknownDevices;
 
     // Initialize storage if using preferences
     if (_usePrefs) {
@@ -446,6 +453,34 @@ class BLEManager {
         } else {
           if (_debugMode) {
             print('  ✅ Device passed filter');
+          }
+        }
+      }
+
+      // Filter out unknown devices if enabled
+      if (_filterUnknownDevices) {
+        final deviceName = device.name.trim();
+        final lowerDeviceName = deviceName.toLowerCase();
+        final isUnknownDevice =
+            deviceName.isEmpty ||
+            lowerDeviceName == 'unknown' ||
+            lowerDeviceName == 'unknown device' ||
+            lowerDeviceName == 'unnamed' ||
+            lowerDeviceName == 'n/a' ||
+            lowerDeviceName.startsWith('unknown') ||
+            lowerDeviceName.contains('unknown device') ||
+            lowerDeviceName.contains('unnamed device') ||
+            lowerDeviceName == 'ble device' ||
+            lowerDeviceName == 'bluetooth device';
+
+        if (isUnknownDevice) {
+          if (_debugMode) {
+            print('  ❌ Device filtered out (unknown device): "${device.name}"');
+          }
+          return;
+        } else {
+          if (_debugMode) {
+            print('  ✅ Device passed unknown filter: "${device.name}"');
           }
         }
       }

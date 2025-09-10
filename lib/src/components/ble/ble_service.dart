@@ -41,6 +41,7 @@ class BLEService {
   int get maxReconnectAttempts => _bleManager.maxReconnectAttempts;
   int get requestedMtu => _bleManager.requestedMtu;
   int get currentMtu => _bleManager.currentMtu;
+  bool get filterUnknownDevices => _bleManager.filterUnknownDevices;
 
   /// Initialize the BLE service
   Future<bool> initialize({
@@ -53,6 +54,7 @@ class BLEService {
     bool androidUsesFineLocation = true,
     bool saveScanDevices = false,
     int requestedMtu = 23,
+    bool filterUnknownDevices = false,
   }) async {
     try {
       // Check and request permissions (without context for programmatic usage)
@@ -75,6 +77,7 @@ class BLEService {
         androidUsesFineLocation: androidUsesFineLocation,
         saveScanDevices: saveScanDevices,
         requestedMtu: requestedMtu,
+        filterUnknownDevices: filterUnknownDevices,
       );
 
       _isInitialized = true;
@@ -97,6 +100,7 @@ class BLEService {
     bool androidUsesFineLocation = true,
     bool saveScanDevices = false,
     int requestedMtu = 23,
+    bool filterUnknownDevices = false,
     String? title,
     String? message,
     String? confirmText,
@@ -127,6 +131,7 @@ class BLEService {
         androidUsesFineLocation: androidUsesFineLocation,
         saveScanDevices: saveScanDevices,
         requestedMtu: requestedMtu,
+        filterUnknownDevices: filterUnknownDevices,
       );
 
       _isInitialized = true;
