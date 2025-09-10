@@ -25,6 +25,7 @@ class _BLEComprehensiveExamplesState extends State<BLEComprehensiveExamples> {
   bool _usePrefs = true;
   bool _debugMode = true;
   bool _autoConnect = false;
+  int _requestedMtu = 23; // Default BLE MTU
   Duration _scanDuration = const Duration(seconds: 15);
   List<String> _deviceFilters = ["Leo"];
 
@@ -76,6 +77,7 @@ class _BLEComprehensiveExamplesState extends State<BLEComprehensiveExamples> {
         alwaysScan: _alwaysScan,
         androidUsesFineLocation: _androidUsesFineLocation,
         saveScanDevices: _saveScanDevices,
+        requestedMtu: _requestedMtu,
         title: 'Comprehensive BLE Setup',
         message:
             'This example demonstrates all BLE features including device filtering, automatic saving, enhanced scanning, and permission handling.',
@@ -209,7 +211,11 @@ class _BLEComprehensiveExamplesState extends State<BLEComprehensiveExamples> {
   /// Connect to device
   Future<void> _connectToDevice(BLEDeviceModel device) async {
     try {
-      await _bleService.connectToDevice(device);
+      await _bleService.connectToDevice(device, reconnect: true);
+      _showSnackBar(
+        'Connecting to ${device.name} with reconnect enabled',
+        Colors.blue,
+      );
     } catch (e) {
       _showSnackBar('Failed to connect: $e', Colors.red);
     }
@@ -221,6 +227,31 @@ class _BLEComprehensiveExamplesState extends State<BLEComprehensiveExamples> {
       await _bleService.disconnectDevice();
     } catch (e) {
       _showSnackBar('Failed to disconnect: $e', Colors.red);
+    }
+  }
+
+  /// Stop reconnect attempts
+  void _stopReconnect() {
+    try {
+      _bleService.stopReconnect();
+      _showSnackBar('Reconnect attempts stopped', Colors.orange);
+    } catch (e) {
+      _showSnackBar('Failed to stop reconnect: $e', Colors.red);
+    }
+  }
+
+  /// Request MTU size
+  Future<void> _requestMtu(int mtuSize) async {
+    try {
+      final success = await _bleService.requestMtu(mtuSize);
+      if (success) {
+        _showSnackBar('MTU successfully set to $mtuSize', Colors.green);
+        setState(() {}); // Refresh UI to show new MTU
+      } else {
+        _showSnackBar('Failed to set MTU to $mtuSize', Colors.red);
+      }
+    } catch (e) {
+      _showSnackBar('Failed to request MTU: $e', Colors.red);
     }
   }
 
@@ -336,10 +367,19 @@ class _BLEComprehensiveExamplesState extends State<BLEComprehensiveExamples> {
                     Text('Initialized: $_isInitialized'),
                     Text('Scanning: $_isScanning'),
                     Text('Connected: $_isConnected'),
+                    Text(
+                      'Reconnect Enabled: ${_bleService.isReconnectEnabled}',
+                    ),
+                    if (_bleService.isReconnectEnabled)
+                      Text(
+                        'Reconnect Attempts: ${_bleService.reconnectAttempts}/${_bleService.maxReconnectAttempts}',
+                      ),
                     if (_connectedDeviceName != null)
                       Text('Connected to: $_connectedDeviceName'),
                     Text('Discovered Devices: ${_devices.length}'),
                     Text('Discovered Services: ${_services.length}'),
+                    Text('Requested MTU: ${_bleService.requestedMtu}'),
+                    Text('Current MTU: ${_bleService.currentMtu}'),
                   ],
                 ),
               ),
@@ -548,10 +588,30 @@ class _BLEComprehensiveExamplesState extends State<BLEComprehensiveExamples> {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    ElevatedButton.icon(
-                      onPressed: _devices.isEmpty ? null : _clearDevices,
-                      icon: const Icon(Icons.clear),
-                      label: const Text('Clear Devices'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: _devices.isEmpty ? null : _clearDevices,
+                            icon: const Icon(Icons.clear),
+                            label: const Text('Clear Devices'),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: _bleService.isReconnectEnabled
+                                ? _stopReconnect
+                                : null,
+                            icon: const Icon(Icons.stop_circle),
+                            label: const Text('Stop Reconnect'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -559,6 +619,68 @@ class _BLEComprehensiveExamplesState extends State<BLEComprehensiveExamples> {
             ),
 
             const SizedBox(height: 16),
+
+            // MTU Controls
+            if (_isConnected) ...[
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'MTU Controls',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () => _requestMtu(23),
+                              icon: const Icon(Icons.settings),
+                              label: const Text('MTU 23'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue,
+                                foregroundColor: Colors.white,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () => _requestMtu(185),
+                              icon: const Icon(Icons.settings),
+                              label: const Text('MTU 185'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                                foregroundColor: Colors.white,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () => _requestMtu(512),
+                              icon: const Icon(Icons.settings),
+                              label: const Text('MTU 512'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange,
+                                foregroundColor: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
 
             // Device List
             if (_devices.isNotEmpty) ...[

@@ -22,6 +22,9 @@ class _BLEServiceExamplesState extends State<BLEServiceExamples> {
   String? _error;
   String? _connectionStatus;
 
+  // Configuration
+  int _requestedMtu = 23; // Default BLE MTU
+
   // Stream subscriptions
   StreamSubscription<BLEDeviceModel>? _deviceSubscription;
   StreamSubscription<BLEConnectionState>? _connectionSubscription;
@@ -55,11 +58,12 @@ class _BLEServiceExamplesState extends State<BLEServiceExamples> {
         // scanDuration: const Duration(seconds: 15), // Longer scan duration
         autoConnect: false,
         deviceFilters: ["Leo"], // Filter for devices containing "Leo"
-        usePrefs: false, // Enable SharedPreferences for device storage
+        usePrefs: true, // Enable SharedPreferences for device storage
         debugMode: true, // Enable debug logging
         alwaysScan: true, // Set to true for continuous scanning
         androidUsesFineLocation: true, // Use fine location for better accuracy
         saveScanDevices: false, // Automatically save discovered devices
+        requestedMtu: _requestedMtu, // MTU size for data transfer
         title: 'BLE Service Setup',
         message:
             'This example demonstrates BLE service with device filtering, automatic saving, and enhanced scanning options.',
@@ -201,8 +205,11 @@ class _BLEServiceExamplesState extends State<BLEServiceExamples> {
   /// Connect to device
   Future<void> _connectToDevice(BLEDeviceModel device) async {
     try {
-      await _bleService.connectToDevice(device);
-      _showSnackBar('Connecting to ${device.name}', Colors.blue);
+      await _bleService.connectToDevice(device, reconnect: true);
+      _showSnackBar(
+        'Connecting to ${device.name} with reconnect enabled',
+        Colors.blue,
+      );
     } catch (e) {
       _showSnackBar('Failed to connect: $e', Colors.red);
     }
@@ -215,6 +222,31 @@ class _BLEServiceExamplesState extends State<BLEServiceExamples> {
       _showSnackBar('Disconnected', Colors.orange);
     } catch (e) {
       _showSnackBar('Failed to disconnect: $e', Colors.red);
+    }
+  }
+
+  /// Stop reconnect attempts
+  void _stopReconnect() {
+    try {
+      _bleService.stopReconnect();
+      _showSnackBar('Reconnect attempts stopped', Colors.orange);
+    } catch (e) {
+      _showSnackBar('Failed to stop reconnect: $e', Colors.red);
+    }
+  }
+
+  /// Request MTU size
+  Future<void> _requestMtu(int mtuSize) async {
+    try {
+      final success = await _bleService.requestMtu(mtuSize);
+      if (success) {
+        _showSnackBar('MTU successfully set to $mtuSize', Colors.green);
+        setState(() {}); // Refresh UI to show new MTU
+      } else {
+        _showSnackBar('Failed to set MTU to $mtuSize', Colors.red);
+      }
+    } catch (e) {
+      _showSnackBar('Failed to request MTU: $e', Colors.red);
     }
   }
 
@@ -341,19 +373,33 @@ class _BLEServiceExamplesState extends State<BLEServiceExamples> {
               ),
             ),
             const SizedBox(height: 12),
-            Row(
+            Wrap(
               children: [
                 _buildStatusIndicator('Initialized', _isInitialized),
                 const SizedBox(width: 16),
                 _buildStatusIndicator('Scanning', _isScanning),
                 const SizedBox(width: 16),
                 _buildStatusIndicator('Connected', _isConnected),
+                const SizedBox(width: 16),
+                _buildStatusIndicator(
+                  'Reconnect',
+                  _bleService.isReconnectEnabled,
+                ),
               ],
             ),
             if (_connectionStatus != null) ...[
               const SizedBox(height: 8),
               Text('Connection Status: $_connectionStatus'),
             ],
+            if (_bleService.isReconnectEnabled) ...[
+              const SizedBox(height: 8),
+              Text(
+                'Reconnect Attempts: ${_bleService.reconnectAttempts}/${_bleService.maxReconnectAttempts}',
+              ),
+            ],
+            const SizedBox(height: 8),
+            Text('Requested MTU: ${_bleService.requestedMtu}'),
+            Text('Current MTU: ${_bleService.currentMtu}'),
             if (_error != null) ...[
               const SizedBox(height: 8),
               Text('Error: $_error', style: const TextStyle(color: Colors.red)),
@@ -457,18 +503,83 @@ class _BLEServiceExamplesState extends State<BLEServiceExamples> {
               ],
             ),
             const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: _devices.isEmpty ? null : _clearDevices,
-                icon: const Icon(Icons.clear),
-                label: const Text('Clear Devices'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey,
-                  foregroundColor: Colors.white,
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _devices.isEmpty ? null : _clearDevices,
+                    icon: const Icon(Icons.clear),
+                    label: const Text('Clear Devices'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _bleService.isReconnectEnabled
+                        ? _stopReconnect
+                        : null,
+                    icon: const Icon(Icons.stop_circle),
+                    label: const Text('Stop Reconnect'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
             ),
+            const SizedBox(height: 8),
+            // MTU Controls
+            if (_isConnected) ...[
+              const Text(
+                'MTU Controls',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () => _requestMtu(23),
+                      icon: const Icon(Icons.settings),
+                      label: const Text('MTU 23'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () => _requestMtu(185),
+                      icon: const Icon(Icons.settings),
+                      label: const Text('MTU 185'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: () => _requestMtu(512),
+                      icon: const Icon(Icons.settings),
+                      label: const Text('MTU 512'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ],
         ),
       ),
