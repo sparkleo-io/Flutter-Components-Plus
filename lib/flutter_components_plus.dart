@@ -32,6 +32,9 @@ export 'src/components/switches/switches.dart';
 // Chart Components
 export 'src/components/charts/charts_exports.dart';
 
+// BLE Components
+export 'src/components/ble/ble_exports.dart';
+
 // Utilities
 export 'src/utils/extensions/widget_extensions.dart';
 export 'src/utils/extensions/string_extensions.dart';
@@ -45,3 +48,9 @@ export 'src/services/logging_service.dart';
 // Infrastructure
 export 'src/infrastructure/environment_config.dart';
 export 'src/infrastructure/platform_utils.dart';
+
+// CLI Tools
+export 'src/cli/cli_runner.dart';
+export 'src/cli/permission_manager.dart';
+export 'src/cli/component_manager.dart';
+export 'src/cli/file_utils.dart';
