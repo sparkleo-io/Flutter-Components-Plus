@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_component_plus_example/ble_leo_example.dart';
 import 'package:flutter_component_plus_example/ble_service_examples.dart';
 import 'package:flutter_component_plus_example/multi_inline_dropdown_examples.dart';
 import 'package:get/get.dart';
@@ -99,6 +100,7 @@ class HomeView extends GetView<HomeController> {
         _buildSidebarItem(context, 'Navigation', Icons.navigation, 13),
         _buildSidebarItem(context, 'Feedback', Icons.feedback, 14),
         _buildSidebarItem(context, 'Layout', Icons.grid_on, 15),
+        _buildSidebarItem(context, 'LEO', Icons.developer_board, 16),
       ],
     );
   }
@@ -213,6 +215,12 @@ class HomeView extends GetView<HomeController> {
                   ),
                   _buildBottomNavItem(context, 'Feedback', Icons.feedback, 14),
                   _buildBottomNavItem(context, 'Layout', Icons.grid_on, 15),
+                  _buildBottomNavItem(
+                    context,
+                    'Leo',
+                    Icons.developer_board,
+                    16,
+                  ),
                 ],
               ),
             ),
@@ -314,6 +322,8 @@ class HomeView extends GetView<HomeController> {
           return _buildFeedbackTab(context);
         case 15:
           return _buildLayoutTab(context);
+        case 16:
+          return _buildLeoTab(context);
         default:
           return _buildOverviewTab(context);
       }
@@ -779,5 +789,9 @@ class HomeView extends GetView<HomeController> {
 
   Widget _buildLayoutTab(BuildContext context) {
     return const Center(child: Text('Layout Tab - Coming Soon'));
+  }
+
+  Widget _buildLeoTab(BuildContext context) {
+    return const BleLeoExample();
   }
 }
