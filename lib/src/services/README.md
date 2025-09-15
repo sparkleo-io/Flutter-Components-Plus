@@ -14,6 +14,9 @@ A service for managing Bluetooth Low Energy (BLE) operations, including permissi
 - **Device Control**: Turn on Bluetooth and location services directly from the app
 - **Comprehensive Status**: Get detailed status of all BLE-related permissions
 - **Location Service Control**: Turn on location services and request permissions separately
+- **BLE Scanning**: Scan for nearby BLE devices with configurable parameters
+- **Device Filtering**: Filter scan results by name, RSSI, and other criteria
+- **Real-time Updates**: Stream-based scan results with live device discovery
 
 #### Usage
 
@@ -46,6 +49,39 @@ final allStatus = await bleService.turnOnAllServices();
 
 // Request all permissions
 final permissionStatus = await bleService.requestPermissions();
+
+// BLE Scanning
+final scanConfig = BleScanConfig(
+  scanTimeout: Duration(seconds: 15),
+  alwaysScan: false,
+  useFineLocation: true,
+  checkPermissionsBeforeScan: true,
+  filters: ['MyDevice', 'Sensor'], // Device name filters
+  debugMode: true, // Enable debug prints
+  filterUnknownDevices: false, // Show unknown devices
+);
+
+// Start scanning
+final scanState = await bleService.startScan(config: scanConfig);
+
+// Listen to scan results
+bleService.scanStateStream.listen((state) {
+  print('Scan status: ${state.status}');
+  print('Found ${state.devices.length} devices');
+  for (final device in state.devices) {
+    print('Device: ${device.deviceName} - RSSI: ${device.rssi}');
+  }
+});
+
+// Stop scanning
+await bleService.stopScan();
+
+// Get filtered devices
+final filteredDevices = bleService.getFilteredDevices(
+  minRssi: -80,
+  nameFilters: ['MyDevice'],
+  excludeUnknown: true,
+);
 ```
 
 #### Methods
@@ -61,6 +97,11 @@ final permissionStatus = await bleService.requestPermissions();
 - `requestLocationPermission()`: Request location permission only (without turning on service)
 - `turnOnAllServices()`: Enable both Bluetooth and location
 - `requestPermissions()`: Request all necessary permissions
+- `startScan(config)`: Start BLE scanning with configuration
+- `stopScan()`: Stop BLE scanning
+- `getFilteredDevices()`: Get filtered scan results
+- `clearScanResults()`: Clear scan results
+- `scanStateStream`: Stream of scan state changes
 
 #### BlePermissionStatus
 
@@ -72,6 +113,37 @@ The service returns a `BlePermissionStatus` object with the following properties
 - `locationPermissionGranted`: Whether location permission is granted
 - `allGranted`: Whether all required permissions are granted
 - `error`: Any error message if an operation failed
+
+#### BleScanConfig
+
+Configuration for BLE scanning with the following properties:
+
+- `scanTimeout`: Duration for scan timeout (default: 10 seconds)
+- `alwaysScan`: Whether to continuously scan (default: false)
+- `useFineLocation`: Use fine location for Android (default: true)
+- `checkPermissionsBeforeScan`: Check permissions before starting scan (default: true)
+- `filters`: List of device name filters (default: empty)
+- `debugMode`: Enable debug prints (default: false)
+- `filterUnknownDevices`: Filter out devices with unknown names (default: true)
+
+#### BleScanResult
+
+Represents a scanned BLE device with the following properties:
+
+- `device`: BluetoothDevice object
+- `rssi`: Signal strength
+- `advertisementData`: Advertisement data from the device
+- `timestamp`: When the device was discovered
+- `deviceName`: Human-readable device name
+- `deviceId`: Unique device identifier
+
+#### BleScanState
+
+Current state of BLE scanning with the following properties:
+
+- `status`: Current scan status (idle, scanning, stopped, error)
+- `devices`: List of discovered devices
+- `error`: Error message if scan failed
 
 ### Other Services
 
