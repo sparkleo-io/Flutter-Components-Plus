@@ -6,23 +6,56 @@ This directory contains various services provided by the Flutter Components Plus
 
 ### FcpBleService
 
-A service for managing Bluetooth Low Energy (BLE) operations, including permission checking and device control.
+A comprehensive service for managing Bluetooth Low Energy (BLE) operations, providing complete control over BLE functionality from permission management to device discovery, connection, and service exploration.
+
+#### 🚀 Quick Start
+
+```dart
+import 'package:flutter_components_plus/flutter_components_plus.dart';
+
+final bleService = FcpBleService.instance;
+
+// Check permissions
+final status = await bleService.checkPermissions();
+
+// Scan for devices
+await bleService.startScan();
+
+// Connect to a device
+await bleService.connectToDevice(device);
+
+// Discover services
+final discovery = await bleService.discoverServices(device);
+```
+
+#### 📋 Feature Summary
+
+| Feature Category | Capabilities | Methods Count |
+|------------------|--------------|---------------|
+| **Permission Management** | Bluetooth & Location control | 8 methods |
+| **Device Scanning** | Configurable BLE scanning | 4 methods |
+| **Device Connection** | Connection management | 2 methods |
+| **Device Persistence** | Storage & retrieval | 5 methods |
+| **Service Discovery** | Complete service exploration | 6 methods |
+| **Total** | **Complete BLE Solution** | **25 methods** |
 
 #### Features
 
-- **Permission Checking**: Check if Bluetooth and location services are enabled
-- **Device Control**: Turn on Bluetooth and location services directly from the app
-- **Comprehensive Status**: Get detailed status of all BLE-related permissions
-- **Location Service Control**: Turn on location services and request permissions separately
-- **BLE Scanning**: Scan for nearby BLE devices with configurable parameters
-- **Device Filtering**: Filter scan results by name, RSSI, and other criteria
-- **Real-time Updates**: Stream-based scan results with live device discovery
-- **BLE Connection**: Connect to BLE devices with customizable timeout, MTU, and auto-connect
-- **Device Persistence**: Save and retrieve connected device information
-- **Connection Management**: Real-time connection state monitoring
-- **Service Discovery**: Discover all services and characteristics of connected devices
-- **Characteristic Discovery**: Find specific services and characteristics by UUID
-- **Comprehensive Information**: Get detailed service and characteristic properties
+- **🔐 Permission Management**: Check and control Bluetooth and location services with granular control
+- **📱 Device Control**: Turn on Bluetooth and location services directly from the app
+- **📊 Comprehensive Status**: Get detailed status of all BLE-related permissions and services
+- **📍 Location Service Control**: Turn on location services and request permissions separately
+- **🔍 BLE Scanning**: Scan for nearby BLE devices with highly configurable parameters
+- **🎯 Device Filtering**: Filter scan results by name, RSSI, and other criteria
+- **⚡ Real-time Updates**: Stream-based scan results with live device discovery
+- **🔗 BLE Connection**: Connect to BLE devices with customizable timeout, MTU, and auto-connect
+- **💾 Device Persistence**: Save and retrieve connected device information with custom storage keys
+- **🔄 Connection Management**: Real-time connection state monitoring with automatic cleanup
+- **🔬 Service Discovery**: Discover all services and characteristics of connected devices
+- **🎯 Characteristic Discovery**: Find specific services and characteristics by UUID
+- **📋 Comprehensive Information**: Get detailed service and characteristic properties and capabilities
+- **🛠️ Advanced Search**: Cross-service characteristic search and relationship mapping
+- **🎨 Beautiful UI**: Interactive example app with expandable dialogs and visual indicators
 
 #### Usage
 
@@ -186,8 +219,84 @@ final servicesWithChar = await bleService.getServicesWithCharacteristic(
 );
 ```
 
+#### Common Usage Patterns
+
+##### 🔄 Complete BLE Workflow
+```dart
+// 1. Check and enable permissions
+final status = await bleService.checkPermissions();
+if (!status.allGranted) {
+  await bleService.turnOnAllServices();
+}
+
+// 2. Scan for devices
+await bleService.startScan();
+bleService.scanStateStream.listen((state) {
+  if (state.status == BleScanStatus.scanning) {
+    print('Scanning... Found ${state.devices.length} devices');
+  }
+});
+
+// 3. Connect to a device
+final device = // Get device from scan results
+await bleService.connectToDevice(device, storageKey: 'my_device');
+
+// 4. Discover services
+final discovery = await bleService.discoverServices(device);
+print('Found ${discovery.services.length} services');
+
+// 5. Find specific characteristic
+final characteristic = await bleService.findCharacteristic(
+  device,
+  '0000180F-0000-1000-8000-00805F9B34FB', // Battery service
+  '00002A19-0000-1000-8000-00805F9B34FB', // Battery level
+);
+```
+
+##### 🎯 Device Management
+```dart
+// Save device manually
+await bleService.saveConnectedDevice('sensor_1', device, mtu: 512);
+
+// Get all stored devices
+final storedDevices = await bleService.getAllStoredDevices();
+for (final device in storedDevices) {
+  print('Stored: ${device.deviceName} (${device.connectedAt})');
+}
+
+// Remove specific device
+await bleService.removeConnectedDevice('sensor_1');
+```
+
+##### 🔍 Advanced Discovery
+```dart
+// Find all services with a specific characteristic
+final services = await bleService.getServicesWithCharacteristic(
+  device,
+  '00002A19-0000-1000-8000-00805F9B34FB', 
+);
+
+// Get all characteristics for a service
+final characteristics = await bleService.getServiceCharacteristics(
+  device,
+  '0000180F-0000-1000-8000-00805F9B34FB',
+);
+
+// Check characteristic capabilities
+if (characteristic.canRead) {
+  // Read from characteristic
+}
+if (characteristic.canWrite) {
+  // Write to characteristic
+}
+if (characteristic.canNotify) {
+  // Subscribe to notifications
+}
+```
+
 #### Methods
 
+##### Permission & Device Control
 - `isBluetoothOn()`: Check if Bluetooth is turned on
 - `isLocationOn()`: Check if location services are enabled (both service and permission)
 - `isLocationServiceEnabled()`: Check if location services are enabled (service level only)
@@ -199,19 +308,27 @@ final servicesWithChar = await bleService.getServicesWithCharacteristic(
 - `requestLocationPermission()`: Request location permission only (without turning on service)
 - `turnOnAllServices()`: Enable both Bluetooth and location
 - `requestPermissions()`: Request all necessary permissions
+
+##### BLE Scanning
 - `startScan(config)`: Start BLE scanning with configuration
 - `stopScan()`: Stop BLE scanning
 - `getFilteredDevices()`: Get filtered scan results
 - `clearScanResults()`: Clear scan results
 - `scanStateStream`: Stream of scan state changes
+
+##### BLE Connection
 - `connectToDevice(device, config, storageKey)`: Connect to a BLE device
 - `disconnectFromDevice(device)`: Disconnect from a BLE device
+- `connectionStateStream`: Stream of connection state changes
+
+##### Device Persistence
 - `saveConnectedDevice(storageKey, device, mtu)`: Save connected device information
 - `getConnectedDevice(storageKey)`: Get saved device information
 - `removeConnectedDevice(storageKey)`: Remove saved device information
 - `getAllStoredDevices()`: Get all stored connected devices
 - `getAllConnectedDeviceKeys()`: Get all device storage keys
-- `connectionStateStream`: Stream of connection state changes
+
+##### Service & Characteristic Discovery
 - `discoverServices(device)`: Discover all services and characteristics of a connected device
 - `findService(device, serviceUuid)`: Find a specific service by UUID
 - `findCharacteristic(device, serviceUuid, characteristicUuid)`: Find a specific characteristic by UUID
@@ -271,6 +388,17 @@ Configuration for BLE connection with the following properties:
 - `saveDeviceOnConnect`: Whether to save device info on successful connection (default: true)
 - `removeDeviceOnDisconnect`: Whether to remove device info on disconnection (default: true)
 
+**Example Configuration:**
+```dart
+final config = BleConnectionConfig(
+  timeout: Duration(seconds: 35),    // 35-second connection timeout
+  mtu: 512,                          // 512-byte MTU
+  autoConnect: false,                // Manual connection control
+  saveDeviceOnConnect: true,         // Auto-save connected devices
+  removeDeviceOnDisconnect: true,    // Auto-remove on disconnect
+);
+```
+
 #### BleConnectionState
 
 Current state of BLE connection with the following properties:
@@ -304,13 +432,23 @@ Information about a BLE characteristic with the following properties:
 
 - `characteristic`: The BluetoothCharacteristic object
 - `uuid`: Characteristic UUID string
-- `properties`: List of characteristic properties
+- `properties`: CharacteristicProperties object containing all properties
 - `descriptors`: List of descriptors for this characteristic
 - `canRead`: Whether the characteristic supports read operations
 - `canWrite`: Whether the characteristic supports write operations
 - `canWriteWithoutResponse`: Whether the characteristic supports write without response
 - `canNotify`: Whether the characteristic supports notifications
 - `canIndicate`: Whether the characteristic supports indications
+
+**Supported Properties:**
+- `read`: Read operations
+- `write`: Write operations
+- `writeWithoutResponse`: Write without response operations
+- `notify`: Notification support
+- `indicate`: Indication support
+- `broadcast`: Broadcast support
+- `authenticatedSignedWrites`: Authenticated signed writes
+- `extendedProperties`: Extended properties support
 
 #### BleDiscoveryResult
 
@@ -363,6 +501,60 @@ The following permissions are required in `ios/Runner/Info.plist`:
 <string>This app needs location access for Bluetooth Low Energy scanning.</string>
 ```
 
-## Example
+## Example App Features
 
-See `flutter_component_plus_example/lib/ble_service_examples.dart` for a complete working example.
+The example app (`flutter_component_plus_example/lib/ble_service_examples.dart`) provides a comprehensive demonstration of all BLE service features:
+
+### 🔐 Permission Management
+- **Permission Status Display**: Real-time status of Bluetooth and location services
+- **Granular Control**: Separate buttons for Bluetooth, location service, and location permission
+- **Visual Feedback**: Color-coded status indicators with detailed information
+
+### 🔍 Device Scanning
+- **Configurable Scanning**: 15-second timeout with Leo device filtering
+- **Real-time Results**: Live device discovery with RSSI and timestamp information
+- **Device List**: Scrollable list of discovered devices with connect buttons
+- **Smart Filtering**: Filter out unknown devices and apply name filters
+
+### 🔗 Device Connection
+- **Connection Management**: Connect to devices with 35-second timeout and 512 MTU
+- **Storage Control**: Automatic device saving with configurable storage behavior
+- **Connection Status**: Real-time connection state monitoring
+- **Smart Buttons**: Connect buttons show "Connected" state for connected devices
+
+### 💾 Device Persistence
+- **Saved Device Display**: Show previously connected device information
+- **Storage Management**: View all stored devices in a beautiful dialog
+- **Individual Removal**: Delete specific devices from storage
+- **Real-time Updates**: UI updates automatically when devices are added/removed
+
+### 🔬 Service Discovery
+- **Complete Discovery**: Discover all services and characteristics of connected devices
+- **Expandable UI**: Services dialog with expandable service lists
+- **Characteristic Details**: View all characteristics with properties and capabilities
+- **Visual Indicators**: Icons for read, write, and notify capabilities
+
+### 🎯 Advanced Search
+- **Service Finder**: Find specific services by UUID with input validation
+- **Characteristic Finder**: Find specific characteristics by UUID within services
+- **Cross-Service Search**: Find characteristics across all services
+- **Detailed Information**: Comprehensive property and capability information
+
+### 🎨 User Interface
+- **Responsive Design**: SingleChildScrollView for long content
+- **Color-Coded Buttons**: Different colors for different actions
+- **Smart States**: Buttons adapt to connection state and data availability
+- **Interactive Dialogs**: Beautiful dialogs with proper form handling
+- **Visual Feedback**: Success and error messages with appropriate colors
+
+### 📱 Usage Instructions
+The example app includes comprehensive usage instructions covering all 18 features:
+1. Permission checking and control
+2. Device scanning and filtering
+3. Device connection and management
+4. Service and characteristic discovery
+5. Advanced search capabilities
+
+## Complete Example
+
+See `flutter_component_plus_example/lib/ble_service_examples.dart` for the complete working example with all features demonstrated.

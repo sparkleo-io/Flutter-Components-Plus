@@ -24,7 +24,7 @@ A comprehensive Flutter package providing highly customizable widgets, themes, a
 - **Color Schemes** - Comprehensive color palette with semantic colors
 - **Text Styles** - Typography system with predefined text styles
 - **Spacing & Layout** - Consistent spacing and layout constants
-- **Animations** - Predefined animation durations and curves
+- **Animations** - Predefined animation durations and curves 
 
 ### 🛠️ Utility Extensions
 - **Widget Extensions** - `.padAll()`, `.center()`, `.shadow()`, etc.
@@ -868,7 +868,7 @@ fcp list components
 # List available permissions
 fcp list permissions
 
-# Add BLE permissions
+# Add BLE permissions and complete BLE service
 fcp add ble_permissions
 
 # Add all permissions
@@ -877,6 +877,7 @@ fcp add permissions
 # Add specific components
 fcp add component chart
 fcp add component table
+fcp add component input_fields
 fcp add component ble
 fcp add component pdf_viewer
 
@@ -899,54 +900,58 @@ The CLI automatically handles:
 - **table** - Data tables with sorting and filtering
 - **button** - Customizable buttons
 - **dropdown** - Advanced dropdown components
-- **ble** - Bluetooth Low Energy device management
+- **input_fields** - Text, password, search, and other input types
+- **ble** - Complete Bluetooth Low Energy solution with service discovery
 - **pdf_viewer** - PDF document viewer
 - **switch** - Customizable toggle switches
 - **navigation** - Navigation components
 
-## 🎯 Roadmap
+## 🚀 Latest Updates
 
-### Phase 1 (Completed ✅)
-- ✅ Core design system (colors, text styles, constants)
-- ✅ FCPButton with fluent API
-- ✅ FCPCard unified component
-- ✅ FCPDropdownBottomSheet
-- ✅ FCPPdfViewer
-- ✅ FCPChart (Area, Bar, Line, Histogram)
-- ✅ FCPBLEComponent
-- ✅ FCPSwitch (Toggle, Single/Multi-select)
-- ✅ FCPBottomNavigationBar
-- ✅ FCPDataTable
-- ✅ Widget extensions
-- ✅ String and date extensions
-- ✅ HTTP service with interceptors
-- ✅ Storage service
-- ✅ Logging service
-- ✅ Environment configuration
-- ✅ Platform utilities
-- ✅ CLI tools for component management
+### FcpBleService - Complete BLE Solution
 
-### Phase 2 (In Progress 🔄)
-- 🔄 Input fields (text, password, search)
-- 🔄 Dialogs and bottom sheets
-- 🔄 Loaders and progress indicators
-- 🔄 Form builders
-- 🔄 Image and media components
+We've recently completed a comprehensive Bluetooth Low Energy service that provides everything you need for BLE development:
 
-### Phase 3 (Future 📋)
-- 📋 Date and time pickers
-- 📋 Advanced animations
-- 📋 Gesture recognizers
-- 📋 Custom painters
-- 📋 Platform-specific components
+#### 🔐 **Permission Management**
+- Check and control Bluetooth and location services
+- Granular permission control with separate service and permission management
+- Real-time permission status monitoring
+
+#### 🔍 **Device Discovery**
+- Configurable BLE scanning with timeout, filtering, and debug options
+- Real-time device discovery with RSSI and timestamp information
+- Smart filtering by device name and unknown device exclusion
+
+#### 🔗 **Device Connection**
+- Connect to BLE devices with customizable timeout (35s), MTU (512), and auto-connect
+- Real-time connection state monitoring with automatic cleanup
+- Storage control with configurable save/remove behavior
+
+#### 💾 **Device Persistence**
+- Save and retrieve connected device information with custom storage keys
+- View all stored devices with comprehensive device management
+- Individual device removal and storage cleanup
+
+#### 🔬 **Service Discovery**
+- Discover all services and characteristics of connected devices
+- Find specific services and characteristics by UUID
+- Cross-service characteristic search and relationship mapping
+- Comprehensive property and capability information
+
+#### 🎨 **Beautiful Example App**
+- Interactive UI with expandable dialogs and visual indicators
+- Smart button states that adapt to connection status
+- Real-time updates with stream-based state management
+- Comprehensive usage instructions and error handling
+
+**Total: 25 methods across 5 categories providing a complete BLE solution!**
+
+
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions!
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 

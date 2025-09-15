@@ -55,11 +55,10 @@ class FCPChartExamples extends StatelessWidget {
             _buildCurrentMeasurementExample(),
             const SizedBox(height: 32),
 
-            _buildSectionTitle('Live Current Chart'),
-            const SizedBox(height: 16),
-            _buildLiveCurrentChart(),
-            const SizedBox(height: 32),
-
+            // _buildSectionTitle('Live Current Chart'),
+            // const SizedBox(height: 16),
+            // _buildLiveCurrentChart(),
+            // const SizedBox(height: 32),
             _buildSectionTitle('Charts with Legends'),
             const SizedBox(height: 16),
             _buildChartsWithLegends(),

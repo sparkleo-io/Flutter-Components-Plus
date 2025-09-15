@@ -94,10 +94,7 @@ class HomeView extends GetView<HomeController> {
         _buildSidebarItem(context, 'Switches', Icons.toggle_on, 9),
         _buildSidebarItem(context, 'PDF Viewer', Icons.picture_as_pdf, 10),
         _buildSidebarItem(context, 'Charts', Icons.bar_chart, 11),
-        _buildSidebarItem(context, 'Navigation', Icons.navigation, 13),
-        _buildSidebarItem(context, 'Feedback', Icons.feedback, 14),
-        _buildSidebarItem(context, 'Layout', Icons.grid_on, 15),
-        _buildSidebarItem(context, 'LEO', Icons.developer_board, 16),
+        _buildSidebarItem(context, 'Ble Services', Icons.bluetooth, 13),
       ],
     );
   }
@@ -164,7 +161,7 @@ class HomeView extends GetView<HomeController> {
           ],
         ),
         child: SafeArea(
-          child: Container(
+          child: SizedBox(
             height: 70,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -205,17 +202,9 @@ class HomeView extends GetView<HomeController> {
                   _buildBottomNavItem(context, 'Charts', Icons.bar_chart, 11),
                   _buildBottomNavItem(
                     context,
-                    'Navigation',
-                    Icons.navigation,
+                    'BLE Services',
+                    Icons.bluetooth,
                     13,
-                  ),
-                  _buildBottomNavItem(context, 'Feedback', Icons.feedback, 14),
-                  _buildBottomNavItem(context, 'Layout', Icons.grid_on, 15),
-                  _buildBottomNavItem(
-                    context,
-                    'Leo',
-                    Icons.developer_board,
-                    16,
                   ),
                 ],
               ),
@@ -311,11 +300,8 @@ class HomeView extends GetView<HomeController> {
         case 11:
           return _buildChartsTab(context);
         case 12:
-          return _buildNavigationTab(context);
-        case 13:
-          return _buildFeedbackTab(context);
-        case 15:
-          return _buildLayoutTab(context);
+          return _buildBleServicesTab(context);
+
         default:
           return _buildOverviewTab(context);
       }
@@ -397,28 +383,28 @@ class HomeView extends GetView<HomeController> {
             _buildStatCard(
               context,
               'Components',
-              '60+',
+              '10+',
               Icons.widgets,
               FCPColorScheme.primary,
             ),
             _buildStatCard(
               context,
               'Variants',
-              '200+',
+              '50+',
               Icons.style,
               FCPColorScheme.secondary,
             ),
             _buildStatCard(
               context,
               'Themes',
-              '10+',
+              '5+',
               Icons.palette,
               FCPColorScheme.success,
             ),
             _buildStatCard(
               context,
               'Examples',
-              '100+',
+              '10+',
               Icons.code,
               FCPColorScheme.warning,
             ),
@@ -767,15 +753,7 @@ class HomeView extends GetView<HomeController> {
     return const FCPChartExamples();
   }
 
-  Widget _buildNavigationTab(BuildContext context) {
-    return const Center(child: Text('Navigation Tab - Coming Soon'));
-  }
-
-  Widget _buildFeedbackTab(BuildContext context) {
-    return const Center(child: Text('Feedback Tab - Coming Soon'));
-  }
-
-  Widget _buildLayoutTab(BuildContext context) {
-    return const Center(child: Text('Layout Tab - Coming Soon'));
+  Widget _buildBleServicesTab(BuildContext context) {
+    return const FCPChartExamples();
   }
 }

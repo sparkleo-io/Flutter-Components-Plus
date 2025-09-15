@@ -527,97 +527,97 @@ class _BleServiceExamplesState extends State<BleServiceExamples> {
     );
   }
 
-  void _showFindServiceDialog() {
-    final serviceController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Find Service by UUID'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: serviceController,
-              decoration: const InputDecoration(
-                labelText: 'Service UUID',
-                hintText: 'e.g., 0000180F-0000-1000-8000-00805F9B34FB',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (serviceController.text.isNotEmpty) {
-                Navigator.of(context).pop();
-                await _findService(serviceController.text);
-              }
-            },
-            child: const Text('Find'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showFindCharacteristicDialog() {
-    final serviceController = TextEditingController();
-    final characteristicController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Find Characteristic by UUID'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: serviceController,
-              decoration: const InputDecoration(
-                labelText: 'Service UUID',
-                hintText: 'e.g., 0000180F-0000-1000-8000-00805F9B34FB',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: characteristicController,
-              decoration: const InputDecoration(
-                labelText: 'Characteristic UUID',
-                hintText: 'e.g., 00002A19-0000-1000-8000-00805F9B34FB',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (serviceController.text.isNotEmpty &&
-                  characteristicController.text.isNotEmpty) {
-                Navigator.of(context).pop();
-                await _findCharacteristic(
-                  serviceController.text,
-                  characteristicController.text,
-                );
-              }
-            },
-            child: const Text('Find'),
-          ),
-        ],
-      ),
-    );
-  }
+  // void _showFindServiceDialog() {
+  //   final serviceController = TextEditingController();
+  //
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: const Text('Find Service by UUID'),
+  //       content: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           TextField(
+  //             controller: serviceController,
+  //             decoration: const InputDecoration(
+  //               labelText: 'Service UUID',
+  //               hintText: 'e.g., 0000180F-0000-1000-8000-00805F9B34FB',
+  //               border: OutlineInputBorder(),
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.of(context).pop(),
+  //           child: const Text('Cancel'),
+  //         ),
+  //         ElevatedButton(
+  //           onPressed: () async {
+  //             if (serviceController.text.isNotEmpty) {
+  //               Navigator.of(context).pop();
+  //               await _findService(serviceController.text);
+  //             }
+  //           },
+  //           child: const Text('Find'),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+  //
+  // void _showFindCharacteristicDialog() {
+  //   final serviceController = TextEditingController();
+  //   final characteristicController = TextEditingController();
+  //
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: const Text('Find Characteristic by UUID'),
+  //       content: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           TextField(
+  //             controller: serviceController,
+  //             decoration: const InputDecoration(
+  //               labelText: 'Service UUID',
+  //               hintText: 'e.g., 0000180F-0000-1000-8000-00805F9B34FB',
+  //               border: OutlineInputBorder(),
+  //             ),
+  //           ),
+  //           const SizedBox(height: 16),
+  //           TextField(
+  //             controller: characteristicController,
+  //             decoration: const InputDecoration(
+  //               labelText: 'Characteristic UUID',
+  //               hintText: 'e.g., 00002A19-0000-1000-8000-00805F9B34FB',
+  //               border: OutlineInputBorder(),
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.of(context).pop(),
+  //           child: const Text('Cancel'),
+  //         ),
+  //         ElevatedButton(
+  //           onPressed: () async {
+  //             if (serviceController.text.isNotEmpty &&
+  //                 characteristicController.text.isNotEmpty) {
+  //               Navigator.of(context).pop();
+  //               await _findCharacteristic(
+  //                 serviceController.text,
+  //                 characteristicController.text,
+  //               );
+  //             }
+  //           },
+  //           child: const Text('Find'),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Future<void> _findService(String serviceUuid) async {
     if (_connectionState?.device == null) {
@@ -1173,36 +1173,36 @@ class _BleServiceExamplesState extends State<BleServiceExamples> {
               ),
               const SizedBox(height: 12),
 
-              ElevatedButton.icon(
-                onPressed:
-                    (_isLoading ||
-                        _connectionState?.status !=
-                            BleConnectionStatus.connected)
-                    ? null
-                    : _showFindServiceDialog,
-                icon: const Icon(Icons.find_in_page),
-                label: const Text('Find Service by UUID'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.cyan,
-                  foregroundColor: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              ElevatedButton.icon(
-                onPressed:
-                    (_isLoading ||
-                        _connectionState?.status !=
-                            BleConnectionStatus.connected)
-                    ? null
-                    : _showFindCharacteristicDialog,
-                icon: const Icon(Icons.find_replace),
-                label: const Text('Find Characteristic by UUID'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepOrange,
-                  foregroundColor: Colors.white,
-                ),
-              ),
+              // ElevatedButton.icon(
+              //   onPressed:
+              //       (_isLoading ||
+              //           _connectionState?.status !=
+              //               BleConnectionStatus.connected)
+              //       ? null
+              //       : _showFindServiceDialog,
+              //   icon: const Icon(Icons.find_in_page),
+              //   label: const Text('Find Service by UUID'),
+              //   style: ElevatedButton.styleFrom(
+              //     backgroundColor: Colors.cyan,
+              //     foregroundColor: Colors.white,
+              //   ),
+              // ),
+              // const SizedBox(height: 12),
+              //
+              // ElevatedButton.icon(
+              //   onPressed:
+              //       (_isLoading ||
+              //           _connectionState?.status !=
+              //               BleConnectionStatus.connected)
+              //       ? null
+              //       : _showFindCharacteristicDialog,
+              //   icon: const Icon(Icons.find_replace),
+              //   label: const Text('Find Characteristic by UUID'),
+              //   style: ElevatedButton.styleFrom(
+              //     backgroundColor: Colors.deepOrange,
+              //     foregroundColor: Colors.white,
+              //   ),
+              // ),
               const SizedBox(height: 20),
 
               // Scanned Devices List
@@ -1297,47 +1297,6 @@ class _BleServiceExamplesState extends State<BleServiceExamples> {
                 ),
                 const SizedBox(height: 20),
               ],
-
-              // Usage Instructions
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Usage Instructions',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        '1. Check Permissions: Verify current status of Bluetooth and location services\n'
-                        '2. Turn On Bluetooth: Attempt to enable Bluetooth on the device\n'
-                        '3. Turn On Location (Service + Permission): Enable location services AND request permission\n'
-                        '4. Turn On Location Service Only: Enable location services without requesting permission\n'
-                        '5. Request Location Permission Only: Request location permission without enabling services\n'
-                        '6. Turn On All Services: Enable both Bluetooth and location services\n'
-                        '7. Request All Permissions: Request all necessary permissions for BLE operations\n'
-                        '8. Start BLE Scan: Scan for nearby BLE devices (15 second timeout)\n'
-                        '9. Stop BLE Scan: Stop the current scan operation\n'
-                        '10. Clear Scan Results: Clear the list of found devices\n'
-                        '11. Connect to Device: Connect to a scanned BLE device (35 second timeout)\n'
-                        '12. Disconnect from Device: Disconnect from the currently connected device (disabled when not connected)\n'
-                        '13. Remove Saved Device: Remove saved device information from storage\n'
-                        '14. View All Stored Devices: View all previously connected devices in a dialog\n'
-                        '15. Discover All Services: Discover all services and characteristics of connected device\n'
-                        '16. View Discovered Services: View all discovered services and characteristics\n'
-                        '17. Find Service by UUID: Find a specific service by its UUID\n'
-                        '18. Find Characteristic by UUID: Find a specific characteristic by its UUID',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ],
           ),
         ),
