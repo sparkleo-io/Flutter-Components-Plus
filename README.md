@@ -5,12 +5,18 @@ A comprehensive Flutter package providing highly customizable widgets, themes, a
 ## 🚀 Features
 
 ### 🧩 UI Components
-- **Customizable Buttons** - Primary, secondary, outline, ghost, and danger variants with loading states
+- **FCPButton** - Fluent API button component with multiple variants, sizes, and states
+- **FCPCard** - Unified card component with flat, shaded, gradient, info, and action variants
+- **FCPDropdownBottomSheet** - Professional dropdown with search functionality and custom styling
+- **FCPPdfViewer** - Comprehensive PDF viewer with zoom, navigation, and search features
+- **FCPChart** - Interactive charts (Area, Bar, Line, Histogram) with fluent API
+- **FCPBLEComponent** - Bluetooth Low Energy device management with scanning and connection
+- **FCPSwitch** - Customizable toggle switches with single/multi-select and toggle variants
+- **FCPBottomNavigationBar** - Modern bottom navigation with asset-based icons
+- **FCPDataTable** - Advanced data tables with sorting, filtering, and pagination
 - **Input Fields** - Text, password, search, and other input types (coming soon)
 - **Dialogs & Sheets** - Bottom sheets, snackbars, and modal dialogs (coming soon)
 - **Loaders** - Progress indicators, shimmer effects, pull-to-refresh (coming soon)
-- **Cards & Tables** - Customizable cards and data tables (coming soon)
-- **Navigation** - Custom navigation bars and tab bars (coming soon)
 - **Pickers** - Date and time pickers (coming soon)
 
 ### 🎨 Design System
@@ -34,6 +40,11 @@ A comprehensive Flutter package providing highly customizable widgets, themes, a
 - **Environment Config** - Multi-environment configuration management
 - **Platform Utils** - Device and platform detection utilities
 
+### 🛠️ CLI Tools
+- **Component Manager** - Add/remove components and dependencies
+- **Permission Manager** - Manage platform permissions automatically
+- **File Utils** - Project file management utilities
+
 ## 📦 Installation
 
 Add this to your `pubspec.yaml`:
@@ -51,16 +62,29 @@ dependencies:
 import 'package:flutter_components_plus/flutter_components_plus.dart';
 ```
 
-### 2. Use the custom button
+### 2. Use the fluent API button
 
 ```dart
-FCPButton(
+// Fluent API - more intuitive and type-safe
+FCPButton.medium.primary(
   text: 'Click Me',
   onPressed: () {
     print('Button pressed!');
   },
-  variant: FCPButtonVariant.primary,
-  size: FCPButtonSize.medium,
+)
+
+// With icon
+FCPButton.large.outlined(
+  text: 'Download',
+  icon: Icons.download,
+  iconPosition: IconPosition.start,
+  onPressed: () => downloadFile(),
+)
+
+// Icon button
+FCPButton.small.iconButton(
+  icon: Icons.add,
+  onPressed: () => addItem(),
 )
 ```
 
@@ -163,78 +187,406 @@ FCPConstants.durationSlow   // 500ms
 
 ## 🧩 UI Components
 
-### FCPButton
+### FCPButton - Fluent API Button Component
 
-A highly customizable button widget with multiple variants and states.
+A highly customizable button widget with an intuitive fluent API that allows you to chain button types, sizes, and variants.
+
+#### Features
+- **Fluent API**: Chain methods like `FCPButton.small.primary()` or `FCPButton.large.outlined()`
+- **Multiple Variants**: Primary, Secondary, Outlined, Ghost, Danger, Floating
+- **Multiple Sizes**: Small, Medium, Large, Extra Large
+- **Loading States**: Built-in loading indicators
+- **Customizable**: Full control over colors, borders, padding, elevation, etc.
+
+#### Basic Usage
 
 ```dart
-// Basic usage
-FCPButton(
-  text: 'Primary Button',
-  onPressed: () {},
+// Primary buttons
+FCPButton.small.primary(text: 'Small Primary')
+FCPButton.medium.primary(text: 'Medium Primary')
+FCPButton.large.primary(text: 'Large Primary')
+
+// Outlined buttons
+FCPButton.medium.outlined(text: 'Outlined Button')
+FCPButton.large.outlined(
+  text: 'Download',
+  icon: Icons.download,
+  iconPosition: IconPosition.start,
 )
 
-// With different variants
-FCPButton(
-  text: 'Secondary Button',
-  variant: FCPButtonVariant.secondary,
-  onPressed: () {},
-)
+// Icon buttons
+FCPButton.small.iconButton(icon: Icons.add)
+FCPButton.medium.iconButton(icon: Icons.edit)
 
-FCPButton(
-  text: 'Outline Button',
-  variant: FCPButtonVariant.outline,
-  onPressed: () {},
-)
-
-FCPButton(
-  text: 'Ghost Button',
-  variant: FCPButtonVariant.ghost,
-  onPressed: () {},
-)
-
-FCPButton(
-  text: 'Danger Button',
-  variant: FCPButtonVariant.danger,
-  onPressed: () {},
-)
-
-// Different sizes
-FCPButton(
-  text: 'Small Button',
-  size: FCPButtonSize.small,
-  onPressed: () {},
-)
-
-FCPButton(
-  text: 'Large Button',
-  size: FCPButtonSize.large,
-  onPressed: () {},
+// Floating buttons
+FCPButton.medium.floating(
+  text: 'Add Item',
+  icon: Icons.add,
 )
 
 // With loading state
-FCPButton(
-  text: 'Loading Button',
+FCPButton.medium.primary(
+  text: 'Processing...',
   isLoading: true,
-  onPressed: () {},
-)
-
-// With icon
-FCPButton(
-  text: 'Button with Icon',
-  icon: Icons.star,
-  iconPosition: IconPosition.start,
-  onPressed: () {},
+  onPressed: () => processData(),
 )
 
 // Custom styling
-FCPButton(
+FCPButton.large.primary(
   text: 'Custom Button',
   backgroundColor: Colors.purple,
   foregroundColor: Colors.white,
-  borderRadius: 20,
+  borderRadius: 25,
   elevation: 8,
-  onPressed: () {},
+  onPressed: () => customAction(),
+)
+```
+
+### FCPCard - Unified Card Component
+
+A comprehensive, unified card component with multiple factory constructors for different card types.
+
+#### Features
+- **Multiple Variants**: Basic, Flat, Shaded, Gradient, Info, Action cards
+- **Shadow Types**: Small, Medium, Large, Soft, Hard shadows
+- **Gradient Support**: Predefined and custom gradients
+- **Interactive**: Tap, long press, and hover callbacks
+- **Customizable**: Full control over styling and layout
+
+#### Usage
+
+```dart
+// Basic card
+FCPCard(
+  child: Text('Simple card'),
+)
+
+// Flat card (no shadows)
+FCPCard.flat(
+  backgroundColor: Colors.green.shade50,
+  borderColor: Colors.green.shade300,
+  child: Text('Flat card'),
+)
+
+// Shaded card with different shadow types
+FCPCard.shaded(
+  shadowType: ShadowType.medium,
+  child: Text('Shaded card'),
+)
+
+// Gradient card
+FCPCard.gradient(
+  gradientType: GradientType.sunset,
+  child: Text('Gradient card'),
+)
+
+// Info card with structured content
+FCPCard.info(
+  icon: Icons.info,
+  title: 'Information',
+  subtitle: 'This is a subtitle',
+  content: 'Main content here',
+)
+
+// Action card with buttons
+FCPCard.action(
+  icon: Icons.settings,
+  title: 'Settings',
+  content: 'Configure your settings.',
+  actions: [
+    TextButton(onPressed: () {}, child: Text('Cancel')),
+    ElevatedButton(onPressed: () {}, child: Text('Save')),
+  ],
+)
+```
+
+### FCPDropdownBottomSheet - Professional Dropdown
+
+A professional dropdown component that displays a bottom sheet with selectable items.
+
+#### Features
+- **Search Functionality**: Built-in search with debouncing
+- **Customizable Styling**: Extensive customization options
+- **Accessibility**: Full accessibility support
+- **Custom Item Builder**: Support for custom item layouts
+- **Extension Method**: Direct context.showFCPDropdownBottomSheet()
+
+#### Usage
+
+```dart
+// Basic dropdown
+FCPDropdownBottomSheet(
+  title: 'Select Country',
+  items: ['USA', 'Canada', 'UK', 'Germany', 'France'],
+  onItemSelected: (value) => print('Selected: $value'),
+)
+
+// With search enabled
+FCPDropdownBottomSheet(
+  title: 'Select Country',
+  items: countries,
+  onItemSelected: (value) => handleSelection(value),
+  isSearchEnabled: true,
+  searchHintText: 'Search countries...',
+)
+
+// Using extension method
+context.showFCPDropdownBottomSheet(
+  title: 'Select Item',
+  items: items,
+  onItemSelected: (value) => handleSelection(value),
+  isSearchEnabled: true,
+)
+
+// With custom styling
+FCPDropdownBottomSheet(
+  title: 'Select Option',
+  items: options,
+  onItemSelected: (value) => handleSelection(value),
+  prefixIcon: Icons.location_on,
+  enableBorder: true,
+  selectedIndex: 1,
+  titleStyle: TextStyle(fontWeight: FontWeight.bold),
+)
+```
+
+### FCPPdfViewer - Comprehensive PDF Viewer
+
+A comprehensive PDF viewer component with enhanced features for displaying PDF documents.
+
+#### Features
+- **Multiple Sources**: Local files, network URLs, or app assets
+- **Enhanced Controls**: Zoom controls, page navigation, search
+- **Customizable UI**: Custom loading and error states
+- **Interactive**: Text selection, document links, hyperlink navigation
+- **Event Callbacks**: Comprehensive event handling
+
+#### Usage
+
+```dart
+// Network PDF
+FCPPdfViewer(
+  pdfType: FCPPdfType.network,
+  pdfUrl: 'https://example.com/sample.pdf',
+  showZoomControls: true,
+  showPageNavigationControls: true,
+  showSearch: true,
+  onDocumentLoaded: () => print('PDF loaded'),
+  onPageChanged: (pageNumber) => setState(() => currentPage = pageNumber),
+)
+
+// Local PDF
+FCPPdfViewer(
+  pdfType: FCPPdfType.local,
+  pdfPath: '/path/to/local/document.pdf',
+  showZoomControls: true,
+  enableTextSelection: true,
+)
+
+// Asset PDF
+FCPPdfViewer(
+  pdfType: FCPPdfType.assets,
+  pdfPath: 'assets/documents/sample.pdf',
+  showPageNavigationControls: true,
+  backgroundColor: Colors.grey[100],
+)
+```
+
+### FCPChart - Interactive Charts
+
+A highly customizable chart component with fluent API for creating beautiful charts.
+
+#### Features
+- **Multiple Chart Types**: Area, Bar, Line, and Histogram charts
+- **Fluent API**: Easy-to-use builder pattern
+- **Fully Customizable**: Extensive configuration options
+- **Interactive**: Built-in tooltips and touch interactions
+- **Themes**: Predefined themes for quick styling
+
+#### Usage
+
+```dart
+// Area chart
+FCPChart.area.withData(
+  data: [
+    FCPChartData(x: 0, y: 10),
+    FCPChartData(x: 1, y: 25),
+    FCPChartData(x: 2, y: 15),
+    FCPChartData(x: 3, y: 40),
+  ],
+  title: 'Sales Performance',
+)
+
+// Bar chart
+FCPChart.bar.withData(
+  data: [
+    FCPChartData(x: 0, y: 20, label: 'Jan'),
+    FCPChartData(x: 1, y: 35, label: 'Feb'),
+    FCPChartData(x: 2, y: 15, label: 'Mar'),
+  ],
+  title: 'Monthly Revenue',
+)
+
+// Line chart
+FCPChart.line.withData(
+  data: lineData,
+  title: 'Stock Price Trend',
+  customConfig: FCPLineChartConfig(
+    showDots: true,
+    isCurved: true,
+    lineWidth: 3,
+  ),
+)
+
+// Histogram
+FCPChart.histogram.withData(
+  data: histogramData,
+  title: 'Age Distribution',
+)
+```
+
+### FCPBLEComponent - Bluetooth Low Energy
+
+A comprehensive BLE component for Bluetooth Low Energy operations.
+
+#### Features
+- **Device Scanning**: Scan for nearby BLE devices
+- **Connection Management**: Connect and disconnect from devices
+- **Permission Handling**: Automatic permission management
+- **Service Discovery**: Automatically discover services and characteristics
+- **Data Persistence**: Optional storage using SharedPreferences
+
+#### Usage
+
+```dart
+// Basic BLE component
+FCPBLEComponent(
+  config: BLEComponentConfig(
+    scanDuration: Duration(seconds: 10),
+    autoConnect: false,
+    deviceFilters: ['MyDevice'],
+    usePrefs: true,
+    showPermissionDialog: true,
+  ),
+  onDeviceSelected: (device) => print('Device selected: ${device.name}'),
+  onConnectionStateChanged: (state) => print('Connection state: $state'),
+)
+
+// Programmatic usage
+final bleManager = BLEManager();
+await bleManager.initialize(
+  scanDuration: Duration(seconds: 10),
+  usePrefs: true,
+);
+
+await bleManager.startScan();
+await bleManager.connectToDevice(device);
+```
+
+### FCPSwitch - Customizable Switches
+
+A comprehensive collection of customizable switch components.
+
+#### Features
+- **Multiple Types**: Toggle, Single-select, Multi-select switches
+- **Customizable**: Colors, sizes, animations, labels
+- **Predefined Configs**: iOS, Material, Compact, Large styles
+- **Group Support**: Switch groups with consistent styling
+
+#### Usage
+
+```dart
+// Basic toggle switch
+FCPSwitch(
+  value: isEnabled,
+  onChanged: (value) => setState(() => isEnabled = value),
+  label: 'Enable Feature',
+  config: SwitchConfigs.iosStyle,
+)
+
+// Single select switch
+FCPSingleSelectSwitch<String>(
+  title: 'Choose Theme',
+  options: [
+    SwitchOption(value: 'light', label: 'Light', icon: Icons.light_mode),
+    SwitchOption(value: 'dark', label: 'Dark', icon: Icons.dark_mode),
+  ],
+  selectedValue: selectedTheme,
+  onChanged: (value) => setState(() => selectedTheme = value),
+)
+
+// Multi select switch
+FCPMultiSelectSwitch<String>(
+  title: 'Select Features',
+  options: [
+    SwitchOption(value: 'notifications', label: 'Notifications'),
+    SwitchOption(value: 'location', label: 'Location'),
+  ],
+  selectedValues: selectedFeatures,
+  onChanged: (values) => setState(() => selectedFeatures = values),
+  maxSelections: 2,
+  showSelectAll: true,
+)
+```
+
+### FCPBottomNavigationBar - Modern Navigation
+
+A customizable bottom navigation bar with asset-based icons.
+
+#### Features
+- **Asset-based Icons**: Support for regular and active icon states
+- **Customizable Colors**: Background, selected, and unselected colors
+- **Theme Integration**: Automatic theme adaptation
+- **Accessibility**: Built-in accessibility support
+
+#### Usage
+
+```dart
+FCPBottomNavigationBar(
+  currentIndex: _currentIndex,
+  onItemChanged: (index) => setState(() => _currentIndex = index),
+  widgets: _pages,
+  icons: _icons,
+  activeIcons: _activeIcons,
+  labels: _labels,
+  backgroundColor: Colors.white,
+  selectedItemColor: Colors.blue,
+  unselectedItemColor: Colors.grey,
+  elevation: 8,
+)
+```
+
+### FCPDataTable - Advanced Data Tables
+
+Advanced data tables with sorting, filtering, and pagination.
+
+#### Features
+- **Sorting**: Column-based sorting
+- **Filtering**: Advanced filtering capabilities
+- **Pagination**: Built-in pagination support
+- **Customizable**: Themes, styling, and behavior
+- **Performance**: Optimized for large datasets
+
+#### Usage
+
+```dart
+FCPDataTable(
+  columns: [
+    DataColumn(label: Text('Name')),
+    DataColumn(label: Text('Age')),
+    DataColumn(label: Text('Email')),
+  ],
+  rows: data.map((item) => DataRow(
+    cells: [
+      DataCell(Text(item.name)),
+      DataCell(Text(item.age.toString())),
+      DataCell(Text(item.email)),
+    ],
+  )).toList(),
+  sortColumnIndex: 0,
+  sortAscending: true,
+  onSelectAll: (value) => handleSelectAll(value),
+  onRowsPerPageChanged: (value) => setRowsPerPage(value),
 )
 ```
 
@@ -490,11 +842,81 @@ FCPPlatformUtils.isTablet(width, height)
 final systemInfo = FCPPlatformUtils.getSystemInfo();
 ```
 
+## 🛠️ CLI Tools
+
+The package includes powerful command-line tools for managing components and permissions in your Flutter projects.
+
+### Installation
+
+```bash
+# Install globally
+dart pub global activate flutter_components_plus
+
+# Or use locally
+dart run flutter_components_plus:fcp <command>
+```
+
+### Available Commands
+
+```bash
+# Show help
+fcp help
+
+# List available components
+fcp list components
+
+# List available permissions
+fcp list permissions
+
+# Add BLE permissions
+fcp add ble_permissions
+
+# Add all permissions
+fcp add permissions
+
+# Add specific components
+fcp add component chart
+fcp add component table
+fcp add component ble
+fcp add component pdf_viewer
+
+# Remove components or permissions
+fcp remove ble_permissions
+fcp remove component chart
+```
+
+### Component Management
+
+The CLI automatically handles:
+- Adding/removing dependencies to `pubspec.yaml`
+- Managing platform permissions (Android/iOS)
+- Updating configuration files
+- Providing setup instructions
+
+### Available Components
+
+- **chart** - Interactive charts and graphs
+- **table** - Data tables with sorting and filtering
+- **button** - Customizable buttons
+- **dropdown** - Advanced dropdown components
+- **ble** - Bluetooth Low Energy device management
+- **pdf_viewer** - PDF document viewer
+- **switch** - Customizable toggle switches
+- **navigation** - Navigation components
+
 ## 🎯 Roadmap
 
-### Phase 1 (Current)
+### Phase 1 (Completed ✅)
 - ✅ Core design system (colors, text styles, constants)
-- ✅ Custom button component
+- ✅ FCPButton with fluent API
+- ✅ FCPCard unified component
+- ✅ FCPDropdownBottomSheet
+- ✅ FCPPdfViewer
+- ✅ FCPChart (Area, Bar, Line, Histogram)
+- ✅ FCPBLEComponent
+- ✅ FCPSwitch (Toggle, Single/Multi-select)
+- ✅ FCPBottomNavigationBar
+- ✅ FCPDataTable
 - ✅ Widget extensions
 - ✅ String and date extensions
 - ✅ HTTP service with interceptors
@@ -502,20 +924,21 @@ final systemInfo = FCPPlatformUtils.getSystemInfo();
 - ✅ Logging service
 - ✅ Environment configuration
 - ✅ Platform utilities
+- ✅ CLI tools for component management
 
-### Phase 2 (Next)
+### Phase 2 (In Progress 🔄)
 - 🔄 Input fields (text, password, search)
 - 🔄 Dialogs and bottom sheets
 - 🔄 Loaders and progress indicators
-- 🔄 Cards and containers
-- 🔄 Navigation components
+- 🔄 Form builders
+- 🔄 Image and media components
 
-### Phase 3 (Future)
-- 📋 Tables and data grids
+### Phase 3 (Future 📋)
 - 📋 Date and time pickers
-- 📋 Charts and graphs
-- 📋 Form builders
-- 📋 Image and media components
+- 📋 Advanced animations
+- 📋 Gesture recognizers
+- 📋 Custom painters
+- 📋 Platform-specific components
 
 ## 🤝 Contributing
 
