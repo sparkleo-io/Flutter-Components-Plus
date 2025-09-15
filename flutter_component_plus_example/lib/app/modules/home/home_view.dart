@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_component_plus_example/multi_inline_dropdown_examples.dart';
 import 'package:get/get.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
 import 'home_controller.dart';
 import '../theme/theme_controller.dart';
 import '../../../input_field_examples.dart';
 import '../../../card_examples.dart';
+import '../../../dropdown_examples.dart';
+import '../../../multi_select_examples.dart';
+import '../../../inline_dropdown_examples.dart';
+import '../../../pdf_viewer_examples.dart';
+import '../../../table_examples.dart';
+import '../../../switch_examples.dart';
+import '../../../chart_examples.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -49,13 +57,13 @@ class HomeView extends GetView<HomeController> {
               ],
             );
           } else {
-            // Mobile layout
+            // Mobile layout with bottom navigation
             return Column(
               children: [
-                // Tab bar for mobile
-                _buildMobileTabBar(context),
                 // Main content
                 Expanded(child: _buildMainContent(context)),
+                // Bottom Navigation Bar
+                _buildBottomNavigationBar(context),
               ],
             );
           }
@@ -73,9 +81,20 @@ class HomeView extends GetView<HomeController> {
         _buildSidebarItem(context, 'Buttons', Icons.smart_button, 1),
         _buildSidebarItem(context, 'Cards', Icons.credit_card, 2),
         _buildSidebarItem(context, 'Inputs', Icons.input, 3),
-        _buildSidebarItem(context, 'Navigation', Icons.navigation, 4),
-        _buildSidebarItem(context, 'Feedback', Icons.feedback, 5),
-        _buildSidebarItem(context, 'Layout', Icons.grid_on, 6),
+        _buildSidebarItem(context, 'Dropdowns', Icons.arrow_drop_down, 4),
+        _buildSidebarItem(context, 'Multi-Select', Icons.checklist, 5),
+        _buildSidebarItem(context, 'Inline Dropdowns', Icons.expand_more, 6),
+        _buildSidebarItem(
+          context,
+          'Multi-Inline Dropdowns',
+          Icons.expand_more,
+          7,
+        ),
+        _buildSidebarItem(context, 'Tables', Icons.table_chart, 8),
+        _buildSidebarItem(context, 'Switches', Icons.toggle_on, 9),
+        _buildSidebarItem(context, 'PDF Viewer', Icons.picture_as_pdf, 10),
+        _buildSidebarItem(context, 'Charts', Icons.bar_chart, 11),
+        _buildSidebarItem(context, 'Ble Services', Icons.bluetooth, 13),
       ],
     );
   }
@@ -121,66 +140,133 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  Widget _buildMobileTabBar(BuildContext context) {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        border: Border(
-          bottom: BorderSide(
-            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.1),
+  Widget _buildBottomNavigationBar(BuildContext context) {
+    return Obx(
+      () => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          border: Border(
+            top: BorderSide(
+              color: Theme.of(
+                context,
+              ).colorScheme.outline.withValues(alpha: 0.1),
+            ),
           ),
-        ),
-      ),
-      child: Obx(
-        () => Row(
-          children: [
-            _buildMobileTabItem(context, 'Overview', Icons.dashboard, 0),
-            _buildMobileTabItem(context, 'Buttons', Icons.smart_button, 1),
-            _buildMobileTabItem(context, 'Cards', Icons.credit_card, 2),
-            _buildMobileTabItem(context, 'More', Icons.more_horiz, 3),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 8,
+              offset: const Offset(0, -2),
+            ),
           ],
+        ),
+        child: SafeArea(
+          child: SizedBox(
+            height: 70,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  _buildBottomNavItem(context, 'Overview', Icons.dashboard, 0),
+                  _buildBottomNavItem(
+                    context,
+                    'Buttons',
+                    Icons.smart_button,
+                    1,
+                  ),
+                  _buildBottomNavItem(context, 'Cards', Icons.credit_card, 2),
+                  _buildBottomNavItem(context, 'Inputs', Icons.input, 3),
+                  _buildBottomNavItem(
+                    context,
+                    'Dropdowns',
+                    Icons.arrow_drop_down,
+                    4,
+                  ),
+                  _buildBottomNavItem(
+                    context,
+                    'Multi-Select',
+                    Icons.checklist,
+                    5,
+                  ),
+                  _buildBottomNavItem(context, 'Inline', Icons.expand_more, 6),
+                  _buildBottomNavItem(
+                    context,
+                    'Multi-Inline',
+                    Icons.expand_more,
+                    7,
+                  ),
+                  _buildBottomNavItem(context, 'Tables', Icons.table_chart, 8),
+                  _buildBottomNavItem(context, 'Switches', Icons.toggle_on, 9),
+                  _buildBottomNavItem(context, 'PDF', Icons.picture_as_pdf, 10),
+                  _buildBottomNavItem(context, 'Charts', Icons.bar_chart, 11),
+                  _buildBottomNavItem(
+                    context,
+                    'BLE Services',
+                    Icons.bluetooth,
+                    13,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildMobileTabItem(
+  Widget _buildBottomNavItem(
     BuildContext context,
     String title,
     IconData icon,
     int index,
   ) {
     final isSelected = controller.selectedTabIndex == index;
-    return Expanded(
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 8,
+      ), // Add spacing between items
       child: InkWell(
         onTap: () => controller.changeTab(index),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: isSelected
-                  ? FCPColorScheme.primary
-                  : Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.7),
-              size: 20,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 12,
+        borderRadius: BorderRadius.circular(FCPConstants.radiusMd),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min, // Added to prevent overflow
+            children: [
+              Icon(
+                icon,
                 color: isSelected
                     ? FCPColorScheme.primary
                     : Theme.of(
                         context,
                       ).colorScheme.onSurface.withValues(alpha: 0.7),
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                size: 22, // Slightly reduced icon size
               ),
-            ),
-          ],
+              const SizedBox(height: 2), // Reduced spacing
+              Flexible(
+                // Added Flexible to handle text overflow
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 10, // Reduced font size
+                    color: isSelected
+                        ? FCPColorScheme.primary
+                        : Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.7),
+                    fontWeight: isSelected
+                        ? FontWeight.w600
+                        : FontWeight.normal,
+                  ),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis, // Added overflow handling
+                  maxLines: 1, // Limit to single line
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -198,11 +284,24 @@ class HomeView extends GetView<HomeController> {
         case 3:
           return _buildInputsTab(context);
         case 4:
-          return _buildNavigationTab(context);
+          return _buildDropdownsTab(context);
         case 5:
-          return _buildFeedbackTab(context);
+          return _buildMultiSelectTab(context);
         case 6:
-          return _buildLayoutTab(context);
+          return _buildInlineDropdownTab(context);
+        case 7:
+          return _buildMultiInlineDropdownTab(context);
+        case 8:
+          return _buildTablesTab(context);
+        case 9:
+          return _buildSwitchesTab(context);
+        case 10:
+          return _buildPdfViewerTab(context);
+        case 11:
+          return _buildChartsTab(context);
+        case 12:
+          return _buildBleServicesTab(context);
+
         default:
           return _buildOverviewTab(context);
       }
@@ -244,43 +343,74 @@ class HomeView extends GetView<HomeController> {
   }
 
   Widget _buildStatsGrid(BuildContext context) {
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: MediaQuery.of(context).size.width > 800 ? 4 : 2,
-      crossAxisSpacing: FCPConstants.spacingMd,
-      mainAxisSpacing: FCPConstants.spacingMd,
-      childAspectRatio: 2.5,
-      children: [
-        _buildStatCard(
-          context,
-          'Components',
-          '50+',
-          Icons.widgets,
-          FCPColorScheme.primary,
-        ),
-        _buildStatCard(
-          context,
-          'Variants',
-          '200+',
-          Icons.style,
-          FCPColorScheme.secondary,
-        ),
-        _buildStatCard(
-          context,
-          'Themes',
-          '10+',
-          Icons.palette,
-          FCPColorScheme.success,
-        ),
-        _buildStatCard(
-          context,
-          'Examples',
-          '100+',
-          Icons.code,
-          FCPColorScheme.warning,
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Responsive grid configuration
+        int crossAxisCount;
+        double childAspectRatio;
+        double spacing;
+
+        if (constraints.maxWidth < 400) {
+          // Very small mobile
+          crossAxisCount = 1;
+          childAspectRatio = 3.5;
+          spacing = 8.0;
+        } else if (constraints.maxWidth < 600) {
+          // Small mobile
+          crossAxisCount = 2;
+          childAspectRatio = 2.8;
+          spacing = 12.0;
+        } else if (constraints.maxWidth < 800) {
+          // Medium mobile/tablet
+          crossAxisCount = 2;
+          childAspectRatio = 2.5;
+          spacing = 16.0;
+        } else {
+          // Desktop
+          crossAxisCount = 4;
+          childAspectRatio = 2.0;
+          spacing = 16.0;
+        }
+
+        return GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: crossAxisCount,
+          crossAxisSpacing: spacing,
+          mainAxisSpacing: spacing,
+          childAspectRatio: childAspectRatio,
+          children: [
+            _buildStatCard(
+              context,
+              'Components',
+              '10+',
+              Icons.widgets,
+              FCPColorScheme.primary,
+            ),
+            _buildStatCard(
+              context,
+              'Variants',
+              '50+',
+              Icons.style,
+              FCPColorScheme.secondary,
+            ),
+            _buildStatCard(
+              context,
+              'Themes',
+              '5+',
+              Icons.palette,
+              FCPColorScheme.success,
+            ),
+            _buildStatCard(
+              context,
+              'Examples',
+              '10+',
+              Icons.code,
+              FCPColorScheme.warning,
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -303,17 +433,22 @@ class HomeView extends GetView<HomeController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
               Icon(icon, color: color, size: 20),
               const SizedBox(width: FCPConstants.spacingSm),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.7),
+              Expanded(
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.7),
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
               ),
             ],
@@ -325,6 +460,8 @@ class HomeView extends GetView<HomeController> {
               fontWeight: FontWeight.bold,
               color: color,
             ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
         ],
       ),
@@ -353,12 +490,36 @@ class HomeView extends GetView<HomeController> {
               iconPosition: IconPosition.start,
             ),
             FCPButton.medium.secondary(
+              text: 'All Components',
+              onPressed: () => Get.toNamed('/components'),
+              icon: Icons.widgets,
+              iconPosition: IconPosition.start,
+            ),
+            FCPButton.medium.outlined(
+              text: 'Multi-Select',
+              onPressed: () => controller.changeTab(5),
+              icon: Icons.checklist,
+              iconPosition: IconPosition.start,
+            ),
+            FCPButton.medium.outlined(
+              text: 'Inline Dropdowns',
+              onPressed: () => controller.changeTab(6),
+              icon: Icons.expand_more,
+              iconPosition: IconPosition.start,
+            ),
+            FCPButton.medium.outlined(
+              text: 'Charts',
+              onPressed: () => controller.changeTab(11),
+              icon: Icons.bar_chart,
+              iconPosition: IconPosition.start,
+            ),
+            FCPButton.medium.outlined(
               text: 'Documentation',
               onPressed: () {},
               icon: Icons.description,
               iconPosition: IconPosition.start,
             ),
-            FCPButton.medium.outlined(
+            FCPButton.medium.ghost(
               text: 'GitHub',
               onPressed: () {},
               icon: Icons.code,
@@ -560,15 +721,39 @@ class HomeView extends GetView<HomeController> {
     return const FCPInputFieldExamples();
   }
 
-  Widget _buildNavigationTab(BuildContext context) {
-    return const Center(child: Text('Navigation Tab - Coming Soon'));
+  Widget _buildDropdownsTab(BuildContext context) {
+    return const FCPDropdownExamples();
   }
 
-  Widget _buildFeedbackTab(BuildContext context) {
-    return const Center(child: Text('Feedback Tab - Coming Soon'));
+  Widget _buildMultiSelectTab(BuildContext context) {
+    return const FCPMultiSelectExamples();
   }
 
-  Widget _buildLayoutTab(BuildContext context) {
-    return const Center(child: Text('Layout Tab - Coming Soon'));
+  Widget _buildInlineDropdownTab(BuildContext context) {
+    return const FCPInlineDropdownExamples();
+  }
+
+  Widget _buildMultiInlineDropdownTab(BuildContext context) {
+    return const MultiInlineDropdownExamples();
+  }
+
+  Widget _buildTablesTab(BuildContext context) {
+    return const TableExamples();
+  }
+
+  Widget _buildSwitchesTab(BuildContext context) {
+    return const SwitchExamplesPage();
+  }
+
+  Widget _buildPdfViewerTab(BuildContext context) {
+    return const PdfViewerExamples();
+  }
+
+  Widget _buildChartsTab(BuildContext context) {
+    return const FCPChartExamples();
+  }
+
+  Widget _buildBleServicesTab(BuildContext context) {
+    return const FCPChartExamples();
   }
 }

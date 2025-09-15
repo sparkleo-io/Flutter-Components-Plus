@@ -1,18 +1,28 @@
 name: flutter_components_plus
 description: "A comprehensive Flutter package providing highly customizable widgets, themes, and utilities for modern app development."
-version: 0.0.1
+version: 0.0.3
 homepage: https://github.com/your-username/flutter_components_plus
+
+executables:
+  fcp: fcp
 
 environment:
   sdk: ^3.8.1
   flutter: ">=1.17.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
-  http: ^1.1.0
-  shared_preferences: ^2.2.2
-
+  flutter: {sdk: flutter}
+  http: ^1.5.0
+  shared_preferences: ^2.3.3
+  syncfusion_flutter_pdfviewer: ^30.2.7
+  syncfusion_flutter_datagrid: ^30.2.7
+  fl_chart: ^0.69.0
+  flutter_blue_plus: ^1.32.10
+  permission_handler: ^11.3.1
+  location: ^5.0.3
+  args: ^2.4.2
+  yaml: ^3.1.2
+  path: ^1.8.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
