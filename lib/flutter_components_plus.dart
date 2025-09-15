@@ -32,9 +32,6 @@ export 'src/components/switches/switches.dart';
 // Chart Components
 export 'src/components/charts/charts_exports.dart';
 
-// BLE Components
-export 'src/components/ble/ble_exports.dart';
-
 // Utilities
 export 'src/utils/extensions/widget_extensions.dart';
 export 'src/utils/extensions/string_extensions.dart';
@@ -44,6 +41,7 @@ export 'src/utils/extensions/date_extensions.dart';
 export 'src/services/http_service.dart';
 export 'src/services/storage_service.dart';
 export 'src/services/logging_service.dart';
+export 'src/services/ble_service.dart';
 
 // Infrastructure
 export 'src/infrastructure/environment_config.dart';

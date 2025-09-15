@@ -14,7 +14,7 @@ A comprehensive Flutter package providing highly customizable widgets, themes, a
 - **FCPSwitch** - Customizable toggle switches with single/multi-select and toggle variants
 - **FCPBottomNavigationBar** - Modern bottom navigation with asset-based icons
 - **FCPDataTable** - Advanced data tables with sorting, filtering, and pagination
-- **Input Fields** - Text, password, search, and other input types (coming soon)
+- **Input Fields** - Text, password, search, and other input types 
 - **Dialogs & Sheets** - Bottom sheets, snackbars, and modal dialogs (coming soon)
 - **Loaders** - Progress indicators, shimmer effects, pull-to-refresh (coming soon)
 - **Pickers** - Date and time pickers (coming soon)

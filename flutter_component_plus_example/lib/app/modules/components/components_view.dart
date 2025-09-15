@@ -15,9 +15,6 @@ import '../../../pdf_viewer_examples.dart';
 import '../../../switch_examples.dart';
 import '../../../chart_examples.dart';
 import '../../../ble_service_examples.dart';
-import '../../../ble_permission_examples.dart';
-import '../../../ble_scan_examples.dart';
-import '../../../ble_comprehensive_examples.dart';
 
 class ComponentsView extends GetView<ComponentsController> {
   const ComponentsView({super.key});
@@ -28,7 +25,7 @@ class ComponentsView extends GetView<ComponentsController> {
     Get.lazyPut<TableExamplesController>(() => TableExamplesController());
 
     return DefaultTabController(
-      length: 16,
+      length: 13,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Flutter Components Plus - Examples'),
@@ -60,12 +57,6 @@ class ComponentsView extends GetView<ComponentsController> {
                   Tab(text: 'Charts', icon: Icon(Icons.bar_chart)),
                   Tab(text: 'Tables', icon: Icon(Icons.table_chart)),
                   Tab(text: 'BLE Service', icon: Icon(Icons.bluetooth)),
-                  Tab(text: 'BLE Permissions', icon: Icon(Icons.security)),
-                  Tab(text: 'BLE Scan Config', icon: Icon(Icons.radar)),
-                  Tab(
-                    text: 'BLE Comprehensive',
-                    icon: Icon(Icons.integration_instructions),
-                  ),
                 ],
                 indicatorColor: Colors.white,
                 labelColor: Colors.white,
@@ -88,10 +79,7 @@ class ComponentsView extends GetView<ComponentsController> {
             PdfViewerExamples(),
             FCPChartExamples(),
             TableExamples(),
-            BLEServiceExamples(),
-            BLEPermissionExamples(),
-            BLEScanExamples(),
-            BLEComprehensiveExamples(),
+            BleServiceExamples(),
           ],
         ),
       ),

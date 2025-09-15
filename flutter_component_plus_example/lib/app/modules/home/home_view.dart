@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_component_plus_example/ble_leo_example.dart';
-import 'package:flutter_component_plus_example/ble_service_examples.dart';
 import 'package:flutter_component_plus_example/multi_inline_dropdown_examples.dart';
 import 'package:get/get.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
@@ -96,7 +94,6 @@ class HomeView extends GetView<HomeController> {
         _buildSidebarItem(context, 'Switches', Icons.toggle_on, 9),
         _buildSidebarItem(context, 'PDF Viewer', Icons.picture_as_pdf, 10),
         _buildSidebarItem(context, 'Charts', Icons.bar_chart, 11),
-        _buildSidebarItem(context, 'BLE', Icons.bluetooth, 12),
         _buildSidebarItem(context, 'Navigation', Icons.navigation, 13),
         _buildSidebarItem(context, 'Feedback', Icons.feedback, 14),
         _buildSidebarItem(context, 'Layout', Icons.grid_on, 15),
@@ -206,7 +203,6 @@ class HomeView extends GetView<HomeController> {
                   _buildBottomNavItem(context, 'Switches', Icons.toggle_on, 9),
                   _buildBottomNavItem(context, 'PDF', Icons.picture_as_pdf, 10),
                   _buildBottomNavItem(context, 'Charts', Icons.bar_chart, 11),
-                  _buildBottomNavItem(context, 'BLE', Icons.bluetooth, 12),
                   _buildBottomNavItem(
                     context,
                     'Navigation',
@@ -315,15 +311,11 @@ class HomeView extends GetView<HomeController> {
         case 11:
           return _buildChartsTab(context);
         case 12:
-          return _buildBleTab(context);
-        case 13:
           return _buildNavigationTab(context);
-        case 14:
+        case 13:
           return _buildFeedbackTab(context);
         case 15:
           return _buildLayoutTab(context);
-        case 16:
-          return _buildLeoTab(context);
         default:
           return _buildOverviewTab(context);
       }
@@ -775,10 +767,6 @@ class HomeView extends GetView<HomeController> {
     return const FCPChartExamples();
   }
 
-  Widget _buildBleTab(BuildContext context) {
-    return const BLEServiceExamples();
-  }
-
   Widget _buildNavigationTab(BuildContext context) {
     return const Center(child: Text('Navigation Tab - Coming Soon'));
   }
@@ -789,9 +777,5 @@ class HomeView extends GetView<HomeController> {
 
   Widget _buildLayoutTab(BuildContext context) {
     return const Center(child: Text('Layout Tab - Coming Soon'));
-  }
-
-  Widget _buildLeoTab(BuildContext context) {
-    return const BleLeoExample();
   }
 }

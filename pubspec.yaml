@@ -19,6 +19,7 @@ dependencies:
   fl_chart: ^0.69.0
   flutter_blue_plus: ^1.32.10
   permission_handler: ^11.3.1
+  location: ^5.0.3
   args: ^2.4.2
   yaml: ^3.1.2
   path: ^1.8.3
