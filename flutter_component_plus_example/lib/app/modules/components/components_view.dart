@@ -25,7 +25,7 @@ class ComponentsView extends GetView<ComponentsController> {
     Get.lazyPut<TableExamplesController>(() => TableExamplesController());
 
     return DefaultTabController(
-      length: 13,
+      length: 12,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Flutter Components Plus - Examples'),
@@ -48,7 +48,7 @@ class ComponentsView extends GetView<ComponentsController> {
                     icon: Icon(Icons.expand_more),
                   ), // Shortened
                   Tab(text: 'Multi Inline', icon: Icon(Icons.checklist_rtl)),
-                  Tab(text: 'Navigation', icon: Icon(Icons.navigation)),
+
                   Tab(text: 'Switches', icon: Icon(Icons.toggle_on)),
                   Tab(
                     text: 'PDF',
@@ -74,7 +74,6 @@ class ComponentsView extends GetView<ComponentsController> {
             FCPMultiSelectExamples(),
             FCPInlineDropdownExamples(),
             MultiInlineDropdownExamples(),
-            BottomNavigationExamples(),
             SwitchExamplesPage(),
             PdfViewerExamples(),
             FCPChartExamples(),

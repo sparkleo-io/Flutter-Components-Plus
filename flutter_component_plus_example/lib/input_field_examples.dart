@@ -43,7 +43,6 @@ class _FCPInputFieldExamplesState extends State<FCPInputFieldExamples> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('FCPInputField Examples')),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(

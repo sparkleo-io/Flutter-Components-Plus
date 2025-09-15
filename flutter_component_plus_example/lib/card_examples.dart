@@ -8,7 +8,6 @@ class CardExamples extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Custom Cards Examples')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

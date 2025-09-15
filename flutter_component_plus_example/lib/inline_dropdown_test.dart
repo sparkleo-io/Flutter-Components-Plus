@@ -16,7 +16,6 @@ class _InlineDropdownTestState extends State<InlineDropdownTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Inline Dropdown Test')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

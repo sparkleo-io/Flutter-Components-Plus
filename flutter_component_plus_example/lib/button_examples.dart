@@ -8,7 +8,6 @@ class FCPButtonExamples extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('FCPButton Examples')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

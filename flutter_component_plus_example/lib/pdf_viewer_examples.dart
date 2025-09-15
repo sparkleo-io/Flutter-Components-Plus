@@ -32,11 +32,6 @@ class _PdfViewerExamplesState extends State<PdfViewerExamples> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('PDF Viewer Examples'),
-        backgroundColor: FCPColorScheme.primary,
-        foregroundColor: Colors.white,
-      ),
       body: Column(
         children: [
           // Controls
@@ -332,11 +327,6 @@ class SimplePdfViewerExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Simple PDF Viewer'),
-        backgroundColor: FCPColorScheme.primary,
-        foregroundColor: Colors.white,
-      ),
       body: const FCPPdfViewer(
         pdfType: FCPPdfType.network,
         pdfUrl:
@@ -377,93 +367,111 @@ class _CustomPdfViewerExampleState extends State<CustomPdfViewerExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Custom PDF Viewer'),
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              _controller.searchText('sample');
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.zoom_in),
-            onPressed: () {
-              _controller.zoomLevel = _controller.zoomLevel + 0.25;
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.zoom_out),
-            onPressed: () {
-              _controller.zoomLevel = _controller.zoomLevel - 0.25;
-            },
-          ),
-        ],
-      ),
       body: Column(
         children: [
-          // Custom page indicator
+          // Custom header with search functionality
           Container(
             padding: const EdgeInsets.all(16),
-            color: Colors.deepPurple.shade50,
+            color: Colors.deepPurple,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Page $_currentPage of $_totalPages',
-                  style: const TextStyle(
+                const Text(
+                  'Custom PDF Viewer',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
                   ),
                 ),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.first_page),
-                      onPressed: () => _controller.jumpToPage(1),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.chevron_left),
-                      onPressed: () => _controller.previousPage(),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.chevron_right),
-                      onPressed: () => _controller.nextPage(),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.last_page),
-                      onPressed: () => _controller.jumpToPage(_totalPages),
-                    ),
-                  ],
+                const Spacer(),
+                IconButton(
+                  icon: const Icon(Icons.search, color: Colors.white),
+                  onPressed: () {
+                    _controller.searchText('sample');
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.zoom_in, color: Colors.white),
+                  onPressed: () {
+                    _controller.zoomLevel = _controller.zoomLevel + 0.25;
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.zoom_out, color: Colors.white),
+                  onPressed: () {
+                    _controller.zoomLevel = _controller.zoomLevel - 0.25;
+                  },
                 ),
               ],
             ),
           ),
-          // PDF Viewer
           Expanded(
-            child: FCPPdfViewer(
-              pdfType: FCPPdfType.network,
-              pdfUrl: 'https://heyzine.com/flip-book/94dbfed300.html',
-              // pdfUrl:
-              // 'https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf',
-              controller: _controller,
-              showZoomControls: false,
-              showPageNavigationControls: false,
-              showSearch: false,
-              backgroundColor: Colors.white,
-              onDocumentLoaded: () {
-                // Get total pages when document is loaded
-                setState(() {
-                  _totalPages = _controller.pageCount;
-                });
-              },
-              onPageChanged: (pageNumber) {
-                setState(() {
-                  _currentPage = pageNumber;
-                });
-              },
+            child: Column(
+              children: [
+                // Custom page indicator
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  color: Colors.deepPurple.shade50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Page $_currentPage of $_totalPages',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.first_page),
+                            onPressed: () => _controller.jumpToPage(1),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.chevron_left),
+                            onPressed: () => _controller.previousPage(),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.chevron_right),
+                            onPressed: () => _controller.nextPage(),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.last_page),
+                            onPressed: () =>
+                                _controller.jumpToPage(_totalPages),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                // PDF Viewer
+                Expanded(
+                  child: FCPPdfViewer(
+                    pdfType: FCPPdfType.network,
+                    pdfUrl: 'https://heyzine.com/flip-book/94dbfed300.html',
+                    // pdfUrl:
+                    // 'https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf',
+                    controller: _controller,
+                    showZoomControls: false,
+                    showPageNavigationControls: false,
+                    showSearch: false,
+                    backgroundColor: Colors.white,
+                    onDocumentLoaded: () {
+                      // Get total pages when document is loaded
+                      setState(() {
+                        _totalPages = _controller.pageCount;
+                      });
+                    },
+                    onPageChanged: (pageNumber) {
+                      setState(() {
+                        _currentPage = pageNumber;
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ],
