@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_component_plus_example/ble_service_examples.dart';
 import 'package:flutter_component_plus_example/multi_inline_dropdown_examples.dart';
 import 'package:get/get.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
@@ -94,7 +95,7 @@ class HomeView extends GetView<HomeController> {
         _buildSidebarItem(context, 'Switches', Icons.toggle_on, 9),
         _buildSidebarItem(context, 'PDF Viewer', Icons.picture_as_pdf, 10),
         _buildSidebarItem(context, 'Charts', Icons.bar_chart, 11),
-        _buildSidebarItem(context, 'Ble Services', Icons.bluetooth, 13),
+        _buildSidebarItem(context, 'Ble Services', Icons.bluetooth, 12),
       ],
     );
   }
@@ -204,7 +205,7 @@ class HomeView extends GetView<HomeController> {
                     context,
                     'BLE Services',
                     Icons.bluetooth,
-                    13,
+                    12,
                   ),
                 ],
               ),
@@ -754,6 +755,6 @@ class HomeView extends GetView<HomeController> {
   }
 
   Widget _buildBleServicesTab(BuildContext context) {
-    return const FCPChartExamples();
+    return const BleServiceExamples();
   }
 }
