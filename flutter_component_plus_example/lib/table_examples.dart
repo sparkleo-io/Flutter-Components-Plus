@@ -295,6 +295,7 @@ class TableExamples extends StatelessWidget {
           onSearch: controller.onSearch,
           onSort: controller.onSort,
           onReload: controller.onReload,
+          expandableSearch: false,
           // Let the package handle responsiveness automatically
           columnWidthMode: ColumnWidthMode.fitByColumnName,
           // Mobile-optimized settings

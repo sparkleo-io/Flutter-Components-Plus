@@ -25,6 +25,7 @@ class FCPDataTable<T> extends StatelessWidget {
   final List<Widget>? actions;
   final double headerRowHeight;
   final bool search;
+  final bool expandableSearch;
   final void Function(String?)? onSearch;
   final void Function()? onReload;
   final void Function()? onAddItem;
@@ -122,6 +123,7 @@ class FCPDataTable<T> extends StatelessWidget {
     required this.totalRecords,
     this.actions,
     this.search = true,
+    this.expandableSearch = true,
     this.onSearch,
     this.onAddItem,
     this.onReload,
@@ -240,6 +242,7 @@ class FCPDataTable<T> extends StatelessWidget {
             title: title,
             actions: actions,
             search: search,
+            expandableSearch: expandableSearch,
             onSearch: (query) {
               dataSource.updateSearch(query ?? '');
               onSearch?.call(query);
