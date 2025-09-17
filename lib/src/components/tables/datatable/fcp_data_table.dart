@@ -27,6 +27,7 @@ class FCPDataTable<T> extends StatelessWidget {
   final bool search;
   final bool expandableSearch;
   final void Function(String?)? onSearch;
+  final Widget? customHeader;
   final void Function()? onReload;
   final void Function()? onAddItem;
   final bool isBusy;
@@ -125,6 +126,7 @@ class FCPDataTable<T> extends StatelessWidget {
     this.search = true,
     this.expandableSearch = true,
     this.onSearch,
+    this.customHeader,
     this.onAddItem,
     this.onReload,
     this.rowHeight = double.nan,
@@ -237,20 +239,21 @@ class FCPDataTable<T> extends StatelessWidget {
       ),
       child: Column(
         children: [
-          TableHeader(
-            suffix: suffix,
-            title: title,
-            actions: actions,
-            search: search,
-            expandableSearch: expandableSearch,
-            onSearch: (query) {
-              dataSource.updateSearch(query ?? '');
-              onSearch?.call(query);
-            },
-            onAddItem: onAddItem,
-            onReload: onReload,
-            themeConfig: themeConfig,
-          ),
+          customHeader ??
+              TableHeader(
+                suffix: suffix,
+                title: title,
+                actions: actions,
+                search: search,
+                expandableSearch: expandableSearch,
+                onSearch: (query) {
+                  dataSource.updateSearch(query ?? '');
+                  onSearch?.call(query);
+                },
+                onAddItem: onAddItem,
+                onReload: onReload,
+                themeConfig: themeConfig,
+              ),
           FCPProgressIndicator(isBusy),
           if (!isBusy) 4.spaceY,
           Expanded(

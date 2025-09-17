@@ -202,11 +202,7 @@ class _TableHeaderState extends State<TableHeader> {
                         ),
                 const Spacer(),
                 if (isSelected && widget.actions != null) ...widget.actions!,
-                // const SizedBox(width: 12),
-                // FCPButton.small.outlined(
-                //   onPressed: widget.onAddItem,
-                //   icon: Icons.add,
-                // ),
+
                 const SizedBox(width: 12),
                 FCPButton.small.primary(
                   onPressed: widget.onReload,

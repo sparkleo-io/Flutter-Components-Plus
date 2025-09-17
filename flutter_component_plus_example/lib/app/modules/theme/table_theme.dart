@@ -13,29 +13,27 @@ class AppTableThemes {
   static const TableThemeConfig light = TableThemeConfig(
     useAppTheme: true,
     useCustomColors: true,
-    headerBackgroundColor: Colors.white,
-    rowAlternateColor: Color(0xFFF7F7F7),
+    headerBackgroundColor: Colors.transparent,
+    rowAlternateColor: Colors.black12,
     borderColor: Color(0xFFE0E0E0),
     textColor: Colors.black87,
     iconColor: Colors.black54,
     borderRadius: 8,
     borderWidth: 1,
-    headerHeight: 56,
-    rowHeight: 48,
     headerTextStyle: TextStyle(
-      color: Colors.black87,
+      color: Colors.black,
       fontWeight: FontWeight.bold,
     ),
-    rowTextStyle: TextStyle(color: Colors.black87),
-    paginationTextStyle: TextStyle(color: Colors.black87),
+    rowTextStyle: TextStyle(color: Colors.black),
+    paginationTextStyle: TextStyle(color: Colors.black),
     tableBackgroundColor: Colors.white,
   );
 
   /// Dark custom theme tuned for this example app
   static const TableThemeConfig dark = TableThemeConfig(
-    useAppTheme: true,
+    useAppTheme: false,
     useCustomColors: true,
-    headerBackgroundColor: Color(0xFF1F2937),
+    headerBackgroundColor: Colors.transparent,
     rowAlternateColor: Color(0xFF111827),
     borderColor: Color(0xFF374151),
     textColor: Color(0xFFE5E7EB),
