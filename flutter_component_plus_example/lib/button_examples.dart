@@ -2,20 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
 
 /// Comprehensive examples of FCPButton usage with the fluent API
-class FCPButtonExamples extends StatelessWidget {
+class FCPButtonExamples extends StatefulWidget {
   const FCPButtonExamples({super.key});
 
   @override
+  State<FCPButtonExamples> createState() => _FCPButtonExamplesState();
+}
+
+class _FCPButtonExamplesState extends State<FCPButtonExamples> {
+  bool isLoading = false;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('FCPButton Examples')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildSection('Primary Buttons', [
-              FCPButton.small.primary(text: 'Small Primary', onPressed: () {}),
+              FCPButton.small.primary(
+                text: 'Small Primary',
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await Future.delayed(const Duration(seconds: 2));
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+                isLoading: isLoading,
+              ),
               const SizedBox(height: 8),
               FCPButton.medium.primary(
                 text: 'Medium Primary',

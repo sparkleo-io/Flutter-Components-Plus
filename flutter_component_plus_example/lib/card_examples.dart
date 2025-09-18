@@ -8,7 +8,6 @@ class CardExamples extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Custom Cards Examples')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -37,9 +36,9 @@ class CardExamples extends StatelessWidget {
             _buildSectionTitle('Action Cards'),
             _buildActionCardExamples(),
 
-            const SizedBox(height: 24),
-            _buildSectionTitle('Advanced Examples'),
-            _buildAdvancedCardExamples(),
+            // const SizedBox(height: 24),
+            // _buildSectionTitle('Advanced Examples'),
+            // _buildAdvancedCardExamples(),
           ],
         ),
       ),
@@ -253,21 +252,21 @@ class CardExamples extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 12),
-        FCPCard.gradient(
-          gradientType: GradientType.radial,
-          gradientColors: [Colors.purple.shade400, Colors.pink.shade400],
-          child: const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Custom Radial Gradient',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
+        // const SizedBox(height: 12),
+        // FCPCard.gradient(
+        //   gradientType: GradientType.radial,
+        //   gradientColors: [Colors.purple.shade400, Colors.pink.shade400],
+        //   child: const Padding(
+        //     padding: EdgeInsets.all(16.0),
+        //     child: Text(
+        //       'Custom Radial Gradient',
+        //       style: TextStyle(
+        //         color: Colors.white,
+        //         fontWeight: FontWeight.bold,
+        //       ),
+        //     ),
+        //   ),
+        // ),
         const SizedBox(height: 12),
         FCPCard.gradient(
           gradientType: GradientType.linear,
@@ -302,25 +301,25 @@ class CardExamples extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 12),
-        FCPCard.gradient(
-          gradientType: GradientType.sweep,
-          gradientColors: [
-            Colors.pink.shade300,
-            Colors.purple.shade300,
-            Colors.blue.shade300,
-          ],
-          child: const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Sweep Gradient',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
+        // const SizedBox(height: 12),
+        // FCPCard.gradient(
+        //   gradientType: GradientType.sweep,
+        //   gradientColors: [
+        //     Colors.pink.shade300,
+        //     Colors.purple.shade300,
+        //     Colors.blue.shade300,
+        //   ],
+        //   child: const Padding(
+        //     padding: EdgeInsets.all(16.0),
+        //     child: Text(
+        //       'Sweep Gradient',
+        //       style: TextStyle(
+        //         color: Colors.white,
+        //         fontWeight: FontWeight.bold,
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

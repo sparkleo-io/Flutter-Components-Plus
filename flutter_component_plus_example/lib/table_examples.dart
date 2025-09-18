@@ -19,7 +19,7 @@ class TableExamples extends StatelessWidget {
           _buildThemeSelector(context, controller),
           const SizedBox(height: 24),
           _buildSection('Basic Data Table', [
-            _buildBasicTable(controller),
+            _buildBasicTable(context, controller),
           ], controller),
           // const SizedBox(height: 32),
           // _buildSection('Advanced Data Table with Actions', [
@@ -274,7 +274,10 @@ class TableExamples extends StatelessWidget {
     );
   }
 
-  Widget _buildBasicTable(TableExamplesController controller) {
+  Widget _buildBasicTable(
+    BuildContext context,
+    TableExamplesController controller,
+  ) {
     return Obx(
       () => Container(
         height: 600, // Fixed height for consistency
@@ -283,7 +286,6 @@ class TableExamples extends StatelessWidget {
           key: ValueKey('basic_table_${controller.selectedTheme.hashCode}'),
           dataList: controller.filteredData,
           columns: controller.columns,
-          title: 'Employee Directory',
           page: controller.currentPage,
           totalRecords: controller.filteredTotalRecords,
           rowsPerPage: controller.rowsPerPage,
@@ -295,6 +297,8 @@ class TableExamples extends StatelessWidget {
           onSearch: controller.onSearch,
           onSort: controller.onSort,
           onReload: controller.onReload,
+          title: 'Employee Directory', // Required parameter
+          // customHeader: _buildCustomHeader(controller, context),
           // Let the package handle responsiveness automatically
           columnWidthMode: ColumnWidthMode.fitByColumnName,
           // Mobile-optimized settings
@@ -302,6 +306,94 @@ class TableExamples extends StatelessWidget {
           // defaultColumnWidth:
           //     double.nan, // Let the package determine optimal width
         ),
+      ),
+    );
+  }
+
+  Widget _buildCustomHeader(
+    TableExamplesController controller,
+    BuildContext context,
+  ) {
+    final theme = Theme.of(context);
+    final themeConfig = controller.selectedTheme;
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: themeConfig.getTableBackgroundColor(theme),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(8),
+          topRight: Radius.circular(8),
+        ),
+        border: Border(
+          bottom: BorderSide(
+            color: themeConfig.borderColor ?? Colors.grey.shade300,
+            width: 1,
+          ),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header title with icon
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade100,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  Icons.people_outline,
+                  color: Colors.blue.shade700,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Employee Directory',
+                      style: themeConfig.useAppTheme
+                          ? (theme.textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ) ??
+                                const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ))
+                          : const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '${controller.filteredTotalRecords} employees',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          // Search and actions row
+          Container(
+            width: 250,
+            child: FCPInputFields.search(
+              onChanged: (query) {
+                controller.onSearch(query);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

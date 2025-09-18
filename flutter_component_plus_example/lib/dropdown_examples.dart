@@ -54,10 +54,6 @@ class _FCPDropdownExamplesState extends State<FCPDropdownExamples> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dropdown Bottom Sheet Examples'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

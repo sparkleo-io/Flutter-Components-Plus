@@ -31,11 +31,6 @@ class _SwitchExamplesPageState extends State<SwitchExamplesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Switch Examples'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

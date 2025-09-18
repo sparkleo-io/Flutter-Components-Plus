@@ -39,6 +39,7 @@ class FCPButton extends StatefulWidget {
     this.backgroundColor,
     this.foregroundColor,
     this.borderColor,
+    this.borderWidth = 0,
     this.textStyle,
     this.padding,
     this.margin,
@@ -77,6 +78,7 @@ class FCPButton extends StatefulWidget {
   final Color? backgroundColor;
   final Color? foregroundColor;
   final Color? borderColor;
+  final double borderWidth;
   final TextStyle? textStyle;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
@@ -110,6 +112,7 @@ class FCPButtonBuilder {
     Color? backgroundColor,
     Color? foregroundColor,
     Color? borderColor,
+    double borderWidth = 0,
     TextStyle? textStyle,
     EdgeInsetsGeometry? padding,
     EdgeInsetsGeometry? margin,
@@ -135,6 +138,7 @@ class FCPButtonBuilder {
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
       borderColor: borderColor,
+      borderWidth: borderWidth,
       textStyle: textStyle,
       padding: padding,
       margin: margin,
@@ -160,6 +164,7 @@ class FCPButtonBuilder {
     Color? backgroundColor,
     Color? foregroundColor,
     Color? borderColor,
+    double borderWidth = 0,
     TextStyle? textStyle,
     EdgeInsetsGeometry? padding,
     EdgeInsetsGeometry? margin,
@@ -185,6 +190,7 @@ class FCPButtonBuilder {
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
       borderColor: borderColor,
+      borderWidth: borderWidth,
       textStyle: textStyle,
       padding: padding,
       margin: margin,
@@ -210,6 +216,7 @@ class FCPButtonBuilder {
     Color? backgroundColor,
     Color? foregroundColor,
     Color? borderColor,
+    double borderWidth = 0,
     TextStyle? textStyle,
     EdgeInsetsGeometry? padding,
     EdgeInsetsGeometry? margin,
@@ -235,6 +242,7 @@ class FCPButtonBuilder {
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
       borderColor: borderColor,
+      borderWidth: borderWidth,
       textStyle: textStyle,
       padding: padding,
       margin: margin,
@@ -260,6 +268,7 @@ class FCPButtonBuilder {
     Color? backgroundColor,
     Color? foregroundColor,
     Color? borderColor,
+    double borderWidth = 0,
     TextStyle? textStyle,
     EdgeInsetsGeometry? padding,
     EdgeInsetsGeometry? margin,
@@ -285,6 +294,7 @@ class FCPButtonBuilder {
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
       borderColor: borderColor,
+      borderWidth: borderWidth,
       textStyle: textStyle,
       padding: padding,
       margin: margin,
@@ -310,6 +320,7 @@ class FCPButtonBuilder {
     Color? backgroundColor,
     Color? foregroundColor,
     Color? borderColor,
+    double borderWidth = 0,
     TextStyle? textStyle,
     EdgeInsetsGeometry? padding,
     EdgeInsetsGeometry? margin,
@@ -335,6 +346,7 @@ class FCPButtonBuilder {
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
       borderColor: borderColor,
+      borderWidth: borderWidth,
       textStyle: textStyle,
       padding: padding,
       margin: margin,
@@ -358,6 +370,7 @@ class FCPButtonBuilder {
     Color? backgroundColor,
     Color? foregroundColor,
     Color? borderColor,
+    double borderWidth = 0,
     EdgeInsetsGeometry? padding,
     EdgeInsetsGeometry? margin,
     double? elevation,
@@ -381,6 +394,7 @@ class FCPButtonBuilder {
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
       borderColor: borderColor,
+      borderWidth: borderWidth,
       padding: padding,
       margin: margin,
       elevation: elevation,
@@ -403,6 +417,7 @@ class FCPButtonBuilder {
     Color? backgroundColor,
     Color? foregroundColor,
     Color? borderColor,
+    double borderWidth = 0,
     TextStyle? textStyle,
     EdgeInsetsGeometry? padding,
     EdgeInsetsGeometry? margin,
@@ -428,6 +443,7 @@ class FCPButtonBuilder {
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
       borderColor: borderColor,
+      borderWidth: borderWidth,
       textStyle: textStyle,
       padding: padding,
       margin: margin,
@@ -453,6 +469,7 @@ class FCPButtonBuilder {
     Color? backgroundColor,
     Color? foregroundColor,
     Color? borderColor,
+    double borderWidth = 0,
     TextStyle? textStyle,
     EdgeInsetsGeometry? padding,
     EdgeInsetsGeometry? margin,
@@ -478,6 +495,7 @@ class FCPButtonBuilder {
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
       borderColor: borderColor,
+      borderWidth: borderWidth,
       textStyle: textStyle,
       padding: padding,
       margin: margin,
@@ -503,6 +521,7 @@ class FCPButtonBuilder {
     Color? backgroundColor,
     Color? foregroundColor,
     Color? borderColor,
+    double borderWidth = 0,
     TextStyle? textStyle,
     EdgeInsetsGeometry? padding,
     EdgeInsetsGeometry? margin,
@@ -528,6 +547,7 @@ class FCPButtonBuilder {
       backgroundColor: backgroundColor,
       foregroundColor: foregroundColor,
       borderColor: borderColor,
+      borderWidth: borderWidth,
       textStyle: textStyle,
       padding: padding,
       margin: margin,
@@ -601,8 +621,6 @@ class _FCPButtonState extends State<FCPButton>
       case FCPButtonType.elevated:
       case FCPButtonType.contained:
         return _buildStandardButton(buttonSize, isDisabled);
-      default:
-        return _buildStandardButton(buttonSize, isDisabled);
     }
   }
 
@@ -672,7 +690,6 @@ class _FCPButtonState extends State<FCPButton>
   }
 
   Widget _buildIconButton(ButtonSize buttonSize, bool isDisabled) {
-    final iconSize = _getIconSize();
     final buttonSizeValue = widget.width ?? widget.height ?? buttonSize.height;
 
     return Container(
@@ -820,102 +837,6 @@ class _FCPButtonState extends State<FCPButton>
     widget.onPressed?.call();
   }
 
-  ButtonStyle _getButtonStyle() {
-    final isDisabled = widget.isDisabled || widget.isLoading;
-    final opacity = isDisabled ? 0.5 : 1.0;
-
-    switch (widget.variant) {
-      case FCPButtonVariant.primary:
-        return ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(
-            (widget.backgroundColor ?? FCPColorScheme.primary).withOpacity(
-              opacity,
-            ),
-          ),
-          foregroundColor: WidgetStateProperty.all(
-            widget.foregroundColor ?? Colors.white,
-          ),
-          side: WidgetStateProperty.all(BorderSide.none),
-        );
-
-      case FCPButtonVariant.secondary:
-        return ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(
-            (widget.backgroundColor ?? FCPColorScheme.secondary).withOpacity(
-              opacity,
-            ),
-          ),
-          foregroundColor: WidgetStateProperty.all(
-            widget.foregroundColor ?? Colors.white,
-          ),
-          side: WidgetStateProperty.all(BorderSide.none),
-        );
-
-      case FCPButtonVariant.outline:
-        return ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(Colors.transparent),
-          foregroundColor: WidgetStateProperty.all(
-            widget.foregroundColor ?? FCPColorScheme.primary,
-          ),
-          side: WidgetStateProperty.all(
-            BorderSide(
-              color: (widget.borderColor ?? FCPColorScheme.primary).withOpacity(
-                opacity,
-              ),
-              width: 1,
-            ),
-          ),
-        );
-
-      case FCPButtonVariant.ghost:
-        return ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(Colors.transparent),
-          foregroundColor: WidgetStateProperty.all(
-            widget.foregroundColor ?? FCPColorScheme.primary,
-          ),
-          side: WidgetStateProperty.all(BorderSide.none),
-        );
-
-      case FCPButtonVariant.danger:
-        return ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(
-            (widget.backgroundColor ?? FCPColorScheme.error).withOpacity(
-              opacity,
-            ),
-          ),
-          foregroundColor: WidgetStateProperty.all(
-            widget.foregroundColor ?? Colors.white,
-          ),
-          side: WidgetStateProperty.all(BorderSide.none),
-        );
-
-      case FCPButtonVariant.floating:
-        return ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(
-            (widget.backgroundColor ?? FCPColorScheme.primary).withOpacity(
-              opacity,
-            ),
-          ),
-          foregroundColor: WidgetStateProperty.all(
-            widget.foregroundColor ?? Colors.white,
-          ),
-          side: WidgetStateProperty.all(BorderSide.none),
-        );
-      default:
-        return ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(
-            (widget.backgroundColor ?? FCPColorScheme.primary).withOpacity(
-              opacity,
-            ),
-          ),
-          foregroundColor: WidgetStateProperty.all(
-            widget.foregroundColor ?? Colors.white,
-          ),
-          side: WidgetStateProperty.all(BorderSide.none),
-        );
-    }
-  }
-
   ButtonSize _getButtonSize() {
     switch (widget.size) {
       case FCPButtonSize.small:
@@ -946,13 +867,6 @@ class _FCPButtonState extends State<FCPButton>
           borderRadius: FCPConstants.radiusXl,
           fontSize: FCPConstants.fontSizeXl,
         );
-      default:
-        return ButtonSize(
-          height: FCPConstants.buttonHeightMd,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          borderRadius: FCPConstants.radiusMd,
-          fontSize: FCPConstants.fontSizeMd,
-        );
     }
   }
 
@@ -973,8 +887,6 @@ class _FCPButtonState extends State<FCPButton>
       case FCPButtonVariant.outline:
       case FCPButtonVariant.ghost:
         return FCPColorScheme.primary;
-      default:
-        return Colors.white;
     }
   }
 
@@ -988,8 +900,6 @@ class _FCPButtonState extends State<FCPButton>
         return 20;
       case FCPButtonSize.extraLarge:
         return 22;
-      default:
-        return 18;
     }
   }
 
@@ -1008,16 +918,14 @@ class _FCPButtonState extends State<FCPButton>
         );
       case FCPButtonVariant.outline:
       case FCPButtonVariant.ghost:
-        return Colors.transparent;
+        return (widget.backgroundColor ?? Colors.transparent).withOpacity(
+          opacity,
+        );
       case FCPButtonVariant.danger:
         return (widget.backgroundColor ?? FCPColorScheme.error).withOpacity(
           opacity,
         );
       case FCPButtonVariant.floating:
-        return (widget.backgroundColor ?? FCPColorScheme.primary).withOpacity(
-          opacity,
-        );
-      default:
         return (widget.backgroundColor ?? FCPColorScheme.primary).withOpacity(
           opacity,
         );
@@ -1030,20 +938,29 @@ class _FCPButtonState extends State<FCPButton>
 
     switch (widget.variant) {
       case FCPButtonVariant.outline:
+        // Outlined buttons should always show a border, use default width of 1 if borderWidth is 0
+        final borderWidth = widget.borderWidth > 0 ? widget.borderWidth : 1.0;
         return Border.all(
           color: (widget.borderColor ?? FCPColorScheme.primary).withOpacity(
             opacity,
           ),
-          width: 1,
+          width: borderWidth,
         );
       case FCPButtonVariant.primary:
       case FCPButtonVariant.secondary:
       case FCPButtonVariant.ghost:
       case FCPButtonVariant.danger:
       case FCPButtonVariant.floating:
-        return null;
-      default:
-        return null;
+        // Other variants only show border if borderWidth is greater than 0
+        if (widget.borderWidth <= 0) {
+          return null;
+        }
+        return Border.all(
+          color: (widget.borderColor ?? FCPColorScheme.primary).withOpacity(
+            opacity,
+          ),
+          width: widget.borderWidth,
+        );
     }
   }
 }

@@ -39,11 +39,6 @@ class _BottomNavigationExamplesState extends State<BottomNavigationExamples> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Bottom Navigation Examples'),
-        backgroundColor: FCPColorScheme.primary,
-        foregroundColor: Colors.white,
-      ),
       body: Column(
         children: [
           Expanded(child: _pages[_currentIndex]),
@@ -105,11 +100,6 @@ class _CustomBottomNavigationExamplesState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Custom Bottom Navigation'),
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
-      ),
       body: Column(
         children: [
           Expanded(child: _pages[_currentIndex]),

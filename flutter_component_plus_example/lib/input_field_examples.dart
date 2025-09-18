@@ -43,7 +43,6 @@ class _FCPInputFieldExamplesState extends State<FCPInputFieldExamples> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('FCPInputField Examples')),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -96,6 +95,7 @@ class _FCPInputFieldExamplesState extends State<FCPInputFieldExamples> {
                   label: 'Search Products',
                   hint: 'Search for products...',
                   controller: _searchController,
+
                   onSearchPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -121,6 +121,7 @@ class _FCPInputFieldExamplesState extends State<FCPInputFieldExamples> {
                   label: 'Select Your Country',
                   hint: 'Choose from the list of countries',
                   initialValue: _selectedCountry,
+
                   onChanged: (country) {
                     setState(() {
                       _selectedCountry = country;
@@ -199,6 +200,7 @@ class _FCPInputFieldExamplesState extends State<FCPInputFieldExamples> {
                 FCPInputField(
                   label: 'Custom Input Field',
                   hint: 'This is a custom input field',
+
                   prefixIcon: const Icon(Icons.edit_outlined),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.clear),
@@ -338,67 +340,4 @@ class _FCPInputFieldExamplesState extends State<FCPInputFieldExamples> {
       ),
     );
   }
-}
-
-/// Usage examples in code comments
-class FCPInputFieldUsageExamples {
-  // Basic usage examples:
-
-  // Email input field
-  // FCPInputFields.email(
-  //   controller: emailController,
-  //   onChanged: (value) => print('Email: $value'),
-  // )
-
-  // Password input field
-  // FCPInputFields.password(
-  //   controller: passwordController,
-  //   validator: FCPValidators.password,
-  // )
-
-  // Text input field with custom styling
-  // FCPInputFields.text(
-  //   label: 'Custom Label',
-  //   hint: 'Custom hint text',
-  //   prefixIcon: Icon(Icons.person),
-  //   maxLines: 3,
-  //   maxLength: 100,
-  // )
-
-  // Phone number input field
-  // FCPInputFields.phone(
-  //   controller: phoneController,
-  //   validator: FCPValidators.phoneNumber,
-  // )
-
-  // Search field with callback
-  // FCPInputFields.search(
-  //   controller: searchController,
-  //   onSearchPressed: () => performSearch(),
-  // )
-
-  // Country picker
-  // FCPInputFields.countryPicker(
-  //   onChanged: (country) => print('Selected: $country'),
-  // )
-
-  // Date picker
-  // FCPInputFields.datePicker(
-  //   context: context,
-  //   controller: dateController,
-  //   firstDate: DateTime(1900),
-  //   lastDate: DateTime.now(),
-  // )
-
-  // Custom input field
-  // FCPInputField(
-  //   label: 'Custom Field',
-  //   hint: 'Enter custom data',
-  //   validator: FCPValidators.required,
-  //   prefixIcon: Icon(Icons.star),
-  //   suffixIcon: IconButton(
-  //     icon: Icon(Icons.clear),
-  //     onPressed: () => controller.clear(),
-  //   ),
-  // )
 }
