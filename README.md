@@ -24,7 +24,6 @@ A comprehensive Flutter package providing highly customizable widgets, themes, a
 - **Color Schemes** - Comprehensive color palette with semantic colors
 - **Text Styles** - Typography system with predefined text styles
 - **Spacing & Layout** - Consistent spacing and layout constants
-- **Animations** - Predefined animation durations and curves 
 
 ### 🛠️ Utility Extensions
 - **Widget Extensions** - `.padAll()`, `.center()`, `.shadow()`, etc.
@@ -36,8 +35,7 @@ A comprehensive Flutter package providing highly customizable widgets, themes, a
 - **Storage Service** - Local storage management with JSON support
 - **Logging Service** - Comprehensive logging with multiple output options
 
-### ⚙️ Infrastructure
-- **Environment Config** - Multi-environment configuration management
+### ⚙️ Platform Utils
 - **Platform Utils** - Device and platform detection utilities
 
 ### 🛠️ CLI Tools
@@ -250,7 +248,6 @@ A comprehensive, unified card component with multiple factory constructors for d
 - **Multiple Variants**: Basic, Flat, Shaded, Gradient, Info, Action cards
 - **Shadow Types**: Small, Medium, Large, Soft, Hard shadows
 - **Gradient Support**: Predefined and custom gradients
-- **Interactive**: Tap, long press, and hover callbacks
 - **Customizable**: Full control over styling and layout
 
 #### Usage
@@ -308,7 +305,6 @@ A professional dropdown component that displays a bottom sheet with selectable i
 - **Search Functionality**: Built-in search with debouncing
 - **Customizable Styling**: Extensive customization options
 - **Accessibility**: Full accessibility support
-- **Custom Item Builder**: Support for custom item layouts
 - **Extension Method**: Direct context.showFCPDropdownBottomSheet()
 
 #### Usage
@@ -398,7 +394,6 @@ A highly customizable chart component with fluent API for creating beautiful cha
 
 #### Features
 - **Multiple Chart Types**: Area, Bar, Line, and Histogram charts
-- **Fluent API**: Easy-to-use builder pattern
 - **Fully Customizable**: Extensive configuration options
 - **Interactive**: Built-in tooltips and touch interactions
 - **Themes**: Predefined themes for quick styling
@@ -488,7 +483,7 @@ await bleManager.connectToDevice(device);
 A comprehensive collection of customizable switch components.
 
 #### Features
-- **Multiple Types**: Toggle, Single-select, Multi-select switches
+- **Multiple Types**: Toggle, Single-select toggle switch
 - **Customizable**: Colors, sizes, animations, labels
 - **Predefined Configs**: iOS, Material, Compact, Large styles
 - **Group Support**: Switch groups with consistent styling
@@ -504,29 +499,27 @@ FCPSwitch(
   config: SwitchConfigs.iosStyle,
 )
 
-// Single select switch
-FCPSingleSelectSwitch<String>(
-  title: 'Choose Theme',
-  options: [
-    SwitchOption(value: 'light', label: 'Light', icon: Icons.light_mode),
-    SwitchOption(value: 'dark', label: 'Dark', icon: Icons.dark_mode),
-  ],
-  selectedValue: selectedTheme,
-  onChanged: (value) => setState(() => selectedTheme = value),
-)
+// Single Toggle switch
+FCPToggleSwitch<String>(
+    title: 'Theme Selection',
+    states: const [
+        ToggleState<String>(
+          value: 'light',
+          label: 'Light',
+          icon: Icons.light_mode,
+        ),
+        ToggleState<String>(
+          value: 'dark',
+          label: 'Dark',
+          icon: Icons.dark_mode,
+        ),
+      ],
+    activeValue: _themeValue,
+    onChanged: (value) => setState(() => _themeValue = value),
+    height: 80,
+    showLabels: false,
+  ),
 
-// Multi select switch
-FCPMultiSelectSwitch<String>(
-  title: 'Select Features',
-  options: [
-    SwitchOption(value: 'notifications', label: 'Notifications'),
-    SwitchOption(value: 'location', label: 'Location'),
-  ],
-  selectedValues: selectedFeatures,
-  onChanged: (values) => setState(() => selectedFeatures = values),
-  maxSelections: 2,
-  showSelectAll: true,
-)
 ```
 
 ### FCPBottomNavigationBar - Modern Navigation
@@ -790,31 +783,6 @@ logger.info(
 
 // Add listeners
 logger.addListener(FCPConsoleLogListener());
-```
-
-## ⚙️ Infrastructure
-
-### Environment Configuration
-
-```dart
-// Initialize
-final config = FCPEnvironmentConfig.instance;
-
-// Set environment
-config.setEnvironment(FCPEnvironment.production);
-
-// Set configuration
-config.setConfig('api_url', 'https://api.example.com');
-config.setConfig('debug_mode', false);
-
-// Get configuration
-final apiUrl = config.getConfig<String>('api_url');
-final debugMode = config.getConfigOrDefault('debug_mode', true);
-
-// Environment-specific values
-config.apiBaseUrl    // Automatically selects based on environment
-config.appName       // App name with environment suffix
-config.isDebugMode   // Debug mode based on environment
 ```
 
 ### Platform Utils
