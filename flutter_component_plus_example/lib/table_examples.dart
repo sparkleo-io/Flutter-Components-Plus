@@ -25,7 +25,6 @@ class TableExamples extends StatelessWidget {
           _buildSection('Data Table with Advanced Filtering', [
             _buildFilteringTable(context, controller),
             const SizedBox(height: 16),
-            _buildFilteringInstructions(),
           ], controller),
           // const SizedBox(height: 32),
           // _buildSection('Advanced Data Table with Actions', [
@@ -362,9 +361,8 @@ class TableExamples extends StatelessWidget {
 
               // Support filtering by multiple status values (comma-separated)
               // Examples: "active", "inactive", "active,inactive"
-              return filterValues.any(
-                (filter) => status?.contains(filter) ?? false,
-              );
+              // Use exact matching instead of contains to avoid partial matches
+              return filterValues.any((filter) => status == filter);
             }
 
             // Custom filter for salary column - supports range filtering
@@ -400,18 +398,14 @@ class TableExamples extends StatelessWidget {
               final filter = filterValue.toLowerCase();
 
               // Support abbreviations: "eng" matches "Engineering"
-              if (filter == 'eng')
-                return department?.contains('engineering') ?? false;
-              if (filter == 'mkt')
-                return department?.contains('marketing') ?? false;
-              if (filter == 'hr') return department?.contains('hr') ?? false;
-              if (filter == 'fin')
-                return department?.contains('finance') ?? false;
-              if (filter == 'sal')
-                return department?.contains('sales') ?? false;
+              if (filter == 'eng') return department == 'engineering';
+              if (filter == 'mkt') return department == 'marketing';
+              if (filter == 'hr') return department == 'hr';
+              if (filter == 'fin') return department == 'finance';
+              if (filter == 'sal') return department == 'sales';
 
-              // Default partial matching
-              return department?.contains(filter) ?? false;
+              // Default exact matching for full department names
+              return department == filter;
             }
 
             // Default text contains filter for other columns
@@ -423,55 +417,6 @@ class TableExamples extends StatelessWidget {
           columnWidthMode: ColumnWidthMode.fitByColumnName,
           shrinkWrapColumns: false,
         ),
-      ),
-    );
-  }
-
-  Widget _buildFilteringInstructions() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.blue.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.info_outline, color: Colors.blue.shade700),
-              const SizedBox(width: 8),
-              Text(
-                'Custom Filter Examples',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue.shade700,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          _buildFilterExample('Status Column:', [
-            '• "active" - Shows only active employees',
-            '• "inactive" - Shows only inactive employees',
-            '• "active,inactive" - Shows both active and inactive employees',
-          ]),
-          const SizedBox(height: 8),
-          _buildFilterExample('Salary Column:', [
-            '• "70000" - Shows salaries within \$5000 of \$70,000',
-            '• "60000-80000" - Shows salaries between \$60,000 and \$80,000',
-          ]),
-          const SizedBox(height: 8),
-          _buildFilterExample('Department Column:', [
-            '• "eng" - Matches "Engineering"',
-            '• "mkt" - Matches "Marketing"',
-            '• "hr" - Matches "HR"',
-            '• "fin" - Matches "Finance"',
-            '• "sal" - Matches "Sales"',
-          ]),
-        ],
       ),
     );
   }
