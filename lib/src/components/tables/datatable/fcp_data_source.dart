@@ -3,6 +3,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import 'types/table_types.dart';
 import 'table_theme_config.dart';
+import 'filter_state.dart';
 
 class FCPDataSource extends DataGridSource {
   final BuildContext context;
@@ -17,8 +18,18 @@ class FCPDataSource extends DataGridSource {
   String? _sortOrder;
   int _currentPage = 1;
   int _rowsPerPage = 10;
+  final FilterManager _filterManager = FilterManager();
+  bool Function(String columnName, dynamic value, String filterValue)?
+  _customFilterFunction;
 
-  FCPDataSource(this.context, {required this.dataList, this.themeConfig}) {
+  FCPDataSource(
+    this.context, {
+    required this.dataList,
+    this.themeConfig,
+    bool Function(String columnName, dynamic value, String filterValue)?
+    customFilterFunction,
+  }) {
+    _customFilterFunction = customFilterFunction;
     _buildDataList();
   }
 
@@ -49,6 +60,21 @@ class FCPDataSource extends DataGridSource {
       return row.getCells().any((cell) {
         final value = cell.value?.toString().toLowerCase() ?? '';
         return value.contains(_searchQuery.toLowerCase());
+      });
+    }).toList();
+
+    // Apply column-specific filters
+    filtered = filtered.where((row) {
+      return _filterManager.filters.values.every((filter) {
+        if (filter.isEmpty) return true;
+
+        final cell = row.getCells().firstWhere(
+          (cell) => cell.columnName == filter.columnName,
+          orElse: () =>
+              DataGridCell(columnName: filter.columnName, value: null),
+        );
+
+        return _applyColumnFilter(filter, cell.value);
       });
     }).toList();
 
@@ -98,6 +124,80 @@ class FCPDataSource extends DataGridSource {
     _currentPage = page;
     _rowsPerPage = rowsPerPage;
     notifyListeners();
+  }
+
+  void updateFilter(String columnName, FilterState? filter) {
+    if (filter == null || filter.isEmpty) {
+      _filterManager.removeFilter(columnName);
+    } else {
+      _filterManager.setFilter(columnName, filter);
+    }
+    _currentPage = 1; // Reset to first page when filtering
+    _applyFilters();
+  }
+
+  void clearAllFilters() {
+    _filterManager.clearAllFilters();
+    _applyFilters();
+  }
+
+  FilterManager get filterManager => _filterManager;
+
+  List<DataGridRow> get allData => _dataList;
+
+  bool _applyColumnFilter(FilterState filter, dynamic value) {
+    // Use custom filter function if provided
+    if (_customFilterFunction != null) {
+      return _customFilterFunction!(
+        filter.columnName,
+        value,
+        filter.filterValue,
+      );
+    }
+
+    // Apply built-in filter logic
+    switch (filter.filterType) {
+      case 'text':
+        return value?.toString().toLowerCase().contains(
+              filter.filterValue.toLowerCase(),
+            ) ??
+            false;
+
+      case 'select':
+        if (filter.filterOptions == null) return true;
+        return filter.filterOptions!.contains(value);
+
+      case 'number':
+        final numValue = value is num
+            ? value
+            : double.tryParse(value?.toString() ?? '');
+        if (numValue == null) return false;
+
+        if (filter.minValue != null && numValue < filter.minValue!)
+          return false;
+        if (filter.maxValue != null && numValue > filter.maxValue!)
+          return false;
+        return true;
+
+      case 'date':
+        if (value is! DateTime) {
+          final dateStr = value?.toString();
+          if (dateStr == null) return false;
+          // Try to parse as DateTime
+          final date = DateTime.tryParse(dateStr);
+          if (date == null) return false;
+          value = date;
+        }
+
+        if (filter.startDate != null && value.isBefore(filter.startDate!))
+          return false;
+        if (filter.endDate != null && value.isAfter(filter.endDate!))
+          return false;
+        return true;
+
+      default:
+        return true;
+    }
   }
 
   List<DataGridRow> get paginatedData {
