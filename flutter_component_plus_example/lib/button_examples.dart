@@ -283,7 +283,7 @@ class _FCPButtonExamplesState extends State<FCPButtonExamples> {
                 text: 'Custom Padding',
                 padding: const EdgeInsets.symmetric(
                   horizontal: 32,
-                  vertical: 16,
+                  vertical: 8,
                 ),
               ),
               const SizedBox(height: 8),

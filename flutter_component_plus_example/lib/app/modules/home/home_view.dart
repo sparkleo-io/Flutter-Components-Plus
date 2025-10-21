@@ -398,7 +398,7 @@ class HomeView extends GetView<HomeController> {
             _buildStatCard(
               context,
               'Themes',
-              '5+',
+              '2',
               Icons.palette,
               FCPColorScheme.success,
             ),

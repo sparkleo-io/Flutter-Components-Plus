@@ -290,7 +290,7 @@ class TableExamples extends StatelessWidget {
           totalRecords: controller.filteredTotalRecords,
           rowsPerPage: controller.rowsPerPage,
           fitToScreen: false,
-          availableRowsPerPage: [5, 10, 15, 20],
+          availableRowsPerPage: [5, 10, 15],
           themeConfig: controller.selectedTheme,
           onPageChanged: controller.onPageChanged,
           onRowsPageChanged: controller.onRowsPageChanged,
