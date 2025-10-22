@@ -19,28 +19,13 @@ A comprehensive Flutter package providing highly customizable widgets, themes, a
 - **FCPBottomNavigationBar** - Modern bottom navigation with asset-based icons
 - **FCPDataTable** - Advanced data tables with sorting, filtering, and pagination
 - **FCPInputField** - Customizable input fields with validation and styling
-- **FCPMultiSelectDropdown** - Multi-selection dropdown with search and custom styling
+- **FCPMultiSelectDropdown** - Multi-selection dropdown with search functionality
 
-### 🎨 Design System
-- **Themes** - Complete light and dark theme support
-- **Color Schemes** - Comprehensive color palette with semantic colors
-- **Text Styles** - Typography system with predefined text styles
-- **Spacing & Layout** - Consistent spacing and layout constants
-
-### 🛠️ Utility Extensions
-- **Widget Extensions** - `.padAll()`, `.center()`, `.shadow()`, etc.
-- **String Extensions** - `.capitalize`, `.isEmail`, `.truncate()`, etc.
-- **Date Extensions** - `.isToday`, `.relativeTime`, `.addDays()`, etc.
-
-### 🌐 Services
-- **HTTP Service** - Complete HTTP client with interceptors and error handling
-- **Storage Service** - Local storage management with JSON support
-- **Logging Service** - Comprehensive logging with multiple output options
-
-### 🛠️ CLI Tools
-- **Component Manager** - Add/remove components and dependencies
-- **Permission Manager** - Manage platform permissions automatically
-- **File Utils** - Project file management utilities
+### 🎨 Design System & Utilities
+- **Complete Theme System** - Light and dark themes with comprehensive color schemes
+- **Utility Extensions** - Widget, String, and Date extensions for enhanced productivity
+- **Services** - HTTP, Storage, and Logging services with full configuration
+- **CLI Tools** - Component and permission management via command line
 
 ## 📦 Installation
 
@@ -57,6 +42,49 @@ Then run:
 flutter pub get
 ```
 
+## 🛠️ CLI Tools
+
+Install and manage components with our powerful CLI:
+
+```bash
+# Install globally
+dart pub global activate flutter_components_plus
+
+# Verify installation
+fcp --version
+```
+
+### Usage
+
+```bash
+# Add components to your project
+fcp add component button
+fcp add component chart
+fcp add component themes
+
+# Add permissions
+fcp add ble_permissions
+
+# List available components
+fcp list components
+
+# Remove components
+fcp remove component button
+```
+
+### Available Components
+
+- `button` - Customizable buttons with various styles
+- `card` - Unified card component with multiple variants
+- `chart` - Interactive charts and graphs
+- `live_graph` - Real-time live data visualization
+- `table` - Data tables with sorting and filtering
+- `dropdown` - Professional dropdown with search
+- `input_field` - Customizable input fields
+- `ble` - Bluetooth Low Energy management
+- `pdf_viewer` - PDF document viewer
+- `themes` - Complete theme system with light/dark variants
+
 ## 🚀 Quick Start
 
 ### 1. Import the package
@@ -65,157 +93,40 @@ flutter pub get
 import 'package:flutter_components_plus/flutter_components_plus.dart';
 ```
 
-### 2. Use the fluent API button
-
-```dart
-// Fluent API - more intuitive and type-safe
+// Fluent API buttons
 FCPButton.medium.primary(
   text: 'Click Me',
-  onPressed: () {
-    print('Button pressed!');
-  },
+  onPressed: () => print('Button pressed!'),
 )
 
-// With icon
-FCPButton.large.outlined(
-  text: 'Download',
-  icon: Icons.download,
-  iconPosition: IconPosition.start,
-  onPressed: () => downloadFile(),
-)
-
-// Icon button
-FCPButton.small.iconButton(
-  icon: Icons.add,
-  onPressed: () => addItem(),
-)
-```
-
-### 3. Apply themes
-
-```dart
+// Apply themes
 MaterialApp(
   theme: FCPAppTheme.lightTheme,
   darkTheme: FCPAppTheme.darkTheme,
   // ... rest of your app
 )
+
+// Use extensions
+Text('Hello World').padAll(16).center().shadow()
 ```
 
-### 4. Use extensions
+## 🧩 Key Components
 
+### FCPButton - Fluent API Buttons
 ```dart
-Text('Hello World')
-  .padAll(16)
-  .center()
-  .shadow()
-```
-
-## 🧩 UI Components
-
-### FCPButton - Fluent API Button Component
-
-```dart
-// Primary buttons
-FCPButton.small.primary(text: 'Small Primary')
-FCPButton.medium.primary(text: 'Medium Primary')
-FCPButton.large.primary(text: 'Large Primary')
-
-// Outlined buttons
-FCPButton.medium.outlined(
-  text: 'Download',
-  icon: Icons.download,
-  iconPosition: IconPosition.start,
-)
-
-// Icon buttons
+// Primary, outlined, and icon buttons
+FCPButton.medium.primary(text: 'Click Me')
+FCPButton.large.outlined(text: 'Download', icon: Icons.download)
 FCPButton.small.iconButton(icon: Icons.add)
-FCPButton.medium.iconButton(icon: Icons.edit)
-
-// Floating buttons
-FCPButton.medium.floating(
-  text: 'Add Item',
-  icon: Icons.add,
-)
-
-// With loading state
-FCPButton.medium.primary(
-  text: 'Processing...',
-  isLoading: true,
-  onPressed: () => processData(),
-)
 ```
 
-### FCPCard - Unified Card Component
-
+### FCPCard - Unified Cards
 ```dart
-// Basic card
+// Various card types
 FCPCard(child: Text('Simple card'))
-
-// Flat card (no shadows)
-FCPCard.flat(
-  backgroundColor: Colors.green.shade50,
-  borderColor: Colors.green.shade300,
-  child: Text('Flat card'),
-)
-
-// Shaded card with different shadow types
-FCPCard.shaded(
-  shadowType: ShadowType.medium,
-  child: Text('Shaded card'),
-)
-
-// Gradient card
-FCPCard.gradient(
-  gradientType: GradientType.sunset,
-  child: Text('Gradient card'),
-)
-
-// Info card with structured content
-FCPCard.info(
-  icon: Icons.info,
-  title: 'Information',
-  subtitle: 'This is a subtitle',
-  content: 'Main content here',
-)
-
-// Action card with buttons
-FCPCard.action(
-  icon: Icons.settings,
-  title: 'Settings',
-  content: 'Configure your settings.',
-  actions: [
-    TextButton(onPressed: () {}, child: Text('Cancel')),
-    ElevatedButton(onPressed: () {}, child: Text('Save')),
-  ],
-)
-```
-
-### FCPDropdownBottomSheet - Professional Dropdown
-
-```dart
-// Basic dropdown
-FCPDropdownBottomSheet(
-  title: 'Select Country',
-  items: ['USA', 'Canada', 'UK', 'Germany', 'France'],
-  onItemSelected: (value) => print('Selected: $value'),
-)
-
-// With search enabled
-FCPDropdownBottomSheet(
-  title: 'Select Country',
-  items: countries,
-  onItemSelected: (value) => handleSelection(value),
-  isSearchEnabled: true,
-  searchHintText: 'Search countries...',
-)
-
-// Using extension method
-context.showFCPDropdownBottomSheet(
-  title: 'Select Item',
-  items: items,
-  onItemSelected: (value) => handleSelection(value),
-  isSearchEnabled: true,
-)
+FCPCard.shaded(shadowType: ShadowType.medium, child: Text('Shaded card'))
+FCPCard.gradient(gradientType: GradientType.sunset, child: Text('Gradient card'))
+FCPCard.info(icon: Icons.info, title: 'Information', content: 'Main content')
 ```
 
 ### FCPChart - Interactive Charts
@@ -272,7 +183,6 @@ FCPLiveGraph(
 ```
 
 ### FCPBLEComponent - Bluetooth Low Energy
-
 ```dart
 FCPBLEComponent(
   config: BLEComponentConfig(
@@ -346,69 +256,29 @@ FCPDataTable(
 ## 🛠️ Utility Extensions
 
 ### Widget Extensions
-
 ```dart
-// Padding
-Text('Hello').padAll(16)
-Text('Hello').padHorizontal(16)
-Text('Hello').padVertical(16)
-
-// Layout
-Text('Hello').center()
-Text('Hello').width(200)
-Text('Hello').height(50)
-
-// Styling
-Text('Hello').borderRadius(8)
-Text('Hello').shadow()
-Text('Hello').backgroundColor(Colors.blue)
-
-// Interactions
+Text('Hello').padAll(16).center().shadow()
+Text('Hello').width(200).height(50).borderRadius(8)
 Text('Hello').onTap(() {})
-Text('Hello').inkWell(onTap: () {})
 ```
 
 ### String Extensions
-
 ```dart
-// Case conversion
 'hello world'.capitalize        // 'Hello world'
-'hello world'.titleCase        // 'Hello World'
-'hello world'.camelCase        // 'helloWorld'
-
-// Validation
 'user@example.com'.isEmail     // true
-'https://example.com'.isUrl    // true
-'+1234567890'.isPhoneNumber    // true
-
-// Manipulation
 'hello world'.truncate(5)      // 'hello...'
-'hello world'.removeWhitespace // 'helloworld'
 ```
 
 ### Date Extensions
-
 ```dart
-final now = DateTime.now();
-final yesterday = DateTime.now().subtract(Duration(days: 1));
-
-// Relative time
 yesterday.relativeTime          // '1 day ago'
-yesterday.shortRelativeTime     // '1d ago'
-
-// Date checks
 now.isToday                    // true
-yesterday.isYesterday          // true
-
-// Date manipulation
 now.addDays(7)                 // Add 7 days
-now.subtractDays(7)            // Subtract 7 days
 ```
 
 ## 🌐 Services
 
 ### HTTP Service
-
 ```dart
 // Initialize
 final httpService = FCPHttpService.instance;
@@ -428,9 +298,7 @@ final createResponse = await httpService.post(
 ```
 
 ### Storage Service
-
 ```dart
-// Initialize
 final storage = FCPStorageService.instance;
 await storage.initialize();
 
@@ -445,9 +313,7 @@ final age = storage.getInt('user_age');
 ```
 
 ### Logging Service
-
 ```dart
-// Initialize
 final logger = FCPLoggingService.instance;
 
 // Log messages
@@ -457,49 +323,12 @@ logger.warning('Warning message');
 logger.error('Error message', error: Exception('Something went wrong'));
 ```
 
-## 🛠️ CLI Tools
-
-The package includes powerful command-line tools for managing components and permissions.
-
-### Installation
-
-```bash
-# Install globally
-dart pub global activate flutter_components_plus
-
-# Or use locally
-dart run flutter_components_plus:fcp <command>
-```
-
-### Available Commands
-
-```bash
-# Show help
-fcp help
-
-# List available components
-fcp list components
-
-# Add BLE permissions and complete BLE service
-fcp add ble_permissions
-
-# Add specific components
-fcp add component chart
-fcp add component table
-fcp add component ble
-fcp add component pdf_viewer
-
-# Remove components or permissions
-fcp remove ble_permissions
-fcp remove component chart
-```
 
 ## 🎨 Design System
 
-### Colors
-
+### Colors & Text Styles
 ```dart
-// Primary colors
+// Colors
 FCPColorScheme.primary
 FCPColorScheme.secondary
 
@@ -508,85 +337,26 @@ FCPColorScheme.success
 FCPColorScheme.warning
 FCPColorScheme.error
 
-// Neutral colors
-FCPColorScheme.neutral50
-FCPColorScheme.neutral100
-// ... up to neutral900
-```
-
-### Text Styles
-
-```dart
-// Display styles
-FCPTextStyles.displayLarge
-FCPTextStyles.displayMedium
-FCPTextStyles.displaySmall
-
-// Headline styles
+// Text styles
 FCPTextStyles.headlineLarge
-FCPTextStyles.headlineMedium
-FCPTextStyles.headlineSmall
-
-// Body styles
-FCPTextStyles.bodyLarge
 FCPTextStyles.bodyMedium
-FCPTextStyles.bodySmall
-```
 
-### Constants
-
-```dart
-// Spacing
-FCPConstants.spacingXs  // 4.0
-FCPConstants.spacingSm  // 8.0
+// Constants
 FCPConstants.spacingMd  // 16.0
-FCPConstants.spacingLg  // 24.0
-
-// Border radius
-FCPConstants.radiusXs   // 2.0
-FCPConstants.radiusSm   // 4.0
-FCPConstants.radiusMd   // 8.0
-FCPConstants.radiusLg   // 12.0
-
-// Animation durations
-FCPConstants.durationFast   // 150ms
+FCPConstants.radiusMd  // 8.0
 FCPConstants.durationNormal // 300ms
-FCPConstants.durationSlow   // 500ms
 ```
 
 ## 🚀 Latest Updates
 
 ### FcpBleService - Complete BLE Solution
+- **Permission Management** - Bluetooth and location services control
+- **Device Discovery** - Configurable scanning with filtering and debug options
+- **Device Connection** - Customizable timeout, MTU, and auto-connect
+- **Device Persistence** - Save and retrieve device information
+- **Service Discovery** - Complete service and characteristic discovery
 
-We've recently completed a comprehensive Bluetooth Low Energy service that provides everything you need for BLE development:
-
-#### 🔐 **Permission Management**
-- Check and control Bluetooth and location services
-- Granular permission control with separate service and permission management
-- Real-time permission status monitoring
-
-#### 🔍 **Device Discovery**
-- Configurable BLE scanning with timeout, filtering, and debug options
-- Real-time device discovery with RSSI and timestamp information
-- Smart filtering by device name and unknown device exclusion
-
-#### 🔗 **Device Connection**
-- Connect to BLE devices with customizable timeout (35s), MTU (512), and auto-connect
-- Real-time connection state monitoring with automatic cleanup
-- Storage control with configurable save/remove behavior
-
-#### 💾 **Device Persistence**
-- Save and retrieve connected device information with custom storage keys
-- View all stored devices with comprehensive device management
-- Individual device removal and storage cleanup
-
-#### 🔬 **Service Discovery**
-- Discover all services and characteristics of connected devices
-- Find specific services and characteristics by UUID
-- Cross-service characteristic search and relationship mapping
-- Comprehensive property and capability information
-
-**Total: 25 methods across 5 categories providing a complete BLE solution!**
+**25 methods across 5 categories providing a complete BLE solution!**
 
 ## 📱 Example App
 
