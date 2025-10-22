@@ -29,7 +29,7 @@ fcp --version
 ```bash
 # Add to your project's pubspec.yaml
 dependencies:
-  flutter_components_plus: ^0.0.1
+  flutter_components_plus: ^1.0.0
 
 # Install dependencies
 flutter pub get

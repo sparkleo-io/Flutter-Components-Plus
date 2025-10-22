@@ -1,4 +1,4 @@
-## 0.0.1
+## 1.0.0
 
 ### Added
 * **FCPButton**: Fluent API button component with multiple variants, sizes, and states

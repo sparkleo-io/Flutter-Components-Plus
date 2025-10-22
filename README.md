@@ -33,7 +33,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_components_plus: ^0.0.1
+  flutter_components_plus: ^1.0.0
 ```
 
 Then run:
