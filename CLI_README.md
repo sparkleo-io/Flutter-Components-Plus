@@ -163,6 +163,7 @@ fcp remove component ble
 | `pdf_viewer` | PDF document viewer | `syncfusion_flutter_pdfviewer` | Storage |
 | `switch` | Customizable toggle switches | None | None |
 | `navigation` | Bottom navigation bar | None | None |
+| `themes` | Complete theme system with light/dark variants | None | None |
 
 ## Available Permissions
 
@@ -205,6 +206,7 @@ fcp add component chart
 fcp add component live_graph
 fcp add component table
 fcp add component card
+fcp add component themes
 fcp add component ble
 
 # 3. Install dependencies
@@ -219,6 +221,7 @@ fcp remove component chart
 fcp remove component live_graph
 fcp remove component table
 fcp remove component card
+fcp remove component themes
 
 # Remove unused permissions
 fcp remove ble_permissions
@@ -297,6 +300,7 @@ When you add components, the CLI creates example files in the `examples/` direct
 - `pdf_viewer_example.dart` - PDF viewer component usage
 - `switch_example.dart` - Switch component usage
 - `navigation_example.dart` - Navigation component usage
+- `themes/` - Complete theme system with organized theme files
 
 ## Troubleshooting
 

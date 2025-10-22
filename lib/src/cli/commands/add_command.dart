@@ -107,6 +107,7 @@ class AddCommand {
       print('  • pdf_viewer');
       print('  • switch');
       print('  • navigation');
+      print('  • themes');
       print('');
       print('Usage: fcp add component <component_name>');
       return;

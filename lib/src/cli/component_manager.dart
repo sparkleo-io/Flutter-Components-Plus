@@ -48,6 +48,9 @@ class ComponentManager {
       case 'navigation':
         await _addNavigationComponent();
         break;
+      case 'themes':
+        await _addThemesComponent();
+        break;
       default:
         throw Exception('Unknown component: $componentName');
     }
@@ -94,6 +97,9 @@ class ComponentManager {
         break;
       case 'navigation':
         await _removeNavigationComponent();
+        break;
+      case 'themes':
+        await _removeThemesComponent();
         break;
       default:
         throw Exception('Unknown component: $componentName');
@@ -204,6 +210,12 @@ class ComponentManager {
     print('✅ Navigation component added');
   }
 
+  /// Add themes component
+  Future<void> _addThemesComponent() async {
+    await _createThemesStructure();
+    print('✅ Themes component added');
+  }
+
   /// Remove chart component
   Future<void> _removeChartComponent() async {
     await _removePubspecDependencies(['fl_chart']);
@@ -288,6 +300,12 @@ class ComponentManager {
   Future<void> _removeNavigationComponent() async {
     await _removeExampleFile('navigation_example.dart');
     print('✅ Navigation component removed');
+  }
+
+  /// Remove themes component
+  Future<void> _removeThemesComponent() async {
+    await _removeThemesStructure();
+    print('✅ Themes component removed');
   }
 
   /// Add dependencies to pubspec.yaml
@@ -1012,5 +1030,1209 @@ class _InputFieldExampleState extends State<InputFieldExample> {
   }
 }
 ''';
+  }
+
+  /// Create themes structure
+  Future<void> _createThemesStructure() async {
+    // Create themes directory
+    final themesDir = Directory('lib/themes');
+    if (!await themesDir.exists()) {
+      await themesDir.create(recursive: true);
+    }
+
+    // Create custom_themes directory
+    final customThemesDir = Directory('lib/themes/custom_themes');
+    if (!await customThemesDir.exists()) {
+      await customThemesDir.create(recursive: true);
+    }
+
+    // Create main app_theme.dart
+    await _createAppThemeFile();
+
+    // Create individual theme files
+    await _createTextThemeFile();
+    await _createAppBarThemeFile();
+    await _createElevatedButtonThemeFile();
+    await _createTextButtonThemeFile();
+    await _createOutlinedButtonThemeFile();
+    await _createTextFormFieldThemeFile();
+    await _createCheckboxThemeFile();
+    await _createBottomSheetThemeFile();
+    await _createChipThemeFile();
+    await _createThemesImportsFile();
+  }
+
+  /// Remove themes structure
+  Future<void> _removeThemesStructure() async {
+    final themesDir = Directory('lib/themes');
+    if (await themesDir.exists()) {
+      await themesDir.delete(recursive: true);
+    }
+  }
+
+  /// Create app_theme.dart file
+  Future<void> _createAppThemeFile() async {
+    final content = '''
+import 'package:flutter/material.dart';
+
+import 'custom_themes/text_btn_theme.dart';
+import 'custom_themes/elevated_btn_theme.dart';
+import 'custom_themes/outlined_btn_theme.dart';
+import 'custom_themes/appbar_theme.dart';
+import 'custom_themes/text_theme.dart';
+import 'custom_themes/text_field_theme.dart';
+import 'custom_themes/checkbox_theme.dart';
+import 'custom_themes/bottom_sheet_theme.dart';
+import 'custom_themes/chip_theme.dart';
+import 'custom_themes/themes_imports.dart';
+
+class AppTheme {
+  AppTheme._();
+
+  // Light Theme Colors
+  static const Color lightPrimary = Color(0xFF1976D2);
+  static const Color lightPrimaryVariant = Color(0xFF1565C0);
+  static const Color lightSecondary = Color(0xFF03DAC6);
+  static const Color lightSecondaryVariant = Color(0xFF018786);
+  static const Color lightSurface = Color(0xFFFFFFFF);
+  static const Color lightBackground = Color(0xFFFAFAFA);
+  static const Color lightError = Color(0xFFB00020);
+  static const Color lightOnPrimary = Color(0xFFFFFFFF);
+  static const Color lightOnSecondary = Color(0xFF000000);
+  static const Color lightOnSurface = Color(0xFF1C1B1F);
+  static const Color lightOnBackground = Color(0xFF1C1B1F);
+  static const Color lightOnError = Color(0xFFFFFFFF);
+
+  // Dark Theme Colors
+  static const Color darkPrimary = Color(0xFF90CAF9);
+  static const Color darkPrimaryVariant = Color(0xFF1976D2);
+  static const Color darkSecondary = Color(0xFF03DAC6);
+  static const Color darkSecondaryVariant = Color(0xFF03DAC6);
+  static const Color darkSurface = Color(0xFF121212);
+  static const Color darkBackground = Color(0xFF000000);
+  static const Color darkError = Color(0xFFCF6679);
+  static const Color darkOnPrimary = Color(0xFF000000);
+  static const Color darkOnSecondary = Color(0xFF000000);
+  static const Color darkOnSurface = Color(0xFFE1E1E1);
+  static const Color darkOnBackground = Color(0xFFE1E1E1);
+  static const Color darkOnError = Color(0xFF000000);
+
+  // Customizable Light Theme
+  static ThemeData lightTheme = ThemeData(
+    useMaterial3: true,
+    fontFamily: 'Poppins',
+    brightness: Brightness.light,
+    colorScheme: const ColorScheme.light(
+      primary: lightPrimary,
+      onPrimary: lightOnPrimary,
+      secondary: lightSecondary,
+      onSecondary: lightOnSecondary,
+      surface: lightSurface,
+      onSurface: lightOnSurface,
+      background: lightBackground,
+      onBackground: lightOnBackground,
+      error: lightError,
+      onError: lightOnError,
+    ),
+    scaffoldBackgroundColor: lightBackground,
+    appBarTheme: CustomAppBarTheme.lightAppBarTheme,
+    textTheme: AppTextTheme.lightTextTheme,
+    elevatedButtonTheme: AppElevatedBtnTheme.lightElevatedButtonTheme,
+    textButtonTheme: AppTextBtnTheme.lightTextButtonTheme,
+    outlinedButtonTheme: AppOutlinedBtnTheme.lightOutlineButtonTheme,
+    inputDecorationTheme: AppTextFormFieldTheme.lightInputDecorationTheme,
+    checkboxTheme: AppCheckBoxTheme.lightCheckboxTheme,
+    bottomSheetTheme: AppBottomSheetTheme.lightBottomSheetTheme,
+    chipTheme: AppChipTheme.lightChipTheme,
+    cardTheme: CardTheme(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      color: lightSurface,
+    ),
+    dividerTheme: const DividerThemeData(
+      color: Color(0xFFE0E0E0),
+      thickness: 1,
+      space: 1,
+    ),
+    iconTheme: const IconThemeData(
+      color: lightOnSurface,
+      size: 24,
+    ),
+    primaryIconTheme: const IconThemeData(
+      color: lightOnPrimary,
+      size: 24,
+    ),
+    secondaryIconTheme: const IconThemeData(
+      color: lightOnSecondary,
+      size: 24,
+    ),
+  );
+
+  // Customizable Dark Theme
+  static ThemeData darkTheme = ThemeData(
+    useMaterial3: true,
+    fontFamily: 'Poppins',
+    brightness: Brightness.dark,
+    colorScheme: const ColorScheme.dark(
+      primary: darkPrimary,
+      onPrimary: darkOnPrimary,
+      secondary: darkSecondary,
+      onSecondary: darkOnSecondary,
+      surface: darkSurface,
+      onSurface: darkOnSurface,
+      background: darkBackground,
+      onBackground: darkOnBackground,
+      error: darkError,
+      onError: darkOnError,
+    ),
+    scaffoldBackgroundColor: darkBackground,
+    appBarTheme: CustomAppBarTheme.darkAppBarTheme,
+    textTheme: AppTextTheme.darkTextTheme,
+    elevatedButtonTheme: AppElevatedBtnTheme.darkElevatedButtonTheme,
+    textButtonTheme: AppTextBtnTheme.darkTextButtonTheme,
+    outlinedButtonTheme: AppOutlinedBtnTheme.darkOutlineButtonTheme,
+    inputDecorationTheme: AppTextFormFieldTheme.darkInputDecorationTheme,
+    checkboxTheme: AppCheckBoxTheme.darkCheckboxTheme,
+    bottomSheetTheme: AppBottomSheetTheme.darkBottomSheetTheme,
+    chipTheme: AppChipTheme.darkChipTheme,
+    cardTheme: CardTheme(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      color: darkSurface,
+    ),
+    dividerTheme: const DividerThemeData(
+      color: Color(0xFF424242),
+      thickness: 1,
+      space: 1,
+    ),
+    iconTheme: const IconThemeData(
+      color: darkOnSurface,
+      size: 24,
+    ),
+    primaryIconTheme: const IconThemeData(
+      color: darkOnPrimary,
+      size: 24,
+    ),
+    secondaryIconTheme: const IconThemeData(
+      color: darkOnSecondary,
+      size: 24,
+    ),
+  );
+}
+''';
+
+    final file = File('lib/themes/app_theme.dart');
+    await file.writeAsString(content);
+  }
+
+  /// Create text_theme.dart file
+  Future<void> _createTextThemeFile() async {
+    final content = '''
+import 'package:flutter/material.dart';
+
+class AppTextTheme {
+  AppTextTheme._();
+
+  // Light Text Theme
+  static const lightTextTheme = TextTheme(
+    displayLarge: TextStyle(
+      fontSize: 57,
+      fontWeight: FontWeight.w400,
+      letterSpacing: -0.25,
+      color: Color(0xFF1C1B1F),
+      height: 1.12,
+    ),
+    displayMedium: TextStyle(
+      fontSize: 45,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0,
+      color: Color(0xFF1C1B1F),
+      height: 1.16,
+    ),
+    displaySmall: TextStyle(
+      fontSize: 36,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0,
+      color: Color(0xFF1C1B1F),
+      height: 1.22,
+    ),
+    headlineLarge: TextStyle(
+      fontSize: 32,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0,
+      color: Color(0xFF1C1B1F),
+      height: 1.25,
+    ),
+    headlineMedium: TextStyle(
+      fontSize: 28,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0,
+      color: Color(0xFF1C1B1F),
+      height: 1.29,
+    ),
+    headlineSmall: TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0,
+      color: Color(0xFF1C1B1F),
+      height: 1.33,
+    ),
+    titleLarge: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0,
+      color: Color(0xFF1C1B1F),
+      height: 1.27,
+    ),
+    titleMedium: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.15,
+      color: Color(0xFF1C1B1F),
+      height: 1.50,
+    ),
+    titleSmall: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.1,
+      color: Color(0xFF1C1B1F),
+      height: 1.43,
+    ),
+    bodyLarge: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.5,
+      color: Color(0xFF1C1B1F),
+      height: 1.50,
+    ),
+    bodyMedium: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.25,
+      color: Color(0xFF1C1B1F),
+      height: 1.43,
+    ),
+    bodySmall: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.4,
+      color: Color(0xFF1C1B1F),
+      height: 1.33,
+    ),
+    labelLarge: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.1,
+      color: Color(0xFF1C1B1F),
+      height: 1.43,
+    ),
+    labelMedium: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.5,
+      color: Color(0xFF1C1B1F),
+      height: 1.33,
+    ),
+    labelSmall: TextStyle(
+      fontSize: 11,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.5,
+      color: Color(0xFF1C1B1F),
+      height: 1.45,
+    ),
+  );
+
+  // Dark Text Theme
+  static const darkTextTheme = TextTheme(
+    displayLarge: TextStyle(
+      fontSize: 57,
+      fontWeight: FontWeight.w400,
+      letterSpacing: -0.25,
+      color: Color(0xFFE1E1E1),
+      height: 1.12,
+    ),
+    displayMedium: TextStyle(
+      fontSize: 45,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0,
+      color: Color(0xFFE1E1E1),
+      height: 1.16,
+    ),
+    displaySmall: TextStyle(
+      fontSize: 36,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0,
+      color: Color(0xFFE1E1E1),
+      height: 1.22,
+    ),
+    headlineLarge: TextStyle(
+      fontSize: 32,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0,
+      color: Color(0xFFE1E1E1),
+      height: 1.25,
+    ),
+    headlineMedium: TextStyle(
+      fontSize: 28,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0,
+      color: Color(0xFFE1E1E1),
+      height: 1.29,
+    ),
+    headlineSmall: TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0,
+      color: Color(0xFFE1E1E1),
+      height: 1.33,
+    ),
+    titleLarge: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0,
+      color: Color(0xFFE1E1E1),
+      height: 1.27,
+    ),
+    titleMedium: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.15,
+      color: Color(0xFFE1E1E1),
+      height: 1.50,
+    ),
+    titleSmall: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.1,
+      color: Color(0xFFE1E1E1),
+      height: 1.43,
+    ),
+    bodyLarge: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.5,
+      color: Color(0xFFE1E1E1),
+      height: 1.50,
+    ),
+    bodyMedium: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.25,
+      color: Color(0xFFE1E1E1),
+      height: 1.43,
+    ),
+    bodySmall: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.4,
+      color: Color(0xFFE1E1E1),
+      height: 1.33,
+    ),
+    labelLarge: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.1,
+      color: Color(0xFFE1E1E1),
+      height: 1.43,
+    ),
+    labelMedium: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.5,
+      color: Color(0xFFE1E1E1),
+      height: 1.33,
+    ),
+    labelSmall: TextStyle(
+      fontSize: 11,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.5,
+      color: Color(0xFFE1E1E1),
+      height: 1.45,
+    ),
+  );
+}
+''';
+
+    final file = File('lib/themes/custom_themes/text_theme.dart');
+    await file.writeAsString(content);
+  }
+
+  /// Create appbar_theme.dart file
+  Future<void> _createAppBarThemeFile() async {
+    final content = '''
+import 'package:flutter/material.dart';
+
+class CustomAppBarTheme {
+  CustomAppBarTheme._();
+
+  // Light AppBar Theme
+  static const lightAppBarTheme = AppBarTheme(
+    elevation: 0,
+    centerTitle: false,
+    scrolledUnderElevation: 0,
+    backgroundColor: Color(0xFFFFFFFF),
+    surfaceTintColor: Color(0xFFFFFFFF),
+    foregroundColor: Color(0xFF1C1B1F),
+    iconTheme: IconThemeData(
+      color: Color(0xFF1C1B1F),
+      size: 24,
+      opacity: 1.0,
+    ),
+    actionsIconTheme: IconThemeData(
+      color: Color(0xFF1C1B1F),
+      size: 24,
+      opacity: 1.0,
+    ),
+    titleTextStyle: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.w400,
+      color: Color(0xFF1C1B1F),
+      letterSpacing: 0,
+      height: 1.27,
+    ),
+    toolbarTextStyle: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: Color(0xFF1C1B1F),
+      letterSpacing: 0.15,
+      height: 1.50,
+    ),
+    systemOverlayStyle: SystemUiOverlayStyle.dark,
+    shadowColor: Color(0xFF000000),
+    surfaceTintColor: Color(0xFFFFFFFF),
+  );
+
+  // Dark AppBar Theme
+  static const darkAppBarTheme = AppBarTheme(
+    elevation: 0,
+    centerTitle: false,
+    scrolledUnderElevation: 0,
+    backgroundColor: Color(0xFF121212),
+    surfaceTintColor: Color(0xFF121212),
+    foregroundColor: Color(0xFFE1E1E1),
+    iconTheme: IconThemeData(
+      color: Color(0xFFE1E1E1),
+      size: 24,
+      opacity: 1.0,
+    ),
+    actionsIconTheme: IconThemeData(
+      color: Color(0xFFE1E1E1),
+      size: 24,
+      opacity: 1.0,
+    ),
+    titleTextStyle: TextStyle(
+      fontSize: 22,
+      fontWeight: FontWeight.w400,
+      color: Color(0xFFE1E1E1),
+      letterSpacing: 0,
+      height: 1.27,
+    ),
+    toolbarTextStyle: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: Color(0xFFE1E1E1),
+      letterSpacing: 0.15,
+      height: 1.50,
+    ),
+    systemOverlayStyle: SystemUiOverlayStyle.light,
+    shadowColor: Color(0xFF000000),
+    surfaceTintColor: Color(0xFF121212),
+  );
+}
+''';
+
+    final file = File('lib/themes/custom_themes/appbar_theme.dart');
+    await file.writeAsString(content);
+  }
+
+  /// Create elevated_btn_theme.dart file
+  Future<void> _createElevatedButtonThemeFile() async {
+    final content = '''
+import 'package:flutter/material.dart';
+
+class AppElevatedBtnTheme {
+  AppElevatedBtnTheme._();
+
+  // Light Elevated Button Theme
+  static final lightElevatedButtonTheme = ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      elevation: 1,
+      shadowColor: Color(0xFF000000),
+      backgroundColor: Color(0xFF1976D2),
+      foregroundColor: Color(0xFFFFFFFF),
+      disabledBackgroundColor: Color(0xFFE0E0E0),
+      disabledForegroundColor: Color(0xFF9E9E9E),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      minimumSize: Size(64, 40),
+      maximumSize: Size.infinite,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide.none,
+      ),
+      textStyle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.1,
+        height: 1.43,
+      ),
+      animationDuration: Duration(milliseconds: 200),
+      enableFeedback: true,
+      alignment: Alignment.center,
+      visualDensity: VisualDensity.standard,
+    ),
+  );
+
+  // Dark Elevated Button Theme
+  static final darkElevatedButtonTheme = ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      elevation: 1,
+      shadowColor: Color(0xFF000000),
+      backgroundColor: Color(0xFF90CAF9),
+      foregroundColor: Color(0xFF000000),
+      disabledBackgroundColor: Color(0xFF424242),
+      disabledForegroundColor: Color(0xFF757575),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      minimumSize: Size(64, 40),
+      maximumSize: Size.infinite,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide.none,
+      ),
+      textStyle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.1,
+        height: 1.43,
+      ),
+      animationDuration: Duration(milliseconds: 200),
+      enableFeedback: true,
+      alignment: Alignment.center,
+      visualDensity: VisualDensity.standard,
+    ),
+  );
+}
+''';
+
+    final file = File('lib/themes/custom_themes/elevated_btn_theme.dart');
+    await file.writeAsString(content);
+  }
+
+  /// Create text_btn_theme.dart file
+  Future<void> _createTextButtonThemeFile() async {
+    final content = '''
+import 'package:flutter/material.dart';
+
+class AppTextBtnTheme {
+  AppTextBtnTheme._();
+
+  // Light Text Button Theme
+  static final lightTextButtonTheme = TextButtonThemeData(
+    style: TextButton.styleFrom(
+      foregroundColor: Color(0xFF1976D2),
+      disabledForegroundColor: Color(0xFF9E9E9E),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      minimumSize: Size(48, 40),
+      maximumSize: Size.infinite,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide.none,
+      ),
+      textStyle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.1,
+        height: 1.43,
+      ),
+      animationDuration: Duration(milliseconds: 200),
+      enableFeedback: true,
+      alignment: Alignment.center,
+      visualDensity: VisualDensity.standard,
+      overlayColor: MaterialStateProperty.resolveWith<Color?>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.pressed)) {
+            return Color(0xFF1976D2).withOpacity(0.12);
+          }
+          if (states.contains(MaterialState.hovered)) {
+            return Color(0xFF1976D2).withOpacity(0.08);
+          }
+          if (states.contains(MaterialState.focused)) {
+            return Color(0xFF1976D2).withOpacity(0.12);
+          }
+          return null;
+        },
+      ),
+    ),
+  );
+
+  // Dark Text Button Theme
+  static final darkTextButtonTheme = TextButtonThemeData(
+    style: TextButton.styleFrom(
+      foregroundColor: Color(0xFF90CAF9),
+      disabledForegroundColor: Color(0xFF757575),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      minimumSize: Size(48, 40),
+      maximumSize: Size.infinite,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide.none,
+      ),
+      textStyle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.1,
+        height: 1.43,
+      ),
+      animationDuration: Duration(milliseconds: 200),
+      enableFeedback: true,
+      alignment: Alignment.center,
+      visualDensity: VisualDensity.standard,
+      overlayColor: MaterialStateProperty.resolveWith<Color?>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.pressed)) {
+            return Color(0xFF90CAF9).withOpacity(0.12);
+          }
+          if (states.contains(MaterialState.hovered)) {
+            return Color(0xFF90CAF9).withOpacity(0.08);
+          }
+          if (states.contains(MaterialState.focused)) {
+            return Color(0xFF90CAF9).withOpacity(0.12);
+          }
+          return null;
+        },
+      ),
+    ),
+  );
+}
+''';
+
+    final file = File('lib/themes/custom_themes/text_btn_theme.dart');
+    await file.writeAsString(content);
+  }
+
+  /// Create outlined_btn_theme.dart file
+  Future<void> _createOutlinedButtonThemeFile() async {
+    final content = '''
+import 'package:flutter/material.dart';
+
+class AppOutlinedBtnTheme {
+  AppOutlinedBtnTheme._();
+
+  // Light Outlined Button Theme
+  static final lightOutlineButtonTheme = OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      foregroundColor: Color(0xFF1976D2),
+      disabledForegroundColor: Color(0xFF9E9E9E),
+      side: BorderSide(color: Color(0xFF1976D2), width: 1),
+      disabledSide: BorderSide(color: Color(0xFFE0E0E0), width: 1),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      minimumSize: Size(64, 40),
+      maximumSize: Size.infinite,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      textStyle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.1,
+        height: 1.43,
+      ),
+      animationDuration: Duration(milliseconds: 200),
+      enableFeedback: true,
+      alignment: Alignment.center,
+      visualDensity: VisualDensity.standard,
+      overlayColor: MaterialStateProperty.resolveWith<Color?>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.pressed)) {
+            return Color(0xFF1976D2).withOpacity(0.12);
+          }
+          if (states.contains(MaterialState.hovered)) {
+            return Color(0xFF1976D2).withOpacity(0.08);
+          }
+          if (states.contains(MaterialState.focused)) {
+            return Color(0xFF1976D2).withOpacity(0.12);
+          }
+          return null;
+        },
+      ),
+    ),
+  );
+
+  // Dark Outlined Button Theme
+  static final darkOutlineButtonTheme = OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      foregroundColor: Color(0xFF90CAF9),
+      disabledForegroundColor: Color(0xFF757575),
+      side: BorderSide(color: Color(0xFF90CAF9), width: 1),
+      disabledSide: BorderSide(color: Color(0xFF424242), width: 1),
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      minimumSize: Size(64, 40),
+      maximumSize: Size.infinite,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      textStyle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 0.1,
+        height: 1.43,
+      ),
+      animationDuration: Duration(milliseconds: 200),
+      enableFeedback: true,
+      alignment: Alignment.center,
+      visualDensity: VisualDensity.standard,
+      overlayColor: MaterialStateProperty.resolveWith<Color?>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.pressed)) {
+            return Color(0xFF90CAF9).withOpacity(0.12);
+          }
+          if (states.contains(MaterialState.hovered)) {
+            return Color(0xFF90CAF9).withOpacity(0.08);
+          }
+          if (states.contains(MaterialState.focused)) {
+            return Color(0xFF90CAF9).withOpacity(0.12);
+          }
+          return null;
+        },
+      ),
+    ),
+  );
+}
+''';
+
+    final file = File('lib/themes/custom_themes/outlined_btn_theme.dart');
+    await file.writeAsString(content);
+  }
+
+  /// Create text_field_theme.dart file
+  Future<void> _createTextFormFieldThemeFile() async {
+    final content = '''
+import 'package:flutter/material.dart';
+
+class AppTextFormFieldTheme {
+  AppTextFormFieldTheme._();
+
+  // Light Input Decoration Theme
+  static final lightInputDecorationTheme = InputDecorationTheme(
+    filled: true,
+    fillColor: Color(0xFFF5F5F5),
+    hintStyle: TextStyle(
+      color: Color(0xFF9E9E9E),
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.5,
+      height: 1.50,
+    ),
+    labelStyle: TextStyle(
+      color: Color(0xFF1976D2),
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.5,
+      height: 1.50,
+    ),
+    floatingLabelStyle: TextStyle(
+      color: Color(0xFF1976D2),
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.4,
+      height: 1.33,
+    ),
+    errorStyle: TextStyle(
+      color: Color(0xFFB00020),
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.4,
+      height: 1.33,
+    ),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Color(0xFFE0E0E0), width: 1),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Color(0xFFE0E0E0), width: 1),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Color(0xFF1976D2), width: 2),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Color(0xFFB00020), width: 1),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Color(0xFFB00020), width: 2),
+    ),
+    disabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Color(0xFFE0E0E0), width: 1),
+    ),
+    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    isDense: false,
+    isCollapsed: false,
+    counterStyle: TextStyle(
+      color: Color(0xFF9E9E9E),
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.4,
+      height: 1.33,
+    ),
+    prefixIconColor: Color(0xFF1976D2),
+    suffixIconColor: Color(0xFF1976D2),
+    iconColor: Color(0xFF1976D2),
+  );
+
+  // Dark Input Decoration Theme
+  static final darkInputDecorationTheme = InputDecorationTheme(
+    filled: true,
+    fillColor: Color(0xFF2C2C2C),
+    hintStyle: TextStyle(
+      color: Color(0xFF757575),
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.5,
+      height: 1.50,
+    ),
+    labelStyle: TextStyle(
+      color: Color(0xFF90CAF9),
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.5,
+      height: 1.50,
+    ),
+    floatingLabelStyle: TextStyle(
+      color: Color(0xFF90CAF9),
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.4,
+      height: 1.33,
+    ),
+    errorStyle: TextStyle(
+      color: Color(0xFFCF6679),
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.4,
+      height: 1.33,
+    ),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Color(0xFF424242), width: 1),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Color(0xFF424242), width: 1),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Color(0xFF90CAF9), width: 2),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Color(0xFFCF6679), width: 1),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Color(0xFFCF6679), width: 2),
+    ),
+    disabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Color(0xFF424242), width: 1),
+    ),
+    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    isDense: false,
+    isCollapsed: false,
+    counterStyle: TextStyle(
+      color: Color(0xFF757575),
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0.4,
+      height: 1.33,
+    ),
+    prefixIconColor: Color(0xFF90CAF9),
+    suffixIconColor: Color(0xFF90CAF9),
+    iconColor: Color(0xFF90CAF9),
+  );
+}
+''';
+
+    final file = File('lib/themes/custom_themes/text_field_theme.dart');
+    await file.writeAsString(content);
+  }
+
+  /// Create checkbox_theme.dart file
+  Future<void> _createCheckboxThemeFile() async {
+    final content = '''
+import 'package:flutter/material.dart';
+
+class AppCheckBoxTheme {
+  AppCheckBoxTheme._();
+
+  // Light Checkbox Theme
+  static final lightCheckboxTheme = CheckboxThemeData(
+    fillColor: MaterialStateProperty.resolveWith<Color?>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return Color(0xFFE0E0E0);
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Color(0xFF1976D2);
+        }
+        return Color(0xFFFFFFFF);
+      },
+    ),
+    checkColor: MaterialStateProperty.resolveWith<Color?>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return Color(0xFF9E9E9E);
+        }
+        return Color(0xFFFFFFFF);
+      },
+    ),
+    overlayColor: MaterialStateProperty.resolveWith<Color?>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.pressed)) {
+          return Color(0xFF1976D2).withOpacity(0.12);
+        }
+        if (states.contains(MaterialState.hovered)) {
+          return Color(0xFF1976D2).withOpacity(0.08);
+        }
+        if (states.contains(MaterialState.focused)) {
+          return Color(0xFF1976D2).withOpacity(0.12);
+        }
+        return null;
+      },
+    ),
+    side: BorderSide(
+      color: Color(0xFF1976D2),
+      width: 2,
+      style: BorderStyle.solid,
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(4),
+    ),
+    splashRadius: 20,
+    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    visualDensity: VisualDensity.standard,
+  );
+
+  // Dark Checkbox Theme
+  static final darkCheckboxTheme = CheckboxThemeData(
+    fillColor: MaterialStateProperty.resolveWith<Color?>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return Color(0xFF424242);
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Color(0xFF90CAF9);
+        }
+        return Color(0xFF121212);
+      },
+    ),
+    checkColor: MaterialStateProperty.resolveWith<Color?>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return Color(0xFF757575);
+        }
+        return Color(0xFF000000);
+      },
+    ),
+    overlayColor: MaterialStateProperty.resolveWith<Color?>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.pressed)) {
+          return Color(0xFF90CAF9).withOpacity(0.12);
+        }
+        if (states.contains(MaterialState.hovered)) {
+          return Color(0xFF90CAF9).withOpacity(0.08);
+        }
+        if (states.contains(MaterialState.focused)) {
+          return Color(0xFF90CAF9).withOpacity(0.12);
+        }
+        return null;
+      },
+    ),
+    side: BorderSide(
+      color: Color(0xFF90CAF9),
+      width: 2,
+      style: BorderStyle.solid,
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(4),
+    ),
+    splashRadius: 20,
+    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    visualDensity: VisualDensity.standard,
+  );
+}
+''';
+
+    final file = File('lib/themes/custom_themes/checkbox_theme.dart');
+    await file.writeAsString(content);
+  }
+
+  /// Create bottom_sheet_theme.dart file
+  Future<void> _createBottomSheetThemeFile() async {
+    final content = '''
+import 'package:flutter/material.dart';
+
+class AppBottomSheetTheme {
+  AppBottomSheetTheme._();
+
+  // Light Bottom Sheet Theme
+  static final lightBottomSheetTheme = BottomSheetThemeData(
+    backgroundColor: Color(0xFFFFFFFF),
+    surfaceTintColor: Color(0xFFFFFFFF),
+    elevation: 8,
+    shadowColor: Color(0xFF000000),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      side: BorderSide.none,
+    ),
+    clipBehavior: Clip.antiAlias,
+    constraints: BoxConstraints(
+      maxHeight: double.infinity,
+      minHeight: 0,
+    ),
+    showDragHandle: true,
+    dragHandleColor: Color(0xFFE0E0E0),
+    dragHandleSize: Size(32, 4),
+  );
+
+  // Dark Bottom Sheet Theme
+  static final darkBottomSheetTheme = BottomSheetThemeData(
+    backgroundColor: Color(0xFF121212),
+    surfaceTintColor: Color(0xFF121212),
+    elevation: 8,
+    shadowColor: Color(0xFF000000),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      side: BorderSide.none,
+    ),
+    clipBehavior: Clip.antiAlias,
+    constraints: BoxConstraints(
+      maxHeight: double.infinity,
+      minHeight: 0,
+    ),
+    showDragHandle: true,
+    dragHandleColor: Color(0xFF424242),
+    dragHandleSize: Size(32, 4),
+  );
+}
+''';
+
+    final file = File('lib/themes/custom_themes/bottom_sheet_theme.dart');
+    await file.writeAsString(content);
+  }
+
+  /// Create chip_theme.dart file
+  Future<void> _createChipThemeFile() async {
+    final content = '''
+import 'package:flutter/material.dart';
+
+class AppChipTheme {
+  AppChipTheme._();
+
+  // Light Chip Theme
+  static final lightChipTheme = ChipThemeData(
+    backgroundColor: Color(0xFFE0E0E0),
+    deleteIconColor: Color(0xFF1976D2),
+    disabledColor: Color(0xFFF5F5F5),
+    selectedColor: Color(0xFF1976D2),
+    secondarySelectedColor: Color(0xFFE3F2FD),
+    shadowColor: Color(0xFF000000),
+    surfaceTintColor: Color(0xFF1976D2),
+    labelStyle: TextStyle(
+      color: Color(0xFF1C1B1F),
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.1,
+      height: 1.43,
+    ),
+    secondaryLabelStyle: TextStyle(
+      color: Color(0xFF1976D2),
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.1,
+      height: 1.43,
+    ),
+    brightness: Brightness.light,
+    elevation: 0,
+    pressElevation: 2,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+      side: BorderSide.none,
+    ),
+    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    labelPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    visualDensity: VisualDensity.standard,
+    side: BorderSide.none,
+  );
+
+  // Dark Chip Theme
+  static final darkChipTheme = ChipThemeData(
+    backgroundColor: Color(0xFF424242),
+    deleteIconColor: Color(0xFF90CAF9),
+    disabledColor: Color(0xFF2C2C2C),
+    selectedColor: Color(0xFF90CAF9),
+    secondarySelectedColor: Color(0xFF1A237E),
+    shadowColor: Color(0xFF000000),
+    surfaceTintColor: Color(0xFF90CAF9),
+    labelStyle: TextStyle(
+      color: Color(0xFFE1E1E1),
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.1,
+      height: 1.43,
+    ),
+    secondaryLabelStyle: TextStyle(
+      color: Color(0xFF90CAF9),
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.1,
+      height: 1.43,
+    ),
+    brightness: Brightness.dark,
+    elevation: 0,
+    pressElevation: 2,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+      side: BorderSide.none,
+    ),
+    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    labelPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    visualDensity: VisualDensity.standard,
+    side: BorderSide.none,
+  );
+}
+''';
+
+    final file = File('lib/themes/custom_themes/chip_theme.dart');
+    await file.writeAsString(content);
+  }
+
+  /// Create themes_imports.dart file
+  Future<void> _createThemesImportsFile() async {
+    final content = '''
+// Themes Imports
+// This file contains all theme imports for easy management
+
+export 'text_theme.dart';
+export 'appbar_theme.dart';
+export 'elevated_btn_theme.dart';
+export 'text_btn_theme.dart';
+export 'outlined_btn_theme.dart';
+export 'text_field_theme.dart';
+export 'checkbox_theme.dart';
+export 'bottom_sheet_theme.dart';
+export 'chip_theme.dart';
+''';
+
+    final file = File('lib/themes/custom_themes/themes_imports.dart');
+    await file.writeAsString(content);
   }
 }

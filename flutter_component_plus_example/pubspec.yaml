@@ -32,9 +32,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   get: ^4.6.6
   flutter_components_plus: {path: ../}
-  flutter_blue_plus: ^1.32.10
-  permission_handler: ^11.3.1
-  fl_chart: ^1.0.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -108,6 +108,13 @@ class ListCommand {
         'dependencies': [],
         'permissions': [],
       },
+      {
+        'name': 'themes',
+        'description':
+            'Complete theme system with light/dark variants and organized theme files',
+        'dependencies': [],
+        'permissions': [],
+      },
     ];
 
     for (final component in components) {

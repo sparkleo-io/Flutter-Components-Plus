@@ -93,6 +93,7 @@ class RemoveCommand {
       print('  • pdf_viewer');
       print('  • switch');
       print('  • navigation');
+      print('  • themes');
       print('');
       print('Usage: fcp remove component <component_name>');
       return;
