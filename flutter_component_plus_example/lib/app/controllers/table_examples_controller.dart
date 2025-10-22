@@ -186,15 +186,6 @@ class TableExamplesController extends GetxController {
       'displayName': 'Department',
       'key': 'department',
       'sort': true,
-      'filter': {
-        'data': [
-          {'displayName': 'Engineering', 'value': 'engineering'},
-          {'displayName': 'Marketing', 'value': 'marketing'},
-          {'displayName': 'Sales', 'value': 'sales'},
-          {'displayName': 'HR', 'value': 'hr'},
-          {'displayName': 'Finance', 'value': 'finance'},
-        ],
-      },
     },
     {
       'columnName': 'salary',
@@ -207,12 +198,6 @@ class TableExamplesController extends GetxController {
       'displayName': 'Status',
       'key': 'status',
       'sort': true,
-      'filter': {
-        'data': [
-          {'displayName': 'Active', 'value': 'active'},
-          {'displayName': 'Inactive', 'value': 'inactive'},
-        ],
-      },
     },
     {
       'columnName': 'joinDate',

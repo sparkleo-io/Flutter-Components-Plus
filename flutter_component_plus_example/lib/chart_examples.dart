@@ -1,7 +1,7 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
-import 'app/widgets/live_current_chart.dart';
 
 /// Comprehensive examples for FCPChart component
 class FCPChartExamples extends StatelessWidget {
@@ -54,6 +54,11 @@ class FCPChartExamples extends StatelessWidget {
             // const SizedBox(height: 16),
             // _buildLiveCurrentChart(),
             // const SizedBox(height: 32),
+            _buildSectionTitle('Live Graphs'),
+            const SizedBox(height: 16),
+            _buildLiveGraphExamples(),
+            const SizedBox(height: 32),
+
             _buildSectionTitle('Charts with Legends'),
             const SizedBox(height: 16),
             _buildChartsWithLegends(),
@@ -200,12 +205,12 @@ class FCPChartExamples extends StatelessWidget {
             drawVerticalLine: true,
             drawHorizontalLine: true,
             getDrawingHorizontalLine: (value) => FCPLine(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withValues(alpha: 0.3),
               strokeWidth: 1,
               dashArray: [5, 5],
             ),
             getDrawingVerticalLine: (value) => FCPLine(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withValues(alpha: 0.3),
               strokeWidth: 1,
               dashArray: [5, 5],
             ),
@@ -292,8 +297,21 @@ class FCPChartExamples extends StatelessWidget {
     return FCPChartQuickExamples.currentMeasurementChart();
   }
 
-  Widget _buildLiveCurrentChart() {
-    return const LiveCurrentChart();
+  Widget _buildLiveGraphExamples() {
+    return Column(
+      children: [
+        // Live updating graph example
+        const LiveGraphExample(),
+        const SizedBox(height: 16),
+
+        // Multi-series live graph
+        const MultiSeriesLiveGraphExample(),
+        const SizedBox(height: 16),
+
+        // Professional styled live graph
+        const ProfessionalLiveGraphExample(),
+      ],
+    );
   }
 
   Widget _buildChartsWithLegends() {
@@ -334,6 +352,464 @@ class FCPChartExamples extends StatelessWidget {
       const FCPChartData(x: 2, y: 20, label: 'Q3'),
       const FCPChartData(x: 3, y: 35, label: 'Q4'),
     ];
+  }
+}
+
+/// Live updating graph example with real-time data
+class LiveGraphExample extends StatefulWidget {
+  const LiveGraphExample({super.key});
+
+  @override
+  State<LiveGraphExample> createState() => _LiveGraphExampleState();
+}
+
+class _LiveGraphExampleState extends State<LiveGraphExample> {
+  final List<FcpLiveGraphData> _liveData = [];
+  final Random _random = Random();
+  Timer? _timer;
+  double _xValue = 0;
+  bool _isRunning = false;
+
+  // Configuration for data management
+  static const bool _persistentData = false;
+  static const int _maxDataPoints = 50;
+  static const int _maxVisibleDataPoints = 30;
+
+  @override
+  void initState() {
+    super.initState();
+    // Add initial value
+    _liveData.add(FcpLiveGraphData(x: _xValue, y: _randomY()));
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startLiveUpdates() {
+    if (_isRunning) return;
+
+    setState(() {
+      _isRunning = true;
+    });
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _xValue++;
+        _liveData.add(FcpLiveGraphData(x: _xValue, y: _randomY()));
+
+        // Data management based on configuration
+        if (!_persistentData && _liveData.length > _maxDataPoints) {
+          _liveData.removeAt(0);
+        }
+      });
+    });
+  }
+
+  void _stopLiveUpdates() {
+    _timer?.cancel();
+    setState(() {
+      _isRunning = false;
+    });
+  }
+
+  void _resetData() {
+    _timer?.cancel();
+    setState(() {
+      _liveData.clear();
+      _xValue = 0;
+      _isRunning = false;
+      // Add initial value
+      _liveData.add(FcpLiveGraphData(x: _xValue, y: _randomY()));
+    });
+  }
+
+  double _randomY() {
+    return double.parse(
+      (_random.nextDouble() * 2).toStringAsFixed(2),
+    ); // Range 0.0 → 2.0
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Control buttons
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: _isRunning ? _stopLiveUpdates : _startLiveUpdates,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _isRunning ? Colors.red : Colors.green,
+                foregroundColor: Colors.white,
+              ),
+              child: Text(_isRunning ? 'Stop' : 'Start'),
+            ),
+            const SizedBox(width: 16),
+            ElevatedButton(onPressed: _resetData, child: const Text('Reset')),
+          ],
+        ),
+        const SizedBox(height: 16),
+
+        // Live graph
+        FcpLiveGraph.single(
+          data: _liveData,
+          color: const Color(0xFFFFBC00),
+          name: 'Current',
+          config: FcpLiveGraphConfig(
+            title: 'Live Current Measurement',
+            subtitle: _isRunning
+                ? 'Real-time current monitoring (${_liveData.length} points)'
+                : 'Click Start to begin live updates',
+            height: 250,
+            showLegend: true,
+            persistentData: _persistentData,
+            maxDataPoints: _maxDataPoints,
+            maxVisibleDataPoints: _maxVisibleDataPoints,
+            yAxis: const FcpLiveGraphAxis(
+              title: 'Current',
+              unit: ' A',
+              interval: 0.5,
+              min: 0,
+              max: 2.5,
+            ),
+            xAxis: FcpLiveGraphAxis(
+              title: 'Time',
+              unit: 's',
+              interval: 5,
+              min: _liveData.isNotEmpty ? _liveData.first.x : 0,
+              max: _liveData.isNotEmpty ? _liveData.last.x + 5 : 10,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Multi-series live graph example
+class MultiSeriesLiveGraphExample extends StatefulWidget {
+  const MultiSeriesLiveGraphExample({super.key});
+
+  @override
+  State<MultiSeriesLiveGraphExample> createState() =>
+      _MultiSeriesLiveGraphExampleState();
+}
+
+class _MultiSeriesLiveGraphExampleState
+    extends State<MultiSeriesLiveGraphExample> {
+  final List<FcpLiveGraphData> _currentData = [];
+  final List<FcpLiveGraphData> _voltageData = [];
+  final Random _random = Random();
+  Timer? _timer;
+  double _xValue = 0;
+  bool _isRunning = false;
+
+  // Configuration for data management
+  static const bool _persistentData = true; // Keep all data for multi-series
+  static const int _maxDataPoints = 30;
+  static const int _maxVisibleDataPoints = 20;
+
+  @override
+  void initState() {
+    super.initState();
+    // Add initial values
+    _currentData.add(FcpLiveGraphData(x: _xValue, y: _randomCurrent()));
+    _voltageData.add(FcpLiveGraphData(x: _xValue, y: _randomVoltage()));
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startLiveUpdates() {
+    if (_isRunning) return;
+
+    setState(() {
+      _isRunning = true;
+    });
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _xValue++;
+        _currentData.add(FcpLiveGraphData(x: _xValue, y: _randomCurrent()));
+        _voltageData.add(FcpLiveGraphData(x: _xValue, y: _randomVoltage()));
+
+        // Data management based on configuration
+        if (!_persistentData && _currentData.length > _maxDataPoints) {
+          _currentData.removeAt(0);
+          _voltageData.removeAt(0);
+        }
+      });
+    });
+  }
+
+  void _stopLiveUpdates() {
+    _timer?.cancel();
+    setState(() {
+      _isRunning = false;
+    });
+  }
+
+  void _resetData() {
+    _timer?.cancel();
+    setState(() {
+      _currentData.clear();
+      _voltageData.clear();
+      _xValue = 0;
+      _isRunning = false;
+      // Add initial values
+      _currentData.add(FcpLiveGraphData(x: _xValue, y: _randomCurrent()));
+      _voltageData.add(FcpLiveGraphData(x: _xValue, y: _randomVoltage()));
+    });
+  }
+
+  double _randomCurrent() {
+    return double.parse(
+      (_random.nextDouble() * 2).toStringAsFixed(2),
+    ); // Range 0.0 → 2.0
+  }
+
+  double _randomVoltage() {
+    return double.parse(
+      (_random.nextDouble() * 4 + 1).toStringAsFixed(2),
+    ); // Range 1.0 → 5.0
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Control buttons
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: _isRunning ? _stopLiveUpdates : _startLiveUpdates,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _isRunning ? Colors.red : Colors.green,
+                foregroundColor: Colors.white,
+              ),
+              child: Text(_isRunning ? 'Stop' : 'Start'),
+            ),
+            const SizedBox(width: 16),
+            ElevatedButton(onPressed: _resetData, child: const Text('Reset')),
+          ],
+        ),
+        const SizedBox(height: 16),
+
+        // Multi-series live graph
+        FcpLiveGraph.multi(
+          series: [
+            FcpLiveGraphSeries(
+              data: _currentData,
+              color: const Color(0xFFFFBC00),
+              name: 'Current',
+              lineWidth: 2.0,
+              showDots: false,
+            ),
+            FcpLiveGraphSeries(
+              data: _voltageData,
+              color: const Color(0xFF01B2A8),
+              name: 'Voltage',
+              lineWidth: 2.0,
+              showDots: false,
+            ),
+          ],
+          config: FcpLiveGraphConfig(
+            title: 'Live Current & Voltage',
+            subtitle: _isRunning
+                ? 'Dual parameter monitoring (${_currentData.length} points)'
+                : 'Click Start to begin live updates',
+            height: 250,
+            showLegend: true,
+            persistentData: _persistentData,
+            maxDataPoints: _maxDataPoints,
+            maxVisibleDataPoints: _maxVisibleDataPoints,
+            yAxis: const FcpLiveGraphAxis(
+              title: 'Value',
+              unit: '',
+              interval: 1,
+              min: 0,
+              max: 6,
+            ),
+            xAxis: FcpLiveGraphAxis(
+              title: 'Time',
+              unit: 's',
+              interval: 5,
+              min: _currentData.isNotEmpty ? _currentData.first.x : 0,
+              max: _currentData.isNotEmpty ? _currentData.last.x + 5 : 10,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Professional styled live graph example
+class ProfessionalLiveGraphExample extends StatefulWidget {
+  const ProfessionalLiveGraphExample({super.key});
+
+  @override
+  State<ProfessionalLiveGraphExample> createState() =>
+      _ProfessionalLiveGraphExampleState();
+}
+
+class _ProfessionalLiveGraphExampleState
+    extends State<ProfessionalLiveGraphExample> {
+  final List<FcpLiveGraphData> _batteryData = [];
+  final Random _random = Random();
+  Timer? _timer;
+  double _xValue = 0;
+  bool _isRunning = false;
+
+  // Configuration for data management
+  static const bool _persistentData = false; // Remove old data for performance
+  static const int _maxDataPoints = 100;
+  static const int _maxVisibleDataPoints = 50;
+
+  @override
+  void initState() {
+    super.initState();
+    // Add initial value
+    _batteryData.add(FcpLiveGraphData(x: _xValue, y: _randomBatteryCurrent()));
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startLiveUpdates() {
+    if (_isRunning) return;
+
+    setState(() {
+      _isRunning = true;
+    });
+
+    _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      setState(() {
+        _xValue += 0.5;
+        _batteryData.add(
+          FcpLiveGraphData(x: _xValue, y: _randomBatteryCurrent()),
+        );
+
+        // Data management based on configuration
+        if (!_persistentData && _batteryData.length > _maxDataPoints) {
+          _batteryData.removeAt(0);
+        }
+      });
+    });
+  }
+
+  void _stopLiveUpdates() {
+    _timer?.cancel();
+    setState(() {
+      _isRunning = false;
+    });
+  }
+
+  void _resetData() {
+    _timer?.cancel();
+    setState(() {
+      _batteryData.clear();
+      _xValue = 0;
+      _isRunning = false;
+      // Add initial value
+      _batteryData.add(
+        FcpLiveGraphData(x: _xValue, y: _randomBatteryCurrent()),
+      );
+    });
+  }
+
+  double _randomBatteryCurrent() {
+    // Simulate battery current with some realistic patterns
+    double base = 1.5 + _random.nextDouble() * 0.5; // Base 1.5-2.0A
+    double noise = (_random.nextDouble() - 0.5) * 0.2; // ±0.1A noise
+    return double.parse((base + noise).toStringAsFixed(2));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Control buttons
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: _isRunning ? _stopLiveUpdates : _startLiveUpdates,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _isRunning ? Colors.red : Colors.green,
+                foregroundColor: Colors.white,
+              ),
+              child: Text(_isRunning ? 'Stop' : 'Start'),
+            ),
+            const SizedBox(width: 16),
+            ElevatedButton(onPressed: _resetData, child: const Text('Reset')),
+          ],
+        ),
+        const SizedBox(height: 16),
+
+        // Professional styled live graph
+        FcpLiveGraph.single(
+          data: _batteryData,
+          color: const Color(0xFF2E7D32),
+          name: 'Battery Current',
+          config: FcpLiveGraphConfig(
+            title: 'Battery Current Monitoring',
+            subtitle: _isRunning
+                ? 'Professional monitoring dashboard (${_batteryData.length} points)'
+                : 'Click Start to begin live updates',
+            height: 300,
+            backgroundColor: const Color(0xFFF5F5F5),
+            borderRadius: 16,
+            showBorder: true,
+            borderColor: const Color(0xFFE0E0E0),
+            borderWidth: 2,
+            showLegend: true,
+            showTooltips: true,
+            tooltipBackgroundColor: const Color(0xFF424242),
+            tooltipTextColor: Colors.white,
+            tooltipBorderRadius: 8,
+            persistentData: _persistentData,
+            maxDataPoints: _maxDataPoints,
+            maxVisibleDataPoints: _maxVisibleDataPoints,
+            yAxis: const FcpLiveGraphAxis(
+              title: 'Current',
+              unit: ' A',
+              interval: 0.5,
+              min: 1.0,
+              max: 2.5,
+              showGrid: true,
+              gridColor: Color(0xFFE0E0E0),
+              gridWidth: 1,
+              showDashedLines: true,
+              dashArray: [5, 5],
+            ),
+            xAxis: FcpLiveGraphAxis(
+              title: 'Time',
+              unit: 's',
+              interval: 10,
+              min: _batteryData.isNotEmpty ? _batteryData.first.x : 0,
+              max: _batteryData.isNotEmpty ? _batteryData.last.x + 10 : 20,
+              showGrid: true,
+              gridColor: const Color(0xFFE0E0E0),
+              gridWidth: 1,
+              showDashedLines: true,
+              dashArray: [5, 5],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -438,12 +914,12 @@ class FCPChartQuickExamples {
         drawVerticalLine: true,
         drawHorizontalLine: true,
         getDrawingHorizontalLine: (value) => FCPLine(
-          color: Colors.blue.withOpacity(0.2),
+          color: Colors.blue.withValues(alpha: 0.2),
           strokeWidth: 2,
           dashArray: [10, 5],
         ),
         getDrawingVerticalLine: (value) => FCPLine(
-          color: Colors.red.withOpacity(0.2),
+          color: Colors.red.withValues(alpha: 0.2),
           strokeWidth: 2,
           dashArray: [10, 5],
         ),
@@ -458,7 +934,7 @@ class FCPChartQuickExamples {
               return Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
+                  color: Colors.blue.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
@@ -587,9 +1063,9 @@ class FCPChartQuickExamples {
         horizontalInterval: 0.5, // Every 0.5 A
         verticalInterval: 1.0, // Every 1 hour
         getDrawingHorizontalLine: (value) =>
-            FCPLine(color: Colors.grey.withOpacity(0.4), strokeWidth: 1),
+            FCPLine(color: Colors.grey.withValues(alpha: 0.4), strokeWidth: 1),
         getDrawingVerticalLine: (value) =>
-            FCPLine(color: Colors.grey.withOpacity(0.4), strokeWidth: 1),
+            FCPLine(color: Colors.grey.withValues(alpha: 0.4), strokeWidth: 1),
       ),
       customTitlesData: FCPTitlesData(
         show: true,
@@ -605,11 +1081,12 @@ class FCPChartQuickExamples {
             reservedSize: 30,
             interval: 1.0, // Every hour
             getTitlesWidget: (value, meta) {
-              if (value == 0)
+              if (value == 0) {
                 return const Text(
                   '0s',
                   style: TextStyle(color: Colors.black87, fontSize: 12),
                 );
+              }
               return Text(
                 '${value.toInt()}h',
                 style: const TextStyle(color: Colors.black87, fontSize: 12),

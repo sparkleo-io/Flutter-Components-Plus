@@ -21,6 +21,11 @@ class TableExamples extends StatelessWidget {
           _buildSection('Basic Data Table', [
             _buildBasicTable(context, controller),
           ], controller),
+          const SizedBox(height: 32),
+          _buildSection('Data Table with Advanced Filtering', [
+            _buildFilteringTable(context, controller),
+            const SizedBox(height: 16),
+          ], controller),
           // const SizedBox(height: 32),
           // _buildSection('Advanced Data Table with Actions', [
           //   _buildAdvancedTable(),
@@ -290,7 +295,7 @@ class TableExamples extends StatelessWidget {
           totalRecords: controller.filteredTotalRecords,
           rowsPerPage: controller.rowsPerPage,
           fitToScreen: false,
-          availableRowsPerPage: [5, 10, 15, 20],
+          availableRowsPerPage: [5, 10, 15],
           themeConfig: controller.selectedTheme,
           onPageChanged: controller.onPageChanged,
           onRowsPageChanged: controller.onRowsPageChanged,
@@ -307,6 +312,134 @@ class TableExamples extends StatelessWidget {
           //     double.nan, // Let the package determine optimal width
         ),
       ),
+    );
+  }
+
+  Widget _buildFilteringTable(
+    BuildContext context,
+    TableExamplesController controller,
+  ) {
+    return Obx(
+      () => Container(
+        height: 600, // Fixed height for consistency
+        width: double.infinity,
+        child: FCPDataTable(
+          key: ValueKey('filtering_table_${controller.selectedTheme.hashCode}'),
+          dataList: controller.filteredData,
+          columns: controller.columns,
+          page: controller.currentPage,
+          totalRecords: controller.filteredTotalRecords,
+          rowsPerPage: controller.rowsPerPage,
+          fitToScreen: false,
+          availableRowsPerPage: [5, 10, 15],
+          themeConfig: controller.selectedTheme,
+          onPageChanged: controller.onPageChanged,
+          onRowsPageChanged: controller.onRowsPageChanged,
+          onSearch: controller.onSearch,
+          onSort: controller.onSort,
+          onReload: controller.onReload,
+          title: 'Employee Directory with Filters',
+          // Enable filtering features
+          showFiltersInHeader: false, // Show filters in column headers
+          filterableColumns: [
+            'name',
+            'department',
+            'salary',
+            'status',
+            'joinDate',
+          ], // Specify which columns can be filtered
+          // Custom filter function for advanced filtering
+          customFilterFunction: (columnName, value, filterValue) {
+            // Custom filter for status column - supports multiple status values
+            if (columnName == 'status') {
+              final status = value?.toString().toLowerCase();
+              final filterValues = filterValue
+                  .toLowerCase()
+                  .split(',')
+                  .map((s) => s.trim())
+                  .toList();
+
+              // Support filtering by multiple status values (comma-separated)
+              // Examples: "active", "inactive", "active,inactive"
+              // Use exact matching instead of contains to avoid partial matches
+              return filterValues.any((filter) => status == filter);
+            }
+
+            // Custom filter for salary column - supports range filtering
+            if (columnName == 'salary' && value is String) {
+              final salaryStr = value
+                  .toString()
+                  .replaceAll('\$', '')
+                  .replaceAll(',', '');
+              final salary = double.tryParse(salaryStr);
+              if (salary != null) {
+                // Support range filtering like "60000-80000" or single value "70000"
+                if (filterValue.contains('-')) {
+                  final parts = filterValue.split('-');
+                  final min = double.tryParse(parts[0]);
+                  final max = double.tryParse(parts[1]);
+                  if (min != null && max != null) {
+                    return salary >= min && salary <= max;
+                  }
+                } else {
+                  // Single value filtering with tolerance
+                  final targetSalary = double.tryParse(filterValue);
+                  if (targetSalary != null) {
+                    return (salary - targetSalary).abs() <=
+                        5000; // Within $5000 tolerance
+                  }
+                }
+              }
+            }
+
+            // Custom filter for department - supports partial matching
+            if (columnName == 'department') {
+              final department = value?.toString().toLowerCase();
+              final filter = filterValue.toLowerCase();
+
+              // Support abbreviations: "eng" matches "Engineering"
+              if (filter == 'eng') return department == 'engineering';
+              if (filter == 'mkt') return department == 'marketing';
+              if (filter == 'hr') return department == 'hr';
+              if (filter == 'fin') return department == 'finance';
+              if (filter == 'sal') return department == 'sales';
+
+              // Default exact matching for full department names
+              return department == filter;
+            }
+
+            // Default text contains filter for other columns
+            return value?.toString().toLowerCase().contains(
+                  filterValue.toLowerCase(),
+                ) ??
+                false;
+          },
+          columnWidthMode: ColumnWidthMode.fitByColumnName,
+          shrinkWrapColumns: false,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterExample(String title, List<String> examples) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+        ),
+        const SizedBox(height: 4),
+        ...examples.map(
+          (example) => Padding(
+            padding: const EdgeInsets.only(left: 8, top: 2),
+            child: Text(
+              example,
+              style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

@@ -7,6 +7,7 @@ import 'components/paginator.dart';
 import 'extensions/table_extensions.dart';
 import 'types/table_types.dart';
 import 'table_theme_config.dart';
+import 'filter_dialog.dart';
 
 // ignore: must_be_immutable
 class FCPDataTable<T> extends StatelessWidget {
@@ -106,6 +107,12 @@ class FCPDataTable<T> extends StatelessWidget {
   final ColumnDragFeedbackBuilderCallback? columnDragFeedbackBuilder;
   final bool showColumnHeaderIconOnHover;
   final TableThemeConfig? themeConfig;
+
+  // Filtering properties
+  final bool showFiltersInHeader;
+  final List<String>? filterableColumns;
+  final bool Function(String columnName, dynamic value, String filterValue)?
+  customFilterFunction;
 
   FCPDataTable({
     // required this.source,
@@ -207,6 +214,9 @@ class FCPDataTable<T> extends StatelessWidget {
     this.columnDragFeedbackBuilder,
     this.showColumnHeaderIconOnHover = false,
     this.themeConfig,
+    this.showFiltersInHeader = false,
+    this.filterableColumns,
+    this.customFilterFunction,
   }) : assert(frozenColumnsCount >= 0),
        assert(footerFrozenColumnsCount >= 0),
        assert(frozenRowsCount >= 0),
@@ -224,6 +234,7 @@ class FCPDataTable<T> extends StatelessWidget {
       context,
       dataList: dataList,
       themeConfig: themeConfig,
+      customFilterFunction: customFilterFunction,
     );
 
     // Update data source with current pagination settings
@@ -253,6 +264,13 @@ class FCPDataTable<T> extends StatelessWidget {
                 onAddItem: onAddItem,
                 onReload: onReload,
                 themeConfig: themeConfig,
+                filterManager: dataSource.filterManager,
+                onRemoveFilter: (columnName) {
+                  dataSource.updateFilter(columnName, null);
+                },
+                onClearAllFilters: () {
+                  dataSource.clearAllFilters();
+                },
               ),
           FCPProgressIndicator(isBusy),
           if (!isBusy) 4.spaceY,
@@ -436,7 +454,12 @@ class FCPDataTable<T> extends StatelessWidget {
               ),
             // if (column['filter'] != null && )
             //   _SortingHandler(column: column, onSort: onSort),
-            _FilteringHandler(column['filter']),
+            _FilteringHandler(
+              column: column,
+              dataSource: dataSource!,
+              showFiltersInHeader: showFiltersInHeader,
+              filterableColumns: filterableColumns,
+            ),
           ],
         ),
       ),
@@ -491,43 +514,106 @@ IconData _icon(String? order) {
 }
 
 class _FilteringHandler extends StatelessWidget {
-  final Map<String, dynamic>? filter;
-  const _FilteringHandler(this.filter);
+  final Map<String, dynamic> column;
+  final FCPDataSource dataSource;
+  final bool showFiltersInHeader;
+  final List<String>? filterableColumns;
+
+  const _FilteringHandler({
+    required this.column,
+    required this.dataSource,
+    required this.showFiltersInHeader,
+    this.filterableColumns,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final themeConfig =
-        TableThemes.defaultTheme; // Default theme for filtering handler
+    final themeConfig = TableThemes.defaultTheme;
+    final columnName = column['columnName']?.toString() ?? '';
 
-    if (filter != null) {
-      return IconButton(
-        onPressed: () => showDialog(
-          context: context,
-          builder: (_) {
-            return Dialog(
-              child: Column(
-                children:
-                    (filter?['data'] as List<dynamic>?)
-                        ?.map(
-                          (data) => ListTile(
-                            title: Text('${data?['displayName'] ?? 'Unknown'}'),
-                          ),
-                        )
-                        .toList()
-                        .cast<Widget>() ??
-                    [],
-              ),
-            );
-          },
-        ),
-        icon: Icon(
-          Icons.filter_alt_outlined,
-          color: themeConfig.getIconColor(theme),
-          size: 16,
-        ),
-      );
+    // Check if this column should show filters
+    final shouldShowFilter = _shouldShowFilter(columnName);
+
+    if (!shouldShowFilter) {
+      return const SizedBox.shrink();
     }
-    return const SizedBox.shrink();
+
+    final currentFilter = dataSource.filterManager.getFilter(columnName);
+    final hasActiveFilter = currentFilter != null && currentFilter.isNotEmpty;
+
+    return IconButton(
+      onPressed: () => _showFilterDialog(context, columnName),
+      icon: Icon(
+        hasActiveFilter ? Icons.filter_alt : Icons.filter_alt_outlined,
+        color: hasActiveFilter
+            ? theme.primaryColor
+            : themeConfig.getIconColor(theme),
+        size: 16,
+      ),
+    );
+  }
+
+  bool _shouldShowFilter(String columnName) {
+    // If showFiltersInHeader is true, show filters for all columns
+    if (showFiltersInHeader) return true;
+
+    // If filterableColumns is specified, only show for those columns
+    if (filterableColumns != null) {
+      return filterableColumns!.contains(columnName);
+    }
+
+    // Default: show filter if column has filter property
+    return column['filter'] != null;
+  }
+
+  void _showFilterDialog(BuildContext context, String columnName) {
+    // Get unique values for this column
+    final uniqueValues = _getUniqueValuesForColumn(columnName);
+
+    showDialog(
+      context: context,
+      builder: (context) => FilterDialog(
+        columnName: columnName,
+        columnType: _getColumnType(columnName),
+        currentFilter: dataSource.filterManager.getFilter(columnName),
+        uniqueValues: uniqueValues,
+        onFilterChanged: (filter) {
+          dataSource.updateFilter(columnName, filter);
+        },
+      ),
+    );
+  }
+
+  List<dynamic> _getUniqueValuesForColumn(String columnName) {
+    final values = <dynamic>{};
+    for (final row in dataSource.allData) {
+      final cell = row.getCells().firstWhere(
+        (cell) => cell.columnName == columnName,
+        orElse: () => DataGridCell(columnName: columnName, value: null),
+      );
+      if (cell.value != null) {
+        values.add(cell.value);
+      }
+    }
+    return values.toList()..sort();
+  }
+
+  String _getColumnType(String columnName) {
+    // Try to determine column type from the first non-null value
+    for (final row in dataSource.allData) {
+      final cell = row.getCells().firstWhere(
+        (cell) => cell.columnName == columnName,
+        orElse: () => DataGridCell(columnName: columnName, value: null),
+      );
+
+      if (cell.value != null) {
+        if (cell.value is DateTime) return 'date';
+        if (cell.value is num) return 'number';
+        if (cell.value is bool) return 'boolean';
+        return 'text';
+      }
+    }
+    return 'text'; // Default to text
   }
 }

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
+import '../filter_state.dart';
+import '../filter_chips.dart';
 
 class TableHeader extends StatefulWidget {
   final Widget? suffix;
@@ -12,6 +14,9 @@ class TableHeader extends StatefulWidget {
   final void Function()? onReload;
   final void Function()? onAddItem;
   final TableThemeConfig? themeConfig;
+  final FilterManager? filterManager;
+  final Function(String columnName)? onRemoveFilter;
+  final Function()? onClearAllFilters;
 
   const TableHeader({
     super.key,
@@ -24,6 +29,9 @@ class TableHeader extends StatefulWidget {
     this.onAddItem,
     this.onReload,
     this.themeConfig,
+    this.filterManager,
+    this.onRemoveFilter,
+    this.onClearAllFilters,
   });
 
   @override
@@ -95,6 +103,14 @@ class _TableHeaderState extends State<TableHeader> {
               overflow: TextOverflow.ellipsis,
             ),
             16.spaceY,
+            // Filter chips
+            if (widget.filterManager != null)
+              FilterChips(
+                filterManager: widget.filterManager!,
+                onRemoveFilter: widget.onRemoveFilter ?? (columnName) {},
+                onClearAllFilters: widget.onClearAllFilters ?? () {},
+              ),
+            if (widget.filterManager != null) 8.spaceY,
             Row(
               children: [
                 if (widget.search)
