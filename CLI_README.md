@@ -4,11 +4,21 @@ A command-line tool for managing Flutter Components Plus package features, permi
 
 ## Installation
 
-### Global Installation
+### Global Installation (After Publishing)
 
 ```bash
-# Install the package globally
+# Install the package globally (after it's published to pub.dev)
 dart pub global activate flutter_components_plus
+
+# Verify installation
+fcp --version
+```
+
+### Local Development Testing
+
+```bash
+# Install globally from local path (for development)
+dart pub global activate --source path /path/to/flutter_components_plus
 
 # Verify installation
 fcp --version
@@ -19,13 +29,29 @@ fcp --version
 ```bash
 # Add to your project's pubspec.yaml
 dependencies:
-  flutter_components_plus: ^0.0.3
+  flutter_components_plus: ^0.0.1
 
 # Install dependencies
 flutter pub get
 
 # Run CLI commands
 dart run flutter_components_plus:fcp <command>
+```
+
+### Development Testing (Before Publishing)
+
+```bash
+# Navigate to your package directory
+cd /path/to/flutter_components_plus
+
+# Run CLI commands directly
+dart run bin/fcp.dart help
+dart run bin/fcp.dart list components
+dart run bin/fcp.dart add component button
+
+# Or test in a Flutter project
+cd /path/to/your/flutter/project
+dart run /path/to/flutter_components_plus/bin/fcp.dart add component chart
 ```
 
 ## Usage
@@ -81,9 +107,14 @@ This command will add:
 ```bash
 # Add specific components
 fcp add component chart
+fcp add component live_graph
 fcp add component table
 fcp add component button
+fcp add component card
 fcp add component dropdown
+fcp add component inline_dropdown
+fcp add component multi_select
+fcp add component input_field
 fcp add component ble
 fcp add component pdf_viewer
 fcp add component switch
@@ -120,9 +151,14 @@ fcp remove component ble
 | Component | Description | Dependencies | Permissions |
 |-----------|-------------|--------------|-------------|
 | `chart` | Interactive charts and graphs | `fl_chart` | None |
+| `live_graph` | Real-time live data visualization | `fl_chart` | None |
 | `table` | Data tables with sorting/filtering | `syncfusion_flutter_datagrid` | None |
 | `button` | Customizable buttons | None | None |
-| `dropdown` | Advanced dropdown components | None | None |
+| `card` | Unified card component with multiple variants | None | None |
+| `dropdown` | Professional dropdown with search | None | None |
+| `inline_dropdown` | Inline dropdown that opens below button | None | None |
+| `multi_select` | Multi-selection dropdown with search | None | None |
+| `input_field` | Customizable input fields with validation | None | None |
 | `ble` | Bluetooth Low Energy management | `flutter_blue_plus`, `permission_handler` | Bluetooth, Location |
 | `pdf_viewer` | PDF document viewer | `syncfusion_flutter_pdfviewer` | Storage |
 | `switch` | Customizable toggle switches | None | None |
@@ -166,7 +202,9 @@ fcp add permissions
 
 # 2. Add multiple components
 fcp add component chart
+fcp add component live_graph
 fcp add component table
+fcp add component card
 fcp add component ble
 
 # 3. Install dependencies
@@ -178,7 +216,9 @@ flutter pub get
 ```bash
 # Remove unused components
 fcp remove component chart
+fcp remove component live_graph
 fcp remove component table
+fcp remove component card
 
 # Remove unused permissions
 fcp remove ble_permissions
@@ -245,9 +285,14 @@ dependencies:
 When you add components, the CLI creates example files in the `examples/` directory:
 
 - `chart_example.dart` - Chart component usage
+- `live_graph_example.dart` - Live graph component usage
 - `table_example.dart` - Table component usage
 - `button_example.dart` - Button component usage
+- `card_example.dart` - Card component usage
 - `dropdown_example.dart` - Dropdown component usage
+- `inline_dropdown_example.dart` - Inline dropdown component usage
+- `multi_select_example.dart` - Multi-select component usage
+- `input_field_example.dart` - Input field component usage
 - `ble_example.dart` - BLE component usage
 - `pdf_viewer_example.dart` - PDF viewer component usage
 - `switch_example.dart` - Switch component usage

@@ -1,28 +1,36 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
-
-## 0.0.2
-
 ### Added
-* **FCPBottomNavigationBar**: A customizable bottom navigation bar component with support for:
-  - Custom background, selected, and unselected item colors
-  - Asset-based icons for both regular and active states
-  - Theme integration with automatic color scheme support
-  - Accessibility features with proper labels and semantics
-  - Flexible layout with customizable elevation
-  - Comprehensive documentation and examples
+* **FCPButton**: Fluent API button component with multiple variants, sizes, and states
+* **FCPCard**: Unified card component with flat, shaded, gradient, info, and action variants
+* **FCPDropdownBottomSheet**: Professional dropdown with search functionality and custom styling
+* **FCPPdfViewer**: Comprehensive PDF viewer with zoom, navigation, and search features
+* **FCPChart**: Interactive charts (Area, Bar, Line, Histogram) with fluent API
+* **FCPLiveGraph**: Real-time live data visualization with smooth animations
+* **FCPBLEComponent**: Bluetooth Low Energy device management with scanning and connection
+* **FCPSwitch**: Customizable toggle switches with single/multi-select and toggle variants
+* **FCPBottomNavigationBar**: Modern bottom navigation with asset-based icons
+* **FCPDataTable**: Advanced data tables with sorting, filtering, and pagination
+* **FCPInputField**: Customizable input fields with validation and styling
+* **FCPMultiSelectDropdown**: Multi-selection dropdown with search and custom styling
 
-## 0.0.3
+### Design System
+* **Themes**: Complete light and dark theme support
+* **Color Schemes**: Comprehensive color palette with semantic colors
+* **Text Styles**: Typography system with predefined text styles
+* **Spacing & Layout**: Consistent spacing and layout constants
 
-### Added
-* **FCPPdfViewer**: A comprehensive PDF viewer component with enhanced features:
-  - Multiple source support (local files, network URLs, app assets)
-  - Built-in zoom controls, page navigation, and search functionality
-  - Customizable loading and error states with theme integration
-  - Interactive features (text selection, document links, hyperlink navigation)
-  - Comprehensive event callbacks for document loading, page changes, and zoom
-  - Accessibility support with proper semantics
-  - Robust error handling with retry functionality
-  - Professional documentation and examples
-  - Syncfusion Flutter PDF Viewer integration (requires license for commercial use)
+### Utility Extensions
+* **Widget Extensions**: `.padAll()`, `.center()`, `.shadow()`, etc.
+* **String Extensions**: `.capitalize`, `.isEmail`, `.truncate()`, etc.
+* **Date Extensions**: `.isToday`, `.relativeTime`, `.addDays()`, etc.
+
+### Services
+* **HTTP Service**: Complete HTTP client with interceptors and error handling
+* **Storage Service**: Local storage management with JSON support
+* **Logging Service**: Comprehensive logging with multiple output options
+
+### CLI Tools
+* **Component Manager**: Add/remove components and dependencies
+* **Permission Manager**: Manage platform permissions automatically
+* **File Utils**: Project file management utilities

@@ -34,6 +34,13 @@ class ListCommand {
         'permissions': [],
       },
       {
+        'name': 'live_graph',
+        'description':
+            'Real-time live data visualization with smooth animations',
+        'dependencies': ['fl_chart'],
+        'permissions': [],
+      },
+      {
         'name': 'table',
         'description': 'Data tables with sorting, filtering, and pagination',
         'dependencies': ['syncfusion_flutter_datagrid'],
@@ -47,9 +54,33 @@ class ListCommand {
         'permissions': [],
       },
       {
+        'name': 'card',
+        'description': 'Unified card component with multiple variants',
+        'dependencies': [],
+        'permissions': [],
+      },
+      {
         'name': 'dropdown',
+        'description': 'Professional dropdown with search functionality',
+        'dependencies': [],
+        'permissions': [],
+      },
+      {
+        'name': 'inline_dropdown',
+        'description': 'Inline dropdown that opens below the button',
+        'dependencies': [],
+        'permissions': [],
+      },
+      {
+        'name': 'multi_select',
         'description':
-            'Advanced dropdown components with search and multi-select',
+            'Multi-selection dropdown with search and custom styling',
+        'dependencies': [],
+        'permissions': [],
+      },
+      {
+        'name': 'input_field',
+        'description': 'Customizable input fields with validation and styling',
         'dependencies': [],
         'permissions': [],
       },

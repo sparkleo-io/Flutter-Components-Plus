@@ -1,6 +1,6 @@
 name: flutter_components_plus
 description: "A comprehensive Flutter package providing highly customizable widgets, themes, and utilities for modern app development."
-version: 0.0.3
+version: 0.0.1
 homepage: https://github.com/your-username/flutter_components_plus
 
 executables:

@@ -95,11 +95,18 @@ class AddCommand {
       print('');
       print('Available components:');
       print('  • chart');
+      print('  • live_graph');
       print('  • table');
       print('  • button');
+      print('  • card');
       print('  • dropdown');
+      print('  • inline_dropdown');
+      print('  • multi_select');
+      print('  • input_field');
       print('  • ble');
       print('  • pdf_viewer');
+      print('  • switch');
+      print('  • navigation');
       print('');
       print('Usage: fcp add component <component_name>');
       return;
