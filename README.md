@@ -362,6 +362,8 @@ FCPConstants.durationNormal // 300ms
 
 Check out the comprehensive example app in the `flutter_component_plus_example` directory to see all components in action.
 
+**🔗 [View Example App on GitHub](https://github.com/sparkleo-io/Reusable-Flutter-Components-Package/tree/main/flutter_component_plus_example)**
+
 ## 🤝 Contributing
 
 We welcome contributions! Please feel free to submit a Pull Request.
