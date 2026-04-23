@@ -95,6 +95,7 @@ class AddCommand {
       print('');
       print('Available components:');
       print('  • chart');
+      print('  • quadrant_chart');
       print('  • live_graph');
       print('  • table');
       print('  • button');
@@ -143,6 +144,7 @@ Examples:
   fcp add ble_permissions          # Add BLE permissions
   fcp add permissions              # Add all permissions
   fcp add component chart          # Add chart component
+  fcp add component quadrant_chart # Add quadrant chart component
   fcp add component ble            # Add BLE component
 
 Run "fcp help" for more information.

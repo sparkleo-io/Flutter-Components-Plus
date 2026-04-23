@@ -81,6 +81,7 @@ class RemoveCommand {
       print('');
       print('Available components:');
       print('  • chart');
+      print('  • quadrant_chart');
       print('  • live_graph');
       print('  • table');
       print('  • button');
@@ -128,6 +129,7 @@ Examples:
   fcp remove ble_permissions          # Remove BLE permissions
   fcp remove permissions              # Remove all permissions
   fcp remove component chart          # Remove chart component
+  fcp remove component quadrant_chart # Remove quadrant chart component
   fcp remove component ble            # Remove BLE component
 
 Run "fcp help" for more information.

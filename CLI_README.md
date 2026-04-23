@@ -107,6 +107,7 @@ This command will add:
 ```bash
 # Add specific components
 fcp add component chart
+fcp add component quadrant_chart
 fcp add component live_graph
 fcp add component table
 fcp add component button
@@ -151,6 +152,7 @@ fcp remove component ble
 | Component | Description | Dependencies | Permissions |
 |-----------|-------------|--------------|-------------|
 | `chart` | Interactive charts and graphs | `fl_chart` | None |
+| `quadrant_chart` | Configurable quadrant chart with thresholds and markers | None | None |
 | `live_graph` | Real-time live data visualization | `fl_chart` | None |
 | `table` | Data tables with sorting/filtering | `syncfusion_flutter_datagrid` | None |
 | `button` | Customizable buttons | None | None |
@@ -203,6 +205,7 @@ fcp add permissions
 
 # 2. Add multiple components
 fcp add component chart
+fcp add component quadrant_chart
 fcp add component live_graph
 fcp add component table
 fcp add component card
@@ -288,6 +291,7 @@ dependencies:
 When you add components, the CLI creates example files in the `examples/` directory:
 
 - `chart_example.dart` - Chart component usage
+- `quadrant_chart_example.dart` - Quadrant chart component usage
 - `live_graph_example.dart` - Live graph component usage
 - `table_example.dart` - Table component usage
 - `button_example.dart` - Button component usage

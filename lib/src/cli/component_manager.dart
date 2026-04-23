@@ -12,6 +12,9 @@ class ComponentManager {
       case 'chart':
         await _addChartComponent();
         break;
+      case 'quadrant_chart':
+        await _addQuadrantChartComponent();
+        break;
       case 'live_graph':
         await _addLiveGraphComponent();
         break;
@@ -62,6 +65,9 @@ class ComponentManager {
       case 'chart':
         await _removeChartComponent();
         break;
+      case 'quadrant_chart':
+        await _removeQuadrantChartComponent();
+        break;
       case 'live_graph':
         await _removeLiveGraphComponent();
         break;
@@ -111,6 +117,15 @@ class ComponentManager {
     await _addPubspecDependencies(['fl_chart']);
     await _createExampleFile('chart_example.dart', _getChartExampleContent());
     print('✅ Chart component added');
+  }
+
+  /// Add quadrant chart component
+  Future<void> _addQuadrantChartComponent() async {
+    await _createExampleFile(
+      'quadrant_chart_example.dart',
+      _getQuadrantChartExampleContent(),
+    );
+    print('✅ Quadrant chart component added');
   }
 
   /// Add live graph component
@@ -221,6 +236,12 @@ class ComponentManager {
     await _removePubspecDependencies(['fl_chart']);
     await _removeExampleFile('chart_example.dart');
     print('✅ Chart component removed');
+  }
+
+  /// Remove quadrant chart component
+  Future<void> _removeQuadrantChartComponent() async {
+    await _removeExampleFile('quadrant_chart_example.dart');
+    print('✅ Quadrant chart component removed');
   }
 
   /// Remove live graph component
@@ -359,6 +380,49 @@ class ChartExample extends StatelessWidget {
             FCPChartData(x: 4, y: 25),
           ],
           title: 'Sample Chart',
+        ),
+      ),
+    );
+  }
+}
+''';
+  }
+
+  /// Get quadrant chart example content
+  String _getQuadrantChartExampleContent() {
+    return '''
+import 'package:flutter/material.dart';
+import 'package:flutter_components_plus/flutter_components_plus.dart';
+
+class QuadrantChartExample extends StatelessWidget {
+  const QuadrantChartExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Quadrant Chart Example')),
+      body: Center(
+        child: FCPQuadrantChart(
+          xValue: 72,
+          yValue: 58,
+          xThreshold: 50,
+          yThreshold: 50,
+          title: 'Risk vs Impact',
+          subtitle: 'Primary marker in top-right region',
+          showRegionLabels: true,
+          topLeftRegionLabel: 'Low Impact / High Risk',
+          topRightRegionLabel: 'High Impact / High Risk',
+          bottomLeftRegionLabel: 'Low Impact / Low Risk',
+          bottomRightRegionLabel: 'High Impact / Low Risk',
+          titlesData: FCPTitlesData(
+            show: true,
+            bottomTitles: FCPAxisTitles(
+              sideTitles: FCPSideTitles(showTitles: true, interval: 25),
+            ),
+            leftTitles: FCPAxisTitles(
+              sideTitles: FCPSideTitles(showTitles: true, interval: 25),
+            ),
+          ),
         ),
       ),
     );

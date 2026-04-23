@@ -34,6 +34,13 @@ class ListCommand {
         'permissions': [],
       },
       {
+        'name': 'quadrant_chart',
+        'description':
+            'Configurable quadrant chart with thresholds, regions, and markers',
+        'dependencies': [],
+        'permissions': [],
+      },
+      {
         'name': 'live_graph',
         'description':
             'Real-time live data visualization with smooth animations',
