@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_component_plus_example/ble_service_examples.dart';
 import 'package:flutter_component_plus_example/multi_inline_dropdown_examples.dart';
+import 'package:flutter_component_plus_example/widgets/quadrant_chart_demo_page.dart';
 import 'package:get/get.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
 import 'home_controller.dart';
@@ -14,6 +15,7 @@ import '../../../pdf_viewer_examples.dart';
 import '../../../table_examples.dart';
 import '../../../switch_examples.dart';
 import '../../../chart_examples.dart';
+import '../../../quadrant_chart.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -512,6 +514,18 @@ class HomeView extends GetView<HomeController> {
               text: 'Charts',
               onPressed: () => controller.changeTab(11),
               icon: Icons.bar_chart,
+              iconPosition: IconPosition.start,
+            ),
+            FCPButton.medium.outlined(
+              text: 'Quadrant Chart',
+              onPressed: () => Get.to(() => const QuadrantChartDemo()),
+              icon: Icons.grid_4x4,
+              iconPosition: IconPosition.start,
+            ),
+            FCPButton.medium.outlined(
+              text: 'Quadrant Chart 2',
+              onPressed: () => Get.to(() => const QuadrantChartDemoPage()),
+              icon: Icons.grid_4x4,
               iconPosition: IconPosition.start,
             ),
             FCPButton.medium.outlined(
