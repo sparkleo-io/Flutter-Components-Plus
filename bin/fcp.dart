@@ -58,6 +58,7 @@ EXAMPLES:
     fcp add ble_permissions          # Add BLE permissions to your app
     fcp add permissions              # Add all necessary permissions
     fcp add component chart          # Add chart component
+    fcp add component quadrant_chart # Add quadrant chart component
     fcp remove ble_permissions       # Remove BLE permissions
     fcp list components              # List available components
     fcp list permissions             # List available permissions
@@ -85,6 +86,7 @@ Examples:
   fcp add ble_permissions          # Add BLE permissions
   fcp add permissions              # Add all permissions
   fcp add component chart          # Add chart component
+  fcp add component quadrant_chart # Add quadrant chart component
   fcp remove ble_permissions       # Remove BLE permissions
   fcp list components              # List available components
   fcp list permissions             # List available permissions

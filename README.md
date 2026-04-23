@@ -13,6 +13,7 @@ A comprehensive Flutter package providing highly customizable widgets, themes, a
 - **FCPDropdownBottomSheet** - Professional dropdown with search functionality and custom styling
 - **FCPPdfViewer** - Comprehensive PDF viewer with zoom, navigation, and search features
 - **FCPChart** - Interactive charts (Area, Bar, Line, Histogram) with fluent API
+- **FCPQuadrantChart** - Configurable 2x2 quadrant chart with threshold-based positioning
 - **FCPLiveGraph** - Real-time live data visualization with smooth animations
 - **FCPBLEComponent** - Bluetooth Low Energy device management with scanning and connection
 - **FCPSwitch** - Customizable toggle switches with single/multi-select and toggle variants
@@ -60,6 +61,7 @@ fcp --version
 # Add components to your project
 fcp add component button
 fcp add component chart
+fcp add component quadrant_chart
 fcp add component themes
 
 # Add permissions
@@ -77,6 +79,7 @@ fcp remove component button
 - `button` - Customizable buttons with various styles
 - `card` - Unified card component with multiple variants
 - `chart` - Interactive charts and graphs
+- `quadrant_chart` - Configurable 2x2 quadrant chart with thresholds and markers
 - `live_graph` - Real-time live data visualization
 - `table` - Data tables with sorting and filtering
 - `dropdown` - Professional dropdown with search
@@ -161,6 +164,33 @@ FCPChart.line.withData(
     showDots: true,
     isCurved: true,
     lineWidth: 3,
+  ),
+)
+```
+
+### FCPQuadrantChart - Threshold-Based Quadrant Visualization
+
+```dart
+FCPQuadrantChart(
+  xValue: 72,
+  yValue: 58,
+  xThreshold: 50,
+  yThreshold: 50,
+  title: 'Risk vs Impact',
+  subtitle: 'Primary marker in top-right region',
+  showRegionLabels: true,
+  topLeftRegionLabel: 'Low Impact / High Risk',
+  topRightRegionLabel: 'High Impact / High Risk',
+  bottomLeftRegionLabel: 'Low Impact / Low Risk',
+  bottomRightRegionLabel: 'High Impact / Low Risk',
+  titlesData: FCPTitlesData(
+    show: true,
+    bottomTitles: FCPAxisTitles(
+      sideTitles: FCPSideTitles(showTitles: true, interval: 25),
+    ),
+    leftTitles: FCPAxisTitles(
+      sideTitles: FCPSideTitles(showTitles: true, interval: 25),
+    ),
   ),
 )
 ```
