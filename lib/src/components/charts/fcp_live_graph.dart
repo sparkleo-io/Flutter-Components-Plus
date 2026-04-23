@@ -384,7 +384,7 @@ class _FcpLiveGraphState extends State<FcpLiveGraph>
       getTitlesWidget: (value, meta) {
         final text = xAxis?.formatLabel?.call(value) ?? value.toString();
         return SideTitleWidget(
-          axisSide: meta.axisSide,
+          meta: meta,
           space: 10,
           child: Text(
             text,
@@ -408,7 +408,7 @@ class _FcpLiveGraphState extends State<FcpLiveGraph>
         final text = yAxis?.formatLabel?.call(value) ?? value.toString();
         final unit = yAxis?.unit ?? '';
         return SideTitleWidget(
-          axisSide: meta.axisSide,
+          meta: meta,
           space: 10,
           child: Text(
             '$text$unit',

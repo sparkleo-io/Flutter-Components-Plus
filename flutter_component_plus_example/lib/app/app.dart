@@ -26,7 +26,7 @@ class App extends StatelessWidget {
             // Unfocus to hide keyboard when tapping outside of input fields
             FocusScope.of(context).unfocus();
           },
-          child: child!,
+          child: child ?? const SizedBox.shrink(),
         );
       },
     );

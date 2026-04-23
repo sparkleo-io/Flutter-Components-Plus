@@ -22,5 +22,6 @@ class AppPages {
       page: () => const ComponentsView(),
       binding: ComponentsBinding(),
     ),
+    
   ];
 }
