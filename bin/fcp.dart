@@ -69,7 +69,7 @@ For more information, visit: https://github.com/your-username/flutter_components
 
 /// Show version information
 void _showVersion() {
-  print('Flutter Components Plus CLI v0.0.1');
+  print('Flutter Components Plus CLI v1.1.0');
 }
 
 /// Show usage information

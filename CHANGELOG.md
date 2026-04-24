@@ -1,3 +1,10 @@
+## 1.1.0
+
+### Added
+* **FCPQuadrantChart**: Configurable 2x2 quadrant chart with threshold-based positioning
+* **CLI Component Support**: Added `fcp add component quadrant_chart` and `fcp remove component quadrant_chart`
+* **Documentation**: Added README and CLI README usage docs for `quadrant_chart`
+
 ## 1.0.0
 
 ### Added
