@@ -27,15 +27,21 @@ class ComponentsView extends GetView<ComponentsController> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Flutter Components Plus - Examples'),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          foregroundColor: Colors.white,
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(48),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: TabBar(
-                isScrollable: true, // Make tabs scrollable on small screens
-                tabs: [
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
+                ),
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: TabBar(
+                  isScrollable: true,
+                  tabs: const [
                   Tab(text: 'Buttons', icon: Icon(Icons.smart_button)),
                   Tab(text: 'Inputs', icon: Icon(Icons.input)), // Shortened
                   Tab(text: 'Cards', icon: Icon(Icons.credit_card)),
@@ -55,9 +61,7 @@ class ComponentsView extends GetView<ComponentsController> {
                   Tab(text: 'Charts', icon: Icon(Icons.bar_chart)),
                   Tab(text: 'Tables', icon: Icon(Icons.table_chart)),
                 ],
-                indicatorColor: Colors.white,
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.white70,
+                ),
               ),
             ),
           ),

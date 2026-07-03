@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
 import 'home_controller.dart';
 import '../theme/theme_controller.dart';
+import '../theme/app_colors.dart';
 import '../../../input_field_examples.dart';
 import '../../../card_examples.dart';
 import '../../../dropdown_examples.dart';
@@ -23,7 +24,18 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter Components Plus'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Flutter Components Plus'),
+            Text(
+              'Interactive component gallery',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+            ),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.brightness_6),
@@ -75,11 +87,50 @@ class HomeView extends GetView<HomeController> {
   }
 
   Widget _buildSidebar(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return ListView(
       padding: const EdgeInsets.all(FCPConstants.spacingMd),
       children: [
-        const SizedBox(height: FCPConstants.spacingMd),
-        _buildSidebarItem(context, 'Overview', Icons.dashboard, 0),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(4, 8, 4, 20),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(FCPConstants.radiusMd),
+                ),
+                child: Icon(
+                  Icons.widgets_outlined,
+                  color: colorScheme.primary,
+                  size: 22,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'FCP',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    Text(
+                      'Component gallery',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        _buildSidebarItem(context, 'Overview', Icons.dashboard_outlined, 0),
         _buildSidebarItem(context, 'Buttons', Icons.smart_button, 1),
         _buildSidebarItem(context, 'Cards', Icons.credit_card, 2),
         _buildSidebarItem(context, 'Inputs', Icons.input, 3),
@@ -106,38 +157,36 @@ class HomeView extends GetView<HomeController> {
     IconData icon,
     int index,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Obx(
-      () => Container(
-        margin: const EdgeInsets.only(bottom: FCPConstants.spacingSm),
-        child: ListTile(
-          leading: Icon(
-            icon,
-            color: controller.selectedTabIndex == index
-                ? FCPColorScheme.primary
-                : Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.7),
-          ),
-          title: Text(
-            title,
-            style: TextStyle(
-              color: controller.selectedTabIndex == index
-                  ? FCPColorScheme.primary
-                  : Theme.of(context).colorScheme.onSurface,
-              fontWeight: controller.selectedTabIndex == index
-                  ? FontWeight.w600
-                  : FontWeight.normal,
+      () {
+        final isSelected = controller.selectedTabIndex == index;
+        return Container(
+          margin: const EdgeInsets.only(bottom: FCPConstants.spacingSm),
+          child: ListTile(
+            leading: Icon(
+              icon,
+              color: isSelected
+                  ? colorScheme.primary
+                  : colorScheme.onSurfaceVariant,
             ),
+            title: Text(
+              title,
+              style: TextStyle(
+                color: isSelected
+                    ? colorScheme.primary
+                    : colorScheme.onSurface,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+              ),
+            ),
+            onTap: () => controller.changeTab(index),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(FCPConstants.radiusMd),
+            ),
+            tileColor: isSelected ? colorScheme.primaryContainer : null,
           ),
-          onTap: () => controller.changeTab(index),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(FCPConstants.radiusMd),
-          ),
-          tileColor: controller.selectedTabIndex == index
-              ? FCPColorScheme.primary.withValues(alpha: 0.1)
-              : null,
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -216,48 +265,49 @@ class HomeView extends GetView<HomeController> {
     IconData icon,
     int index,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
     final isSelected = controller.selectedTabIndex == index;
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: 8,
-      ), // Add spacing between items
+      ),
       child: InkWell(
         onTap: () => controller.changeTab(index),
         borderRadius: BorderRadius.circular(FCPConstants.radiusMd),
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+          decoration: isSelected
+              ? BoxDecoration(
+                  color: colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(FCPConstants.radiusMd),
+                )
+              : null,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min, // Added to prevent overflow
+            mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
                 icon,
                 color: isSelected
-                    ? FCPColorScheme.primary
-                    : Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.7),
-                size: 22, // Slightly reduced icon size
+                    ? colorScheme.primary
+                    : colorScheme.onSurfaceVariant,
+                size: 22,
               ),
-              const SizedBox(height: 2), // Reduced spacing
+              const SizedBox(height: 2),
               Flexible(
-                // Added Flexible to handle text overflow
                 child: Text(
                   title,
                   style: TextStyle(
-                    fontSize: 10, // Reduced font size
+                    fontSize: 10,
                     color: isSelected
-                        ? FCPColorScheme.primary
-                        : Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withValues(alpha: 0.7),
-                    fontWeight: isSelected
-                        ? FontWeight.w600
-                        : FontWeight.normal,
+                        ? colorScheme.primary
+                        : colorScheme.onSurfaceVariant,
+                    fontWeight:
+                        isSelected ? FontWeight.w600 : FontWeight.normal,
                   ),
                   textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis, // Added overflow handling
-                  maxLines: 1, // Limit to single line
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
               ),
             ],
@@ -378,28 +428,28 @@ class HomeView extends GetView<HomeController> {
               'Components',
               '10+',
               Icons.widgets,
-              FCPColorScheme.primary,
+              Theme.of(context).colorScheme.primary,
             ),
             _buildStatCard(
               context,
               'Variants',
               '50+',
               Icons.style,
-              FCPColorScheme.secondary,
+              Theme.of(context).colorScheme.secondary,
             ),
             _buildStatCard(
               context,
               'Themes',
               '2',
               Icons.palette,
-              FCPColorScheme.success,
+              Theme.of(context).colorScheme.tertiary,
             ),
             _buildStatCard(
               context,
               'Examples',
               '10+',
               Icons.code,
-              FCPColorScheme.warning,
+              AppColors.success,
             ),
           ],
         );
@@ -414,14 +464,20 @@ class HomeView extends GetView<HomeController> {
     IconData icon,
     Color color,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(FCPConstants.spacingMd),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(FCPConstants.radiusLg),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.1),
-        ),
+        border: Border.all(color: colorScheme.outlineVariant),
+        boxShadow: [
+          BoxShadow(
+            color: color.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
