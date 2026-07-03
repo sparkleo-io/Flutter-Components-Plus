@@ -22,21 +22,21 @@
             "flutterMode": "release"
         },
         {
-            "name": "flutter_component_plus_example",
-            "cwd": "flutter_component_plus_example",
+            "name": "example",
+            "cwd": "example",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "flutter_component_plus_example (profile mode)",
-            "cwd": "flutter_component_plus_example",
+            "name": "example (profile mode)",
+            "cwd": "example",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "flutter_component_plus_example (release mode)",
-            "cwd": "flutter_component_plus_example",
+            "name": "example (release mode)",
+            "cwd": "example",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
