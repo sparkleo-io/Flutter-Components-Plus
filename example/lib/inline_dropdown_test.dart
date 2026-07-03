@@ -26,7 +26,6 @@ class _InlineDropdownTestState extends State<InlineDropdownTest> {
               items: items,
               selectedIndex: selectedIndex,
               onItemSelected: (value) {
-                print('Selected: $value');
                 setState(() {
                   selectedIndex = value as int;
                 });
@@ -41,7 +40,6 @@ class _InlineDropdownTestState extends State<InlineDropdownTest> {
               items: items,
               selectedIndex: selectedIndex,
               onItemSelected: (value) {
-                print('Selected: $value');
                 setState(() {
                   selectedIndex = value as int;
                 });
@@ -58,7 +56,6 @@ class _InlineDropdownTestState extends State<InlineDropdownTest> {
               items: items,
               selectedIndex: selectedIndex,
               onItemSelected: (value) {
-                print('Selected: $value');
                 setState(() {
                   selectedIndex = value as int;
                 });

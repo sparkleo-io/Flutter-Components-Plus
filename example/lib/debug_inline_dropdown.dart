@@ -30,14 +30,13 @@ class _DebugInlineDropdownState extends State<DebugInlineDropdown> {
           children: [
             _buildSectionTitle('Basic Inline Dropdown'),
             const SizedBox(height: 8),
-            Container(
+            SizedBox(
               width: 300,
               child: FCPInlineDropdown(
                 title: 'Select Option',
                 items: items,
                 selectedIndex: selectedIndex,
                 onItemSelected: (value) {
-                  print('DEBUG: Item selected: $value');
                   setState(() {
                     selectedIndex = value as int;
                   });
@@ -51,14 +50,13 @@ class _DebugInlineDropdownState extends State<DebugInlineDropdown> {
 
             _buildSectionTitle('Inline Dropdown with Search'),
             const SizedBox(height: 8),
-            Container(
+            SizedBox(
               width: 300,
               child: FCPInlineDropdown(
                 title: 'Select with Search',
                 items: items,
                 selectedIndex: selectedIndex,
                 onItemSelected: (value) {
-                  print('DEBUG: Item selected: $value');
                   setState(() {
                     selectedIndex = value as int;
                   });
@@ -74,14 +72,13 @@ class _DebugInlineDropdownState extends State<DebugInlineDropdown> {
 
             _buildSectionTitle('Custom Styled Inline Dropdown'),
             const SizedBox(height: 8),
-            Container(
+            SizedBox(
               width: 300,
               child: FCPInlineDropdown(
                 title: 'Custom Styled',
                 items: items,
                 selectedIndex: selectedIndex,
                 onItemSelected: (value) {
-                  print('DEBUG: Item selected: $value');
                   setState(() {
                     selectedIndex = value as int;
                   });
@@ -112,14 +109,13 @@ class _DebugInlineDropdownState extends State<DebugInlineDropdown> {
 
             _buildSectionTitle('Custom Item Builder'),
             const SizedBox(height: 8),
-            Container(
+            SizedBox(
               width: 300,
               child: FCPInlineDropdown(
                 title: 'Custom Items',
                 items: items,
                 selectedIndex: selectedIndex,
                 onItemSelected: (value) {
-                  print('DEBUG: Item selected: $value');
                   setState(() {
                     selectedIndex = value as int;
                   });
@@ -145,9 +141,8 @@ class _DebugInlineDropdownState extends State<DebugInlineDropdown> {
                       children: [
                         CircleAvatar(
                           radius: 16,
-                          backgroundColor: isSelected
-                              ? Colors.blue
-                              : Colors.grey[300],
+                          backgroundColor:
+                              isSelected ? Colors.blue : Colors.grey[300],
                           child: Text(
                             item[0],
                             style: TextStyle(
@@ -185,7 +180,7 @@ class _DebugInlineDropdownState extends State<DebugInlineDropdown> {
 
             _buildSectionTitle('Non-Indexed Inline Dropdown'),
             const SizedBox(height: 8),
-            Container(
+            SizedBox(
               width: 300,
               child: FCPInlineDropdown(
                 title: 'Non-Indexed',
@@ -194,7 +189,6 @@ class _DebugInlineDropdownState extends State<DebugInlineDropdown> {
                     ? items.indexOf(selectedCustomItem!)
                     : null,
                 onItemSelected: (value) {
-                  print('DEBUG: Item selected: $value');
                   setState(() {
                     selectedCustomItem = value as String;
                   });
@@ -211,14 +205,13 @@ class _DebugInlineDropdownState extends State<DebugInlineDropdown> {
 
             _buildSectionTitle('Compact Inline Dropdown'),
             const SizedBox(height: 8),
-            Container(
+            SizedBox(
               width: 300,
               child: FCPInlineDropdown(
                 title: 'Compact Style',
                 items: items,
                 selectedIndex: selectedIndex,
                 onItemSelected: (value) {
-                  print('DEBUG: Item selected: $value');
                   setState(() {
                     selectedIndex = value as int;
                   });
@@ -236,7 +229,7 @@ class _DebugInlineDropdownState extends State<DebugInlineDropdown> {
 
             _buildSectionTitle('Disabled Inline Dropdown'),
             const SizedBox(height: 8),
-            Container(
+            SizedBox(
               width: 300,
               child: FCPInlineDropdown(
                 title: 'Disabled Dropdown',

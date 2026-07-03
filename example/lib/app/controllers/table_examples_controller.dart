@@ -291,25 +291,18 @@ class TableExamplesController extends GetxController {
   void onItemSelect(int? selectedIndex, int? deselectedIndex) {
     _selectedRowIndex.value = selectedIndex;
     if (selectedIndex != null) {
-      print('Selected row: $selectedIndex');
     }
   }
 
   void onAddItem() {
-    print('Add new employee');
   }
 
   void onRefreshData() {
-    print('Refresh data');
   }
 
   // Theme management using app-level themes
   void setTheme(TableThemeConfig theme) {
-    print('Setting theme to: ${theme.runtimeType}');
-    print('Theme useAppTheme: ${theme.useAppTheme}');
-    print('Theme useCustomColors: ${theme.useCustomColors}');
     _selectedTheme.value = theme;
-    print('Theme updated in controller');
   }
 
   void setAppDefaultTheme() {
@@ -329,18 +322,13 @@ class TableExamplesController extends GetxController {
   }
 
   void toggleTheme() {
-    print('Current theme before toggle: ${_selectedTheme.value.runtimeType}');
     if (_selectedTheme.value == AppTableThemes.defaultTheme) {
       _selectedTheme.value = AppTableThemes.light;
-      print('Switched to Light theme');
     } else if (_selectedTheme.value == AppTableThemes.light) {
       _selectedTheme.value = AppTableThemes.dark;
-      print('Switched to Dark theme');
     } else {
       _selectedTheme.value = AppTableThemes.defaultTheme;
-      print('Switched to Default theme');
     }
-    print('New theme: ${_selectedTheme.value.runtimeType}');
   }
 
   String getCurrentThemeName() {

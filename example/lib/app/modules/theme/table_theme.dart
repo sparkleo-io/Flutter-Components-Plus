@@ -46,7 +46,6 @@ class AppTableThemes {
 
   /// Material-3 flavored preset that still respects app theme colors
   static TableThemeConfig material3(BuildContext context) {
-    final theme = Theme.of(context);
     return TableThemeConfig(
       useAppTheme: true,
       useCustomColors: false,

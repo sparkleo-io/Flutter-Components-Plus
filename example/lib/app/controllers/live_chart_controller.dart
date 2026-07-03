@@ -159,9 +159,9 @@ class LiveChartController extends GetxController {
     horizontalInterval: 0.5, // Every 0.5 A
     verticalInterval: 1.0, // Every 1 hour
     getDrawingHorizontalLine: (value) =>
-        FCPLine(color: Colors.grey.withOpacity(0.4), strokeWidth: 1),
+        FCPLine(color: Colors.grey.withValues(alpha: 0.4), strokeWidth: 1),
     getDrawingVerticalLine: (value) =>
-        FCPLine(color: Colors.grey.withOpacity(0.4), strokeWidth: 1),
+        FCPLine(color: Colors.grey.withValues(alpha: 0.4), strokeWidth: 1),
   );
 
   FCPTitlesData get titlesData => FCPTitlesData(

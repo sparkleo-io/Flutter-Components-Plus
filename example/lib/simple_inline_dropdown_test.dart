@@ -27,7 +27,6 @@ class _SimpleInlineDropdownTestState extends State<SimpleInlineDropdownTest> {
                 items: const ['Apple', 'Banana', 'Orange', 'Grape'],
                 selectedIndex: selectedIndex,
                 onItemSelected: (value) {
-                  print('DEBUG: Item selected: $value');
                   setState(() {
                     selectedIndex = value as int;
                   });
@@ -40,7 +39,12 @@ class _SimpleInlineDropdownTestState extends State<SimpleInlineDropdownTest> {
 
               // Show selected value
               Text(
-                'Selected: ${selectedIndex != null ? ['Apple', 'Banana', 'Orange', 'Grape'][selectedIndex!] : 'None'}',
+                'Selected: ${selectedIndex != null ? [
+                    'Apple',
+                    'Banana',
+                    'Orange',
+                    'Grape'
+                  ][selectedIndex!] : 'None'}',
                 style: const TextStyle(fontSize: 18),
               ),
 

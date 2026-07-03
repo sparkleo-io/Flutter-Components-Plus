@@ -24,7 +24,7 @@ Container kEdgePaddContainerTopHalf = Container(
 );
 
 class EdgesPadding extends StatelessWidget {
-  const EdgesPadding({Key? key, required this.child}) : super(key: key);
+  const EdgesPadding({super.key, required this.child});
   final Widget child;
 
   @override
@@ -37,7 +37,7 @@ class EdgesPadding extends StatelessWidget {
 }
 
 class EdgesPaddingHalf extends StatelessWidget {
-  const EdgesPaddingHalf({Key? key, required this.child}) : super(key: key);
+  const EdgesPaddingHalf({super.key, required this.child});
   final Widget child;
   @override
   Widget build(BuildContext context) {

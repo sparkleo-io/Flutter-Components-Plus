@@ -67,7 +67,7 @@ class _BleServiceExamplesState extends State<BleServiceExamples> {
         _savedDevice = savedDevice;
       });
     } catch (e) {
-      print('Failed to load saved device: $e');
+      FCPLoggingService.instance.error('Failed to load saved device: $e');
     }
   }
 
@@ -78,7 +78,7 @@ class _BleServiceExamplesState extends State<BleServiceExamples> {
         _allStoredDevices = storedDevices;
       });
     } catch (e) {
-      print('Failed to load stored devices: $e');
+      FCPLoggingService.instance.error('Failed to load stored devices: $e');
     }
   }
 
@@ -381,10 +381,10 @@ class _BleServiceExamplesState extends State<BleServiceExamples> {
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () async {
                             // Remove this specific device
-                            final success = await _bleService
-                                .removeConnectedDevice(
-                                  'ble_connected_device_${device.deviceId}',
-                                );
+                            final success =
+                                await _bleService.removeConnectedDevice(
+                              'ble_connected_device_${device.deviceId}',
+                            );
                             if (success) {
                               _loadAllStoredDevices();
                               _loadSavedDevice();
@@ -619,166 +619,19 @@ class _BleServiceExamplesState extends State<BleServiceExamples> {
   //   );
   // }
 
-  Future<void> _findService(String serviceUuid) async {
-    if (_connectionState?.device == null) {
-      _showErrorSnackBar('No device connected');
-      return;
-    }
-
-    setState(() => _isLoading = true);
-    try {
-      final service = await _bleService.findService(
-        _connectionState!.device,
-        serviceUuid,
-      );
-
-      if (service != null) {
-        _showSuccessSnackBar('Service found: ${service.uuid}');
-        _showServiceDetailsDialog(service);
-      } else {
-        _showErrorSnackBar('Service not found: $serviceUuid');
-      }
-    } catch (e) {
-      _showErrorSnackBar('Error finding service: $e');
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
-
-  Future<void> _findCharacteristic(
-    String serviceUuid,
-    String characteristicUuid,
-  ) async {
-    if (_connectionState?.device == null) {
-      _showErrorSnackBar('No device connected');
-      return;
-    }
-
-    setState(() => _isLoading = true);
-    try {
-      final characteristic = await _bleService.findCharacteristic(
-        _connectionState!.device,
-        serviceUuid,
-        characteristicUuid,
-      );
-
-      if (characteristic != null) {
-        _showSuccessSnackBar('Characteristic found: ${characteristic.uuid}');
-        _showCharacteristicDetailsDialog(characteristic);
-      } else {
-        _showErrorSnackBar('Characteristic not found: $characteristicUuid');
-      }
-    } catch (e) {
-      _showErrorSnackBar('Error finding characteristic: $e');
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
-
-  void _showServiceDetailsDialog(BleServiceInfo service) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Service Details'),
-        content: SizedBox(
-          width: double.maxFinite,
-          height: 300,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('UUID: ${service.uuid}'),
-              Text('Primary: ${service.isPrimary ? 'Yes' : 'No'}'),
-              Text('Characteristics: ${service.characteristics.length}'),
-              const SizedBox(height: 16),
-              const Text(
-                'Characteristics:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: service.characteristics.length,
-                  itemBuilder: (context, index) {
-                    final characteristic = service.characteristics[index];
-                    return ListTile(
-                      title: Text(
-                        characteristic.uuid,
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                      subtitle: Text(
-                        'Properties: ${_getPropertyNames(characteristic.properties)}',
-                        style: const TextStyle(fontSize: 11),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showCharacteristicDetailsDialog(BleCharacteristicInfo characteristic) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Characteristic Details'),
-        content: SizedBox(
-          width: double.maxFinite,
-          height: 250,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('UUID: ${characteristic.uuid}'),
-              const SizedBox(height: 8),
-              Text(
-                'Properties: ${_getPropertyNames(characteristic.properties)}',
-              ),
-              const SizedBox(height: 8),
-              Text('Descriptors: ${characteristic.descriptors.length}'),
-              const SizedBox(height: 16),
-              const Text(
-                'Capabilities:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text('• Read: ${characteristic.canRead ? 'Yes' : 'No'}'),
-              Text('• Write: ${characteristic.canWrite ? 'Yes' : 'No'}'),
-              Text(
-                '• Write Without Response: ${characteristic.canWriteWithoutResponse ? 'Yes' : 'No'}',
-              ),
-              Text('• Notify: ${characteristic.canNotify ? 'Yes' : 'No'}'),
-              Text('• Indicate: ${characteristic.canIndicate ? 'Yes' : 'No'}'),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
-
   String _getPropertyNames(CharacteristicProperties properties) {
     final propertyNames = <String>[];
     if (properties.read) propertyNames.add('read');
     if (properties.write) propertyNames.add('write');
-    if (properties.writeWithoutResponse)
+    if (properties.writeWithoutResponse) {
       propertyNames.add('writeWithoutResponse');
+    }
     if (properties.notify) propertyNames.add('notify');
     if (properties.indicate) propertyNames.add('indicate');
     if (properties.broadcast) propertyNames.add('broadcast');
-    if (properties.authenticatedSignedWrites)
+    if (properties.authenticatedSignedWrites) {
       propertyNames.add('authenticatedSignedWrites');
+    }
     if (properties.extendedProperties) propertyNames.add('extendedProperties');
     return propertyNames.join(', ');
   }
@@ -927,8 +780,8 @@ class _BleServiceExamplesState extends State<BleServiceExamples> {
                           true,
                           statusText:
                               _connectionState!.device.platformName.isNotEmpty
-                              ? _connectionState!.device.platformName
-                              : 'Unknown Device',
+                                  ? _connectionState!.device.platformName
+                                  : 'Unknown Device',
                         ),
                         if (_connectionState!.mtu != null) ...[
                           const SizedBox(height: 8),
@@ -1096,8 +949,7 @@ class _BleServiceExamplesState extends State<BleServiceExamples> {
               const SizedBox(height: 12),
 
               ElevatedButton.icon(
-                onPressed:
-                    (_isLoading ||
+                onPressed: (_isLoading ||
                         _connectionState?.status !=
                             BleConnectionStatus.connected)
                     ? null
@@ -1141,8 +993,7 @@ class _BleServiceExamplesState extends State<BleServiceExamples> {
               const SizedBox(height: 12),
 
               ElevatedButton.icon(
-                onPressed:
-                    (_isLoading ||
+                onPressed: (_isLoading ||
                         _connectionState?.status !=
                             BleConnectionStatus.connected)
                     ? null
@@ -1250,13 +1101,11 @@ class _BleServiceExamplesState extends State<BleServiceExamples> {
                                         onPressed: _isLoading
                                             ? null
                                             : () => _connectToDevice(
-                                                device.device,
-                                              ),
+                                                  device.device,
+                                                ),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              _connectionState
-                                                          ?.device
-                                                          .remoteId ==
+                                          backgroundColor: _connectionState
+                                                          ?.device.remoteId ==
                                                       device.device.remoteId &&
                                                   _connectionState?.status ==
                                                       BleConnectionStatus

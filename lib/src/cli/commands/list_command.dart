@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 /// Command handler for listing available components and permissions
 class ListCommand {
   /// Run the list command

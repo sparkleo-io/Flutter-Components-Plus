@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'dart:async';
 import '../../core/constants.dart';
 import '../../core/theme/text_styles.dart';
@@ -107,7 +106,7 @@ class FCPInlineDropdown extends StatefulWidget {
 
   /// Custom builder for items (overrides default item appearance)
   final Widget Function(String item, int index, bool isSelected)?
-  customItemBuilder;
+      customItemBuilder;
 
   /// Callback for search changes
   final Function(String)? onSearchChanged;
@@ -171,8 +170,8 @@ class _FCPInlineDropdownState extends State<FCPInlineDropdown> {
           border: widget.enableBorder
               ? Border.all(
                   color: isDark
-                      ? colorScheme.outline.withOpacity(0.2)
-                      : colorScheme.outline.withOpacity(0.1),
+                      ? colorScheme.outline.withValues(alpha: 0.2)
+                      : colorScheme.outline.withValues(alpha: 0.1),
                 )
               : null,
           borderRadius: FCPConstants.radiusSm,
@@ -187,7 +186,7 @@ class _FCPInlineDropdownState extends State<FCPInlineDropdown> {
                 if (widget.prefixIcon != null) ...[
                   Icon(
                     widget.prefixIcon,
-                    color: colorScheme.onSurface.withOpacity(0.6),
+                    color: colorScheme.onSurface.withValues(alpha: 0.6),
                     size: 20,
                   ),
                   const SizedBox(width: FCPConstants.spacingMd),
@@ -197,10 +196,10 @@ class _FCPInlineDropdownState extends State<FCPInlineDropdown> {
                     _getDisplayText(),
                     style: (widget.titleStyle ?? FCPTextStyles.getBodyMedium())
                         .copyWith(
-                          color: widget.selectedIndex == null
-                              ? colorScheme.onSurface.withOpacity(0.6)
-                              : null,
-                        ),
+                      color: widget.selectedIndex == null
+                          ? colorScheme.onSurface.withValues(alpha: 0.6)
+                          : null,
+                    ),
                   ),
                 ),
                 if (!widget.disabled)
@@ -209,7 +208,7 @@ class _FCPInlineDropdownState extends State<FCPInlineDropdown> {
                     duration: const Duration(milliseconds: 200),
                     child: Icon(
                       Icons.keyboard_arrow_down,
-                      color: colorScheme.onSurface.withOpacity(0.6),
+                      color: colorScheme.onSurface.withValues(alpha: 0.6),
                       size: 20,
                     ),
                   ),
@@ -457,7 +456,7 @@ class _DropdownOverlay extends StatefulWidget {
   final String emptyStateText;
   final bool showEmptyState;
   final Widget Function(String item, int index, bool isSelected)?
-  customItemBuilder;
+      customItemBuilder;
   final Function(String)? onSearchChanged;
   final Duration searchDebounceDuration;
   final TextEditingController searchController;
@@ -545,7 +544,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(widget.borderRadius),
                     border: Border.all(
-                      color: colorScheme.outline.withOpacity(0.1),
+                      color: colorScheme.outline.withValues(alpha: 0.1),
                       width: 1,
                     ),
                   ),
@@ -613,8 +612,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
               onTap: () {
                 widget.onItemSelected(widget.indexed ? originalIndex : item);
               },
-              child:
-                  widget.customItemBuilder?.call(
+              child: widget.customItemBuilder?.call(
                     item,
                     originalIndex,
                     isSelected,
@@ -644,8 +642,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
               onTap: () {
                 widget.onItemSelected(widget.indexed ? originalIndex : item);
               },
-              child:
-                  widget.customItemBuilder?.call(
+              child: widget.customItemBuilder?.call(
                     item,
                     originalIndex,
                     isSelected,
@@ -674,7 +671,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(FCPConstants.radiusSm),
           color: isSelected
-              ? colorScheme.primaryContainer.withOpacity(0.1)
+              ? colorScheme.primaryContainer.withValues(alpha: 0.1)
               : null,
         ),
         child: Row(
@@ -682,8 +679,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
             Expanded(
               child: Text(
                 item,
-                style:
-                    (isSelected
+                style: (isSelected
                         ? widget.selectedItemTextStyle
                         : widget.itemTextStyle) ??
                     FCPTextStyles.getBodyMedium().copyWith(
@@ -716,13 +712,13 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
           Icon(
             Icons.search_off,
             size: 32,
-            color: theme.colorScheme.onSurface.withOpacity(0.4),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
           ),
           const SizedBox(height: FCPConstants.spacingSm),
           Text(
             widget.emptyStateText,
             style: FCPTextStyles.getBodySmall().copyWith(
-              color: theme.colorScheme.onSurface.withOpacity(0.6),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             ),
             textAlign: TextAlign.center,
           ),

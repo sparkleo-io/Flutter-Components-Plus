@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'file_utils.dart';

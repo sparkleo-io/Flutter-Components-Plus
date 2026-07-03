@@ -3,7 +3,7 @@ import 'package:flutter_components_plus/flutter_components_plus.dart';
 
 /// Examples demonstrating the simplified switch components
 class SwitchExamplesPage extends StatefulWidget {
-  const SwitchExamplesPage({Key? key}) : super(key: key);
+  const SwitchExamplesPage({super.key});
 
   @override
   State<SwitchExamplesPage> createState() => _SwitchExamplesPageState();
@@ -26,7 +26,6 @@ class _SwitchExamplesPageState extends State<SwitchExamplesPage> {
   String? _intensityValue;
   String? _sizeValue;
   String? _themeValue;
-  String? _languageValue;
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,6 @@ import '../../../dropdown_examples.dart';
 import '../../../multi_select_examples.dart';
 import '../../../inline_dropdown_examples.dart';
 import '../../../multi_inline_dropdown_examples.dart';
-import '../../../bottom_navigation_examples.dart';
 import '../../../pdf_viewer_examples.dart';
 import '../../../switch_examples.dart';
 import '../../../chart_examples.dart';

@@ -63,7 +63,7 @@ class CardExamples extends StatelessWidget {
           borderWidth: 2,
           borderRadius: 16,
           elevation: 4,
-          shadowColor: Colors.blue.withOpacity(0.3),
+          shadowColor: Colors.blue.withValues(alpha: 0.3),
           child: const Padding(
             padding: EdgeInsets.all(16.0),
             child: Text(
@@ -81,7 +81,7 @@ class CardExamples extends StatelessWidget {
           ),
           borderRadius: 20,
           elevation: 8,
-          onTap: () => print('Card tapped!'),
+          onTap: () {},
           child: const Padding(
             padding: EdgeInsets.all(16.0),
             child: Text(
@@ -153,7 +153,7 @@ class CardExamples extends StatelessWidget {
           borderColor: Colors.grey.shade400,
           borderWidth: 1,
           borderRadius: 8,
-          onTap: () => print('Flat card tapped!'),
+          onTap: () {},
           child: const Text('Interactive flat card'),
         ),
       ],
@@ -293,11 +293,11 @@ class CardExamples extends StatelessWidget {
           content: 'Configure your application settings.',
           actions: [
             TextButton(
-              onPressed: () => print('Cancel pressed'),
+              onPressed: () {},
               child: const Text('Cancel'),
             ),
             ElevatedButton(
-              onPressed: () => print('Save pressed'),
+              onPressed: () {},
               child: const Text('Save'),
             ),
           ],
@@ -310,11 +310,11 @@ class CardExamples extends StatelessWidget {
           content: 'Are you sure you want to delete this item?',
           actions: [
             TextButton(
-              onPressed: () => print('Cancel pressed'),
+              onPressed: () {},
               child: const Text('Cancel'),
             ),
             ElevatedButton(
-              onPressed: () => print('Delete pressed'),
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
                 foregroundColor: Colors.white,
@@ -335,15 +335,15 @@ class CardExamples extends StatelessWidget {
           content: 'Manage your profile information and preferences.',
           actions: [
             IconButton(
-              onPressed: () => print('Edit pressed'),
+              onPressed: () {},
               icon: const Icon(Icons.edit),
             ),
             IconButton(
-              onPressed: () => print('Share pressed'),
+              onPressed: () {},
               icon: const Icon(Icons.share),
             ),
             IconButton(
-              onPressed: () => print('More pressed'),
+              onPressed: () {},
               icon: const Icon(Icons.more_vert),
             ),
           ],
@@ -358,7 +358,7 @@ class CardExamples extends StatelessWidget {
           actions: [
             Switch(
               value: true,
-              onChanged: (value) => print('Switch toggled: $value'),
+              onChanged: (_) {},
             ),
           ],
           actionAlignment: MainAxisAlignment.end,

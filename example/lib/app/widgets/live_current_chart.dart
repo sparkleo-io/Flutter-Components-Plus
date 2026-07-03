@@ -17,7 +17,7 @@ class LiveCurrentChart extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.grey.withValues(alpha: 0.1),
               spreadRadius: 1,
               blurRadius: 5,
               offset: const Offset(0, 2),
@@ -48,7 +48,7 @@ class LiveCurrentChart extends StatelessWidget {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1B5E20).withOpacity(0.1),
+                        color: const Color(0xFF1B5E20).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
@@ -67,7 +67,7 @@ class LiveCurrentChart extends StatelessWidget {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.1),
+                        color: Colors.blue.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
@@ -151,8 +151,8 @@ class LiveCurrentChart extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: controller.isPlaying.value
-                    ? Colors.green.withOpacity(0.1)
-                    : Colors.grey.withOpacity(0.1),
+                    ? Colors.green.withValues(alpha: 0.1)
+                    : Colors.grey.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: controller.isPlaying.value

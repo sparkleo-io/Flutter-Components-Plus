@@ -18,14 +18,20 @@ class TableExamples extends StatelessWidget {
         children: [
           _buildThemeSelector(context, controller),
           const SizedBox(height: 24),
-          _buildSection('Basic Data Table', [
-            _buildBasicTable(context, controller),
-          ], controller),
+          _buildSection(
+              'Basic Data Table',
+              [
+                _buildBasicTable(context, controller),
+              ],
+              controller),
           const SizedBox(height: 32),
-          _buildSection('Data Table with Advanced Filtering', [
-            _buildFilteringTable(context, controller),
-            const SizedBox(height: 16),
-          ], controller),
+          _buildSection(
+              'Data Table with Advanced Filtering',
+              [
+                _buildFilteringTable(context, controller),
+                const SizedBox(height: 16),
+              ],
+              controller),
           // const SizedBox(height: 32),
           // _buildSection('Advanced Data Table with Actions', [
           //   _buildAdvancedTable(),
@@ -284,7 +290,7 @@ class TableExamples extends StatelessWidget {
     TableExamplesController controller,
   ) {
     return Obx(
-      () => Container(
+      () => SizedBox(
         height: 600, // Fixed height for consistency
         width: double.infinity,
         child: FCPDataTable(
@@ -320,7 +326,7 @@ class TableExamples extends StatelessWidget {
     TableExamplesController controller,
   ) {
     return Obx(
-      () => Container(
+      () => SizedBox(
         height: 600, // Fixed height for consistency
         width: double.infinity,
         child: FCPDataTable(
@@ -367,10 +373,8 @@ class TableExamples extends StatelessWidget {
 
             // Custom filter for salary column - supports range filtering
             if (columnName == 'salary' && value is String) {
-              final salaryStr = value
-                  .toString()
-                  .replaceAll('\$', '')
-                  .replaceAll(',', '');
+              final salaryStr =
+                  value.toString().replaceAll('\$', '').replaceAll(',', '');
               final salary = double.tryParse(salaryStr);
               if (salary != null) {
                 // Support range filtering like "60000-80000" or single value "70000"
@@ -410,312 +414,12 @@ class TableExamples extends StatelessWidget {
 
             // Default text contains filter for other columns
             return value?.toString().toLowerCase().contains(
-                  filterValue.toLowerCase(),
-                ) ??
+                      filterValue.toLowerCase(),
+                    ) ??
                 false;
           },
           columnWidthMode: ColumnWidthMode.fitByColumnName,
           shrinkWrapColumns: false,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFilterExample(String title, List<String> examples) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-        ),
-        const SizedBox(height: 4),
-        ...examples.map(
-          (example) => Padding(
-            padding: const EdgeInsets.only(left: 8, top: 2),
-            child: Text(
-              example,
-              style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCustomHeader(
-    TableExamplesController controller,
-    BuildContext context,
-  ) {
-    final theme = Theme.of(context);
-    final themeConfig = controller.selectedTheme;
-
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: themeConfig.getTableBackgroundColor(theme),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(8),
-          topRight: Radius.circular(8),
-        ),
-        border: Border(
-          bottom: BorderSide(
-            color: themeConfig.borderColor ?? Colors.grey.shade300,
-            width: 1,
-          ),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header title with icon
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade100,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  Icons.people_outline,
-                  color: Colors.blue.shade700,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Employee Directory',
-                      style: themeConfig.useAppTheme
-                          ? (theme.textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ) ??
-                                const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ))
-                          : const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      '${controller.filteredTotalRecords} employees',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          // Search and actions row
-          Container(
-            width: 250,
-            child: FCPInputFields.search(
-              onChanged: (query) {
-                controller.onSearch(query);
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAdvancedTable(TableExamplesController controller) {
-    return Obx(
-      () => Container(
-        height: 400, // Fixed height for consistency
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: FCPDataTable(
-          key: ValueKey('advanced_table_${controller.selectedTheme.hashCode}'),
-          dataList: controller.filteredData,
-          columns: controller.columns,
-          title: 'Advanced Employee Directory',
-          page: controller.currentPage,
-          totalRecords: controller.filteredTotalRecords,
-          rowsPerPage: controller.rowsPerPage,
-          fitToScreen: true,
-          availableRowsPerPage: [5, 10, 15, 20],
-          allowSorting: true,
-          allowFiltering: true,
-          themeConfig: controller.selectedTheme,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: controller.onAddItem,
-            ),
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: controller.onRefreshData,
-            ),
-          ],
-          suffix: Container(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.info_outline, color: Colors.blue.shade600),
-                const SizedBox(width: 4),
-                Text(
-                  '${controller.filteredTotalRecords} employees',
-                  style: TextStyle(
-                    color: Colors.blue.shade600,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          onPageChanged: controller.onPageChanged,
-          onRowsPageChanged: controller.onRowsPageChanged,
-          onSearch: controller.onSearch,
-          onSort: controller.onSort,
-          onReload: controller.onReload,
-          // Let the package handle responsiveness automatically
-          columnWidthMode: ColumnWidthMode.fitByColumnName,
-          gridLinesVisibility: GridLinesVisibility.none,
-          allowColumnsDragging: false, // Better for mobile UX
-          allowColumnsResizing: true,
-          columnResizeMode: ColumnResizeMode.onResize,
-          defaultColumnWidth: double.nan,
-          shrinkWrapColumns: true,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildThemedTable(TableExamplesController controller) {
-    return Obx(
-      () => Container(
-        height: 400,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: FCPDataTable(
-          key: ValueKey('themed_table_${controller.selectedTheme.hashCode}'),
-          dataList: controller.filteredData,
-          columns: controller.columns,
-          title: 'Themed Employee Directory',
-          page: controller.currentPage,
-          totalRecords: controller.filteredTotalRecords,
-          rowsPerPage: controller.rowsPerPage,
-          fitToScreen: true,
-          availableRowsPerPage: [5, 10, 15, 20],
-          allowSorting: true,
-          allowFiltering: true,
-          themeConfig: controller.selectedTheme,
-          onPageChanged: controller.onPageChanged,
-          onRowsPageChanged: controller.onRowsPageChanged,
-          onSearch: controller.onSearch,
-          onSort: controller.onSort,
-          onReload: controller.onReload,
-          // Let the package handle responsiveness automatically
-          columnWidthMode: ColumnWidthMode.fitByColumnName,
-          gridLinesVisibility: GridLinesVisibility.none,
-          allowColumnsDragging: false, // Better for mobile UX
-          allowColumnsResizing: true,
-          columnResizeMode: ColumnResizeMode.onResize,
-          defaultColumnWidth: double.nan,
-          shrinkWrapColumns: true,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSelectableTable(TableExamplesController controller) {
-    return Obx(
-      () => Container(
-        height: 400,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: FCPDataTable(
-          key: ValueKey(
-            'selectable_table_${controller.selectedTheme.hashCode}',
-          ),
-          dataList: controller.filteredData,
-          columns: controller.columns,
-          title: 'Selectable Employee Directory',
-          page: controller.currentPage,
-          totalRecords: controller.filteredTotalRecords,
-          rowsPerPage: controller.rowsPerPage,
-          fitToScreen: true,
-          availableRowsPerPage: [5, 10, 15, 20],
-          allowSorting: true,
-          allowFiltering: true,
-          themeConfig: controller.selectedTheme,
-          onItemSelect: controller.onItemSelect,
-          onPageChanged: controller.onPageChanged,
-          onRowsPageChanged: controller.onRowsPageChanged,
-          onSearch: controller.onSearch,
-          onSort: controller.onSort,
-          onReload: controller.onReload,
-          // Let the package handle responsiveness automatically
-          columnWidthMode: ColumnWidthMode.fitByColumnName,
-          gridLinesVisibility: GridLinesVisibility.none,
-          allowColumnsDragging: false, // Better for mobile UX
-          allowColumnsResizing: true,
-          columnResizeMode: ColumnResizeMode.onResize,
-          defaultColumnWidth: double.nan,
-          shrinkWrapColumns: true,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCompactTable(TableExamplesController controller) {
-    return Obx(
-      () => Container(
-        height: 300,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: FCPDataTable(
-          key: ValueKey('compact_table_${controller.selectedTheme.hashCode}'),
-          dataList: controller.filteredData,
-          columns: controller.columns,
-          title: 'Compact Employee Directory',
-          page: controller.currentPage,
-          totalRecords: controller.filteredTotalRecords,
-          rowsPerPage: controller.rowsPerPage,
-          fitToScreen: true,
-          availableRowsPerPage: [5, 10, 15, 20],
-          allowSorting: true,
-          allowFiltering: true,
-          rowHeight: 40,
-          headerRowHeight: 48,
-          defaultColumnWidth: 120,
-          themeConfig: controller.selectedTheme,
-          onPageChanged: controller.onPageChanged,
-          onRowsPageChanged: controller.onRowsPageChanged,
-          onSearch: controller.onSearch,
-          onSort: controller.onSort,
-          onReload: controller.onReload,
-          // Let the package handle responsiveness automatically
-          columnWidthMode: ColumnWidthMode.fitByColumnName,
-          gridLinesVisibility: GridLinesVisibility.none,
-          allowColumnsDragging: false, // Better for mobile UX
-          allowColumnsResizing: true,
-          columnResizeMode: ColumnResizeMode.onResize,
-          shrinkWrapColumns: true,
         ),
       ),
     );

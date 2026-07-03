@@ -33,35 +33,35 @@ class FCPCard extends StatelessWidget {
     this.autofocus = false,
     this.statesController,
     this.isSemanticButton = false,
-  }) : shadowType = null,
-       gradientType = null,
-       gradientColors = null,
-       gradientStops = null,
-       gradientBegin = Alignment.topLeft,
-       gradientEnd = Alignment.bottomRight,
-       gradientCenter = null,
-       gradientRadius = 0.5,
-       gradientTileMode = TileMode.clamp,
-       gradientTransform = null,
-       title = null,
-       subtitle = null,
-       content = null,
-       leading = null,
-       trailing = null,
-       icon = null,
-       iconColor = null,
-       iconSize = 24.0,
-       titleStyle = null,
-       subtitleStyle = null,
-       contentStyle = null,
-       showDivider = true,
-       dividerColor = null,
-       dividerHeight = 1.0,
-       spacing = 8.0,
-       actions = null,
-       actionAlignment = MainAxisAlignment.end,
-       actionSpacing = 8.0,
-       contentPadding = const EdgeInsets.only(bottom: 16.0);
+  })  : shadowType = null,
+        gradientType = null,
+        gradientColors = null,
+        gradientStops = null,
+        gradientBegin = Alignment.topLeft,
+        gradientEnd = Alignment.bottomRight,
+        gradientCenter = null,
+        gradientRadius = 0.5,
+        gradientTileMode = TileMode.clamp,
+        gradientTransform = null,
+        title = null,
+        subtitle = null,
+        content = null,
+        leading = null,
+        trailing = null,
+        icon = null,
+        iconColor = null,
+        iconSize = 24.0,
+        titleStyle = null,
+        subtitleStyle = null,
+        contentStyle = null,
+        showDivider = true,
+        dividerColor = null,
+        dividerHeight = 1.0,
+        spacing = 8.0,
+        actions = null,
+        actionAlignment = MainAxisAlignment.end,
+        actionSpacing = 8.0,
+        contentPadding = const EdgeInsets.only(bottom: 16.0);
 
   /// Creates a flat card without shadows
   const FCPCard.flat({
@@ -89,40 +89,40 @@ class FCPCard extends StatelessWidget {
     this.autofocus = false,
     this.statesController,
     this.isSemanticButton = false,
-  }) : elevation = 0.0,
-       shadowColor = Colors.transparent,
-       shadowOffset = null,
-       shadowBlurRadius = null,
-       shadowSpreadRadius = null,
-       shadowType = null,
-       gradientType = null,
-       gradientColors = null,
-       gradientStops = null,
-       gradientBegin = Alignment.topLeft,
-       gradientEnd = Alignment.bottomRight,
-       gradientCenter = null,
-       gradientRadius = 0.5,
-       gradientTileMode = TileMode.clamp,
-       gradientTransform = null,
-       title = null,
-       subtitle = null,
-       content = null,
-       leading = null,
-       trailing = null,
-       icon = null,
-       iconColor = null,
-       iconSize = 24.0,
-       titleStyle = null,
-       subtitleStyle = null,
-       contentStyle = null,
-       showDivider = true,
-       dividerColor = null,
-       dividerHeight = 1.0,
-       spacing = 8.0,
-       actions = null,
-       actionAlignment = MainAxisAlignment.end,
-       actionSpacing = 8.0,
-       contentPadding = const EdgeInsets.only(bottom: 16.0);
+  })  : elevation = 0.0,
+        shadowColor = Colors.transparent,
+        shadowOffset = null,
+        shadowBlurRadius = null,
+        shadowSpreadRadius = null,
+        shadowType = null,
+        gradientType = null,
+        gradientColors = null,
+        gradientStops = null,
+        gradientBegin = Alignment.topLeft,
+        gradientEnd = Alignment.bottomRight,
+        gradientCenter = null,
+        gradientRadius = 0.5,
+        gradientTileMode = TileMode.clamp,
+        gradientTransform = null,
+        title = null,
+        subtitle = null,
+        content = null,
+        leading = null,
+        trailing = null,
+        icon = null,
+        iconColor = null,
+        iconSize = 24.0,
+        titleStyle = null,
+        subtitleStyle = null,
+        contentStyle = null,
+        showDivider = true,
+        dividerColor = null,
+        dividerHeight = 1.0,
+        spacing = 8.0,
+        actions = null,
+        actionAlignment = MainAxisAlignment.end,
+        actionSpacing = 8.0,
+        contentPadding = const EdgeInsets.only(bottom: 16.0);
 
   /// Creates a shaded card with predefined shadow styles
   const FCPCard.shaded({
@@ -155,35 +155,35 @@ class FCPCard extends StatelessWidget {
     this.autofocus = false,
     this.statesController,
     this.isSemanticButton = false,
-  }) : elevation = 0.0,
-       gradientType = null,
-       gradientColors = null,
-       gradientStops = null,
-       gradientBegin = Alignment.topLeft,
-       gradientEnd = Alignment.bottomRight,
-       gradientCenter = null,
-       gradientRadius = 0.5,
-       gradientTileMode = TileMode.clamp,
-       gradientTransform = null,
-       title = null,
-       subtitle = null,
-       content = null,
-       leading = null,
-       trailing = null,
-       icon = null,
-       iconColor = null,
-       iconSize = 24.0,
-       titleStyle = null,
-       subtitleStyle = null,
-       contentStyle = null,
-       showDivider = true,
-       dividerColor = null,
-       dividerHeight = 1.0,
-       spacing = 8.0,
-       actions = null,
-       actionAlignment = MainAxisAlignment.end,
-       actionSpacing = 8.0,
-       contentPadding = const EdgeInsets.only(bottom: 16.0);
+  })  : elevation = 0.0,
+        gradientType = null,
+        gradientColors = null,
+        gradientStops = null,
+        gradientBegin = Alignment.topLeft,
+        gradientEnd = Alignment.bottomRight,
+        gradientCenter = null,
+        gradientRadius = 0.5,
+        gradientTileMode = TileMode.clamp,
+        gradientTransform = null,
+        title = null,
+        subtitle = null,
+        content = null,
+        leading = null,
+        trailing = null,
+        icon = null,
+        iconColor = null,
+        iconSize = 24.0,
+        titleStyle = null,
+        subtitleStyle = null,
+        contentStyle = null,
+        showDivider = true,
+        dividerColor = null,
+        dividerHeight = 1.0,
+        spacing = 8.0,
+        actions = null,
+        actionAlignment = MainAxisAlignment.end,
+        actionSpacing = 8.0,
+        contentPadding = const EdgeInsets.only(bottom: 16.0);
 
   /// Creates a gradient card with various gradient styles
   const FCPCard.gradient({
@@ -223,28 +223,28 @@ class FCPCard extends StatelessWidget {
     this.autofocus = false,
     this.statesController,
     this.isSemanticButton = false,
-  }) : backgroundColor = null,
-       gradient = null,
-       shadowType = null,
-       title = null,
-       subtitle = null,
-       content = null,
-       leading = null,
-       trailing = null,
-       icon = null,
-       iconColor = null,
-       iconSize = 24.0,
-       titleStyle = null,
-       subtitleStyle = null,
-       contentStyle = null,
-       showDivider = true,
-       dividerColor = null,
-       dividerHeight = 1.0,
-       spacing = 8.0,
-       actions = null,
-       actionAlignment = MainAxisAlignment.end,
-       actionSpacing = 8.0,
-       contentPadding = const EdgeInsets.only(bottom: 16.0);
+  })  : backgroundColor = null,
+        gradient = null,
+        shadowType = null,
+        title = null,
+        subtitle = null,
+        content = null,
+        leading = null,
+        trailing = null,
+        icon = null,
+        iconColor = null,
+        iconSize = 24.0,
+        titleStyle = null,
+        subtitleStyle = null,
+        contentStyle = null,
+        showDivider = true,
+        dividerColor = null,
+        dividerHeight = 1.0,
+        spacing = 8.0,
+        actions = null,
+        actionAlignment = MainAxisAlignment.end,
+        actionSpacing = 8.0,
+        contentPadding = const EdgeInsets.only(bottom: 16.0);
 
   /// Creates an info card for displaying structured information
   const FCPCard.info({
@@ -291,21 +291,21 @@ class FCPCard extends StatelessWidget {
     this.dividerColor,
     this.dividerHeight = 1.0,
     this.spacing = 8.0,
-  }) : child = null,
-       shadowType = null,
-       gradientType = null,
-       gradientColors = null,
-       gradientStops = null,
-       gradientBegin = Alignment.topLeft,
-       gradientEnd = Alignment.bottomRight,
-       gradientCenter = null,
-       gradientRadius = 0.5,
-       gradientTileMode = TileMode.clamp,
-       gradientTransform = null,
-       actions = null,
-       actionAlignment = MainAxisAlignment.end,
-       actionSpacing = 8.0,
-       contentPadding = const EdgeInsets.only(bottom: 16.0);
+  })  : child = null,
+        shadowType = null,
+        gradientType = null,
+        gradientColors = null,
+        gradientStops = null,
+        gradientBegin = Alignment.topLeft,
+        gradientEnd = Alignment.bottomRight,
+        gradientCenter = null,
+        gradientRadius = 0.5,
+        gradientTileMode = TileMode.clamp,
+        gradientTransform = null,
+        actions = null,
+        actionAlignment = MainAxisAlignment.end,
+        actionSpacing = 8.0,
+        contentPadding = const EdgeInsets.only(bottom: 16.0);
 
   /// Creates an action card for interactive actions
   const FCPCard.action({
@@ -356,17 +356,17 @@ class FCPCard extends StatelessWidget {
     this.dividerHeight = 1.0,
     this.spacing = 8.0,
     this.contentPadding = const EdgeInsets.only(bottom: 16.0),
-  }) : child = null,
-       shadowType = null,
-       gradientType = null,
-       gradientColors = null,
-       gradientStops = null,
-       gradientBegin = Alignment.topLeft,
-       gradientEnd = Alignment.bottomRight,
-       gradientCenter = null,
-       gradientRadius = 0.5,
-       gradientTileMode = TileMode.clamp,
-       gradientTransform = null;
+  })  : child = null,
+        shadowType = null,
+        gradientType = null,
+        gradientColors = null,
+        gradientStops = null,
+        gradientBegin = Alignment.topLeft,
+        gradientEnd = Alignment.bottomRight,
+        gradientCenter = null,
+        gradientRadius = 0.5,
+        gradientTileMode = TileMode.clamp,
+        gradientTransform = null;
 
   // Common properties
   final Widget? child;
@@ -395,7 +395,7 @@ class FCPCard extends StatelessWidget {
   final ValueChanged<bool>? onFocusChange;
   final FocusNode? focusNode;
   final bool autofocus;
-  final MaterialStatesController? statesController;
+  final WidgetStatesController? statesController;
   final bool isSemanticButton;
 
   // Shaded card properties
@@ -438,7 +438,6 @@ class FCPCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
 
     // Determine effective properties based on card type
     final effectiveProperties = _getEffectiveProperties(context, theme);
@@ -454,9 +453,8 @@ class FCPCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: effectiveProperties.backgroundColor,
         gradient: effectiveProperties.gradient,
-        borderRadius: shape == null
-            ? BorderRadius.circular(borderRadius)
-            : null,
+        borderRadius:
+            shape == null ? BorderRadius.circular(borderRadius) : null,
         border: effectiveProperties.border,
         boxShadow: effectiveProperties.boxShadow,
       ),
@@ -486,9 +484,8 @@ class FCPCard extends StatelessWidget {
           focusNode: focusNode,
           autofocus: autofocus,
           statesController: statesController,
-          borderRadius: shape == null
-              ? BorderRadius.circular(borderRadius)
-              : null,
+          borderRadius:
+              shape == null ? BorderRadius.circular(borderRadius) : null,
           child: cardWidget,
         ),
       );
@@ -515,19 +512,17 @@ class FCPCard extends StatelessWidget {
     if (effectiveBackgroundColor == null &&
         gradient == null &&
         gradientType == null) {
-      effectiveBackgroundColor = isDark
-          ? colorScheme.surface
-          : colorScheme.surface;
+      effectiveBackgroundColor =
+          isDark ? colorScheme.surface : colorScheme.surface;
     }
 
     // Determine border
     BoxBorder? effectiveBorder = border;
     if (effectiveBorder == null && (borderColor != null || borderWidth > 0)) {
-      final effectiveBorderColor =
-          borderColor ??
+      final effectiveBorderColor = borderColor ??
           (isDark
-              ? colorScheme.outline.withOpacity(0.2)
-              : colorScheme.outline.withOpacity(0.1));
+              ? colorScheme.outline.withValues(alpha: 0.2)
+              : colorScheme.outline.withValues(alpha: 0.1));
       effectiveBorder = Border.all(
         color: effectiveBorderColor,
         width: borderWidth,
@@ -555,11 +550,10 @@ class FCPCard extends StatelessWidget {
         ),
       ];
     } else if (elevation > 0 || shadowBlurRadius != null) {
-      final effectiveShadowColor =
-          shadowColor ??
+      final effectiveShadowColor = shadowColor ??
           (isDark
-              ? Colors.black.withOpacity(0.3)
-              : Colors.black.withOpacity(0.1));
+              ? Colors.black.withValues(alpha: 0.3)
+              : Colors.black.withValues(alpha: 0.1));
       effectiveBoxShadow = [
         BoxShadow(
           color: effectiveShadowColor,
@@ -626,8 +620,7 @@ class FCPCard extends StatelessWidget {
       textContent.add(
         Text(
           title!,
-          style:
-              titleStyle ??
+          style: titleStyle ??
               theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -643,8 +636,7 @@ class FCPCard extends StatelessWidget {
       textContent.add(
         Text(
           subtitle!,
-          style:
-              subtitleStyle ??
+          style: subtitleStyle ??
               theme.textTheme.bodyMedium?.copyWith(
                 color: theme.textTheme.bodySmall?.color,
               ),
@@ -713,11 +705,10 @@ class FCPCard extends StatelessWidget {
             leading != null ||
             trailing != null)) {
       final colorScheme = theme.colorScheme;
-      final effectiveDividerColor =
-          dividerColor ??
+      final effectiveDividerColor = dividerColor ??
           (theme.brightness == Brightness.dark
-              ? colorScheme.outline.withOpacity(0.2)
-              : colorScheme.outline.withOpacity(0.1));
+              ? colorScheme.outline.withValues(alpha: 0.2)
+              : colorScheme.outline.withValues(alpha: 0.1));
       children.add(
         Divider(
           color: effectiveDividerColor,
@@ -865,8 +856,8 @@ class FCPCard extends StatelessWidget {
         return _ShadowProperties(
           elevation: 2,
           shadowColor: isDark
-              ? Colors.black.withOpacity(0.4)
-              : Colors.black.withOpacity(0.1),
+              ? Colors.black.withValues(alpha: 0.4)
+              : Colors.black.withValues(alpha: 0.1),
           shadowOffset: const Offset(0, 1),
           shadowBlurRadius: 3,
           shadowSpreadRadius: 0,
@@ -875,8 +866,8 @@ class FCPCard extends StatelessWidget {
         return _ShadowProperties(
           elevation: 4,
           shadowColor: isDark
-              ? Colors.black.withOpacity(0.5)
-              : Colors.black.withOpacity(0.15),
+              ? Colors.black.withValues(alpha: 0.5)
+              : Colors.black.withValues(alpha: 0.15),
           shadowOffset: const Offset(0, 2),
           shadowBlurRadius: 8,
           shadowSpreadRadius: 0,
@@ -885,8 +876,8 @@ class FCPCard extends StatelessWidget {
         return _ShadowProperties(
           elevation: 8,
           shadowColor: isDark
-              ? Colors.black.withOpacity(0.6)
-              : Colors.black.withOpacity(0.2),
+              ? Colors.black.withValues(alpha: 0.6)
+              : Colors.black.withValues(alpha: 0.2),
           shadowOffset: const Offset(0, 4),
           shadowBlurRadius: 16,
           shadowSpreadRadius: 0,
@@ -895,8 +886,8 @@ class FCPCard extends StatelessWidget {
         return _ShadowProperties(
           elevation: 16,
           shadowColor: isDark
-              ? Colors.black.withOpacity(0.7)
-              : Colors.black.withOpacity(0.25),
+              ? Colors.black.withValues(alpha: 0.7)
+              : Colors.black.withValues(alpha: 0.25),
           shadowOffset: const Offset(0, 8),
           shadowBlurRadius: 24,
           shadowSpreadRadius: 0,
@@ -905,8 +896,8 @@ class FCPCard extends StatelessWidget {
         return _ShadowProperties(
           elevation: 0,
           shadowColor: isDark
-              ? Colors.black.withOpacity(0.3)
-              : Colors.black.withOpacity(0.08),
+              ? Colors.black.withValues(alpha: 0.3)
+              : Colors.black.withValues(alpha: 0.08),
           shadowOffset: const Offset(0, 1),
           shadowBlurRadius: 12,
           shadowSpreadRadius: 0,
@@ -915,8 +906,8 @@ class FCPCard extends StatelessWidget {
         return _ShadowProperties(
           elevation: 0,
           shadowColor: isDark
-              ? Colors.black.withOpacity(0.8)
-              : Colors.black.withOpacity(0.3),
+              ? Colors.black.withValues(alpha: 0.8)
+              : Colors.black.withValues(alpha: 0.3),
           shadowOffset: const Offset(0, 2),
           shadowBlurRadius: 4,
           shadowSpreadRadius: 0,

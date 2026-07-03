@@ -132,9 +132,6 @@ class _FCPMultiSelectExamplesState extends State<FCPMultiSelectExamples> {
                 const FCPMultiSelectItem(label: 'Option 4', value: 'opt4'),
               ],
               onSelectionChanged: (selectedItems) {
-                print(
-                  'Selected: ${selectedItems.map((item) => item.label).toList()}',
-                );
               },
               titleStyle: const TextStyle(
                 fontWeight: FontWeight.bold,

@@ -109,8 +109,7 @@ class _FCPInputFieldState extends State<FCPInputField> {
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Text(
               widget.label!,
-              style:
-                  widget.labelStyle ??
+              style: widget.labelStyle ??
                   Theme.of(
                     context,
                   ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
@@ -137,8 +136,7 @@ class _FCPInputFieldState extends State<FCPInputField> {
           cursorColor: widget.cursorColor,
           focusNode: widget.focusNode,
           obscuringCharacter: widget.obscuringCharacter,
-          onTapOutside:
-              widget.onTapOutside ??
+          onTapOutside: widget.onTapOutside ??
               (event) => FocusScope.of(context).unfocus(),
           decoration: InputDecoration(
             hintText: widget.hint,
@@ -161,8 +159,7 @@ class _FCPInputFieldState extends State<FCPInputField> {
             focusedBorder:
                 widget.focusedBorder ?? _getDefaultFocusedBorder(context),
             errorBorder: widget.errorBorder ?? _getDefaultErrorBorder(),
-            contentPadding:
-                widget.contentPadding ??
+            contentPadding: widget.contentPadding ??
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
           ),
         ),
@@ -184,8 +181,7 @@ class _FCPInputFieldState extends State<FCPInputField> {
 
   InputBorder _getDefaultFocusedBorder(BuildContext context) {
     final radius = widget.borderRadius ?? 8.0;
-    final color =
-        widget.focusedBorderColor ??
+    final color = widget.focusedBorderColor ??
         widget.borderColor ??
         Theme.of(context).dividerColor;
     final width = widget.borderWidth ?? 2.0;
@@ -380,7 +376,7 @@ class _FCPCountryPickerState extends State<FCPCountryPicker> {
             ),
           ),
         DropdownButtonFormField<String>(
-          value: selectedCountry,
+          initialValue: selectedCountry,
           hint: Text(widget.hint ?? 'Select Country'),
           validator: widget.validator,
           decoration: InputDecoration(
@@ -797,8 +793,7 @@ class FCPInputFields {
       controller: controller,
       validator: validator ?? FCPValidators.numeric,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      inputFormatters:
-          inputFormatters ??
+      inputFormatters: inputFormatters ??
           [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))],
       prefixIcon: prefixIcon ?? const Icon(Icons.calculate_outlined),
       onChanged: onChanged,
@@ -985,8 +980,7 @@ class FCPInputFields {
       controller: controller,
       keyboardType: TextInputType.text,
       prefixIcon: prefixIcon ?? const Icon(Icons.search),
-      suffixIcon:
-          suffixIcon ??
+      suffixIcon: suffixIcon ??
           (onSearchPressed != null
               ? IconButton(
                   icon: const Icon(Icons.search),
@@ -1074,8 +1068,7 @@ class FCPInputFields {
       hint: hint ?? 'Enter URL',
       initialValue: initialValue,
       controller: controller,
-      validator:
-          validator ??
+      validator: validator ??
           (String? value) {
             if (value == null || value.isEmpty) {
               return 'URL is required';

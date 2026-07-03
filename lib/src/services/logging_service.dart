@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 /// Log levels for the logging service
 enum FCPLogLevel { debug, info, warning, error, fatal }
@@ -42,13 +43,13 @@ class FCPLoggingService {
   static final FCPLoggingService _instance = FCPLoggingService._();
   static FCPLoggingService get instance => _instance;
 
-  FCPLogLevel _minLevel = FCPLogLevel.debug;
-  bool _enableConsoleOutput = true;
+  FCPLogLevel _minLevel = FCPLogLevel.info;
+  bool _enableConsoleOutput = false;
   bool _enableFileOutput = false;
   String? _logFilePath;
   final List<FCPLogEntry> _logBuffer = [];
   int _maxBufferSize = 1000;
-  List<FCPLogListener> _listeners = [];
+  final List<FCPLogListener> _listeners = [];
 
   /// Set minimum log level
   void setMinLevel(FCPLogLevel level) {
@@ -271,48 +272,32 @@ class FCPLoggingService {
 
   /// Output to console
   void _outputToConsole(FCPLogEntry entry) {
-    final emoji = _getLevelEmoji(entry.level);
-    final color = _getLevelColor(entry.level);
+    developer.log(
+      entry.toString(),
+      name: entry.tag ?? 'FCP',
+      level: _toDeveloperLogLevel(entry.level),
+    );
+  }
 
-    print('$emoji ${entry.toString()}');
+  int _toDeveloperLogLevel(FCPLogLevel level) {
+    switch (level) {
+      case FCPLogLevel.debug:
+        return 500;
+      case FCPLogLevel.info:
+        return 800;
+      case FCPLogLevel.warning:
+        return 900;
+      case FCPLogLevel.error:
+        return 1000;
+      case FCPLogLevel.fatal:
+        return 1200;
+    }
   }
 
   /// Output to file
   void _outputToFile(FCPLogEntry entry) {
     // This would require dart:io, so we'll leave it as a placeholder
     // In a real implementation, you would write to a file here
-  }
-
-  /// Get level emoji
-  String _getLevelEmoji(FCPLogLevel level) {
-    switch (level) {
-      case FCPLogLevel.debug:
-        return '🐛';
-      case FCPLogLevel.info:
-        return 'ℹ️';
-      case FCPLogLevel.warning:
-        return '⚠️';
-      case FCPLogLevel.error:
-        return '❌';
-      case FCPLogLevel.fatal:
-        return '💀';
-    }
-  }
-
-  /// Get level color (for console output)
-  String _getLevelColor(FCPLogLevel level) {
-    switch (level) {
-      case FCPLogLevel.debug:
-        return '\x1B[36m'; // Cyan
-      case FCPLogLevel.info:
-        return '\x1B[32m'; // Green
-      case FCPLogLevel.warning:
-        return '\x1B[33m'; // Yellow
-      case FCPLogLevel.error:
-        return '\x1B[31m'; // Red
-      case FCPLogLevel.fatal:
-        return '\x1B[35m'; // Magenta
-    }
   }
 
   /// Trim buffer if it exceeds max size

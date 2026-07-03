@@ -647,7 +647,7 @@ class _FCPButtonState extends State<FCPButton>
                   ? [
                       BoxShadow(
                         color:
-                            widget.shadowColor ?? Colors.black.withOpacity(0.1),
+                            widget.shadowColor ?? Colors.black.withValues(alpha: 0.1),
                         blurRadius: widget.elevation!,
                         offset: const Offset(0, 2),
                       ),
@@ -714,7 +714,7 @@ class _FCPButtonState extends State<FCPButton>
                   ? [
                       BoxShadow(
                         color:
-                            widget.shadowColor ?? Colors.black.withOpacity(0.1),
+                            widget.shadowColor ?? Colors.black.withValues(alpha: 0.1),
                         blurRadius: widget.elevation!,
                         offset: const Offset(0, 2),
                       ),
@@ -756,7 +756,7 @@ class _FCPButtonState extends State<FCPButton>
                       BoxShadow(
                         color:
                             widget.shadowColor ??
-                            Colors.black.withOpacity(0.15),
+                            Colors.black.withValues(alpha: 0.15),
                         blurRadius: widget.elevation!,
                         offset: const Offset(0, 4),
                         spreadRadius: 1,
@@ -764,7 +764,7 @@ class _FCPButtonState extends State<FCPButton>
                     ]
                   : [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
+                        color: Colors.black.withValues(alpha: 0.15),
                         blurRadius: 8,
                         offset: const Offset(0, 4),
                         spreadRadius: 1,
@@ -909,24 +909,24 @@ class _FCPButtonState extends State<FCPButton>
 
     switch (widget.variant) {
       case FCPButtonVariant.primary:
-        return (widget.backgroundColor ?? FCPColorScheme.primary).withOpacity(
+        return (widget.backgroundColor ?? FCPColorScheme.primary).withValues(alpha: 
           opacity,
         );
       case FCPButtonVariant.secondary:
-        return (widget.backgroundColor ?? FCPColorScheme.secondary).withOpacity(
+        return (widget.backgroundColor ?? FCPColorScheme.secondary).withValues(alpha: 
           opacity,
         );
       case FCPButtonVariant.outline:
       case FCPButtonVariant.ghost:
-        return (widget.backgroundColor ?? Colors.transparent).withOpacity(
+        return (widget.backgroundColor ?? Colors.transparent).withValues(alpha: 
           opacity,
         );
       case FCPButtonVariant.danger:
-        return (widget.backgroundColor ?? FCPColorScheme.error).withOpacity(
+        return (widget.backgroundColor ?? FCPColorScheme.error).withValues(alpha: 
           opacity,
         );
       case FCPButtonVariant.floating:
-        return (widget.backgroundColor ?? FCPColorScheme.primary).withOpacity(
+        return (widget.backgroundColor ?? FCPColorScheme.primary).withValues(alpha: 
           opacity,
         );
     }
@@ -941,7 +941,7 @@ class _FCPButtonState extends State<FCPButton>
         // Outlined buttons should always show a border, use default width of 1 if borderWidth is 0
         final borderWidth = widget.borderWidth > 0 ? widget.borderWidth : 1.0;
         return Border.all(
-          color: (widget.borderColor ?? FCPColorScheme.primary).withOpacity(
+          color: (widget.borderColor ?? FCPColorScheme.primary).withValues(alpha: 
             opacity,
           ),
           width: borderWidth,
@@ -956,7 +956,7 @@ class _FCPButtonState extends State<FCPButton>
           return null;
         }
         return Border.all(
-          color: (widget.borderColor ?? FCPColorScheme.primary).withOpacity(
+          color: (widget.borderColor ?? FCPColorScheme.primary).withValues(alpha: 
             opacity,
           ),
           width: widget.borderWidth,

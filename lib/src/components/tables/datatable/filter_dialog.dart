@@ -9,13 +9,13 @@ class FilterDialog extends StatefulWidget {
   final Function(FilterState?) onFilterChanged;
 
   const FilterDialog({
-    Key? key,
+    super.key,
     required this.columnName,
     required this.columnType,
     this.currentFilter,
     this.uniqueValues,
     required this.onFilterChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<FilterDialog> createState() => _FilterDialogState();
@@ -25,7 +25,7 @@ class _FilterDialogState extends State<FilterDialog> {
   late TextEditingController _textController;
   late String _selectedFilterType;
   String _filterValue = '';
-  List<dynamic> _selectedOptions = [];
+  final List<dynamic> _selectedOptions = [];
   DateTime? _startDate;
   DateTime? _endDate;
   double? _minValue;
@@ -103,7 +103,7 @@ class _FilterDialogState extends State<FilterDialog> {
 
             // Filter type selector
             DropdownButtonFormField<String>(
-              value: _selectedFilterType,
+              initialValue: _selectedFilterType,
               decoration: const InputDecoration(
                 labelText: 'Filter Type',
                 border: OutlineInputBorder(),

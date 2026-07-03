@@ -3,6 +3,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:location/location.dart' as location;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'logging_service.dart';
 
 /// BLE service for managing Bluetooth Low Energy operations
 class FcpBleService {
@@ -10,6 +11,8 @@ class FcpBleService {
 
   static final FcpBleService _instance = FcpBleService._();
   static FcpBleService get instance => _instance;
+
+  final FCPLoggingService _logger = FCPLoggingService.instance;
 
   // Scan state management
   BleScanState _scanState = const BleScanState(
@@ -170,8 +173,8 @@ class FcpBleService {
       }
 
       // Check if the app has permission to access location
-      location.PermissionStatus permissionGranted = await locationService
-          .hasPermission();
+      location.PermissionStatus permissionGranted =
+          await locationService.hasPermission();
       if (permissionGranted == location.PermissionStatus.denied) {
         // Request permission to access location
         permissionGranted = await locationService.requestPermission();
@@ -211,8 +214,8 @@ class FcpBleService {
       final locationService = location.Location();
 
       // Check if the app has permission to access location
-      location.PermissionStatus permissionGranted = await locationService
-          .hasPermission();
+      location.PermissionStatus permissionGranted =
+          await locationService.hasPermission();
       if (permissionGranted == location.PermissionStatus.denied) {
         // Request permission to access location
         permissionGranted = await locationService.requestPermission();
@@ -304,7 +307,7 @@ class FcpBleService {
       _updateScanState(scanningState);
 
       if (scanConfig.debugMode) {
-        print('🔍 Starting BLE scan with config: $scanConfig');
+        _logger.debug('Starting BLE scan with config: $scanConfig', tag: 'BLE');
       }
 
       // Start scanning
@@ -416,8 +419,9 @@ class FcpBleService {
 
       // Debug output
       if (config.debugMode) {
-        print(
-          '📱 Found BLE device: ${bleScanResult.deviceName} (${bleScanResult.deviceId}) - RSSI: ${bleScanResult.rssi}',
+        _logger.debug(
+          'Found BLE device: ${bleScanResult.deviceName} (${bleScanResult.deviceId}) - RSSI: ${bleScanResult.rssi}',
+          tag: 'BLE',
         );
       }
     }
@@ -638,7 +642,7 @@ class FcpBleService {
           .join('&');
       await prefs.setString(storageKey, jsonString);
     } catch (e) {
-      print('Failed to save connected device: $e');
+      _logger.debug('Failed to save connected device: $e', tag: 'BLE');
     }
   }
 
@@ -673,7 +677,7 @@ class FcpBleService {
 
       return ConnectedDeviceInfo.fromJson(deviceJson);
     } catch (e) {
-      print('Failed to get connected device: $e');
+      _logger.debug('Failed to get connected device: $e', tag: 'BLE');
       return null;
     }
   }
@@ -747,7 +751,10 @@ class FcpBleService {
             descriptors.addAll(characteristic.descriptors);
           } catch (e) {
             // Some characteristics may not have descriptors
-            print('Failed to get descriptors for ${characteristic.uuid}: $e');
+            _logger.debug(
+              'Failed to get descriptors for ${characteristic.uuid}: $e',
+              tag: 'BLE',
+            );
           }
 
           final characteristicInfo = BleCharacteristicInfo(
@@ -802,7 +809,7 @@ class FcpBleService {
 
       return null;
     } catch (e) {
-      print('Failed to find service $serviceUuid: $e');
+      _logger.debug('Failed to find service $serviceUuid: $e', tag: 'BLE');
       return null;
     }
   }
@@ -830,8 +837,9 @@ class FcpBleService {
 
       return null;
     } catch (e) {
-      print(
+      _logger.debug(
         'Failed to find characteristic $characteristicUuid in service $serviceUuid: $e',
+        tag: 'BLE',
       );
       return null;
     }
@@ -861,8 +869,9 @@ class FcpBleService {
 
       return null;
     } catch (e) {
-      print(
+      _logger.debug(
         'Failed to find characteristic $characteristicUuid in all services: $e',
+        tag: 'BLE',
       );
       return null;
     }
@@ -877,7 +886,10 @@ class FcpBleService {
       final service = await findService(device, serviceUuid);
       return service?.characteristics ?? [];
     } catch (e) {
-      print('Failed to get characteristics for service $serviceUuid: $e');
+      _logger.debug(
+        'Failed to get characteristics for service $serviceUuid: $e',
+        tag: 'BLE',
+      );
       return [];
     }
   }
@@ -908,8 +920,9 @@ class FcpBleService {
 
       return servicesWithCharacteristic;
     } catch (e) {
-      print(
+      _logger.debug(
         'Failed to get services with characteristic $characteristicUuid: $e',
+        tag: 'BLE',
       );
       return [];
     }
@@ -1151,8 +1164,9 @@ class BleCharacteristicInfo {
     final propertyNames = <String>[];
     if (properties.read) propertyNames.add('read');
     if (properties.write) propertyNames.add('write');
-    if (properties.writeWithoutResponse)
+    if (properties.writeWithoutResponse) {
       propertyNames.add('writeWithoutResponse');
+    }
     if (properties.notify) propertyNames.add('notify');
     if (properties.indicate) propertyNames.add('indicate');
     return 'BleCharacteristicInfo(uuid: $uuid, properties: ${propertyNames.join(', ')})';
