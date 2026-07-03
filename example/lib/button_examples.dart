@@ -46,7 +46,6 @@ class _FCPButtonExamplesState extends State<FCPButtonExamples> {
                 onPressed: () {},
               ),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Secondary Buttons', [
               FCPButton.small.secondary(
@@ -64,34 +63,46 @@ class _FCPButtonExamplesState extends State<FCPButtonExamples> {
                 onPressed: () {},
               ),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Outlined Buttons', [
               FCPButton.small.outlined(
                 text: 'Small Outlined',
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
                 onPressed: () {},
               ),
               const SizedBox(height: 8),
               FCPButton.medium.outlined(
                 text: 'Medium Outlined',
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
                 onPressed: () {},
               ),
               const SizedBox(height: 8),
               FCPButton.large.outlined(
                 text: 'Large Outlined',
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
                 onPressed: () {},
               ),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Ghost Buttons', [
-              FCPButton.small.ghost(text: 'Small Ghost', onPressed: () {}),
+              FCPButton.small.ghost(
+                text: 'Small Ghost',
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.medium.ghost(text: 'Medium Ghost', onPressed: () {}),
+              FCPButton.medium.ghost(
+                text: 'Medium Ghost',
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                onPressed: () {},
+              ),
               const SizedBox(height: 8),
-              FCPButton.large.ghost(text: 'Large Ghost', onPressed: () {}),
+              FCPButton.large.ghost(
+                text: 'Large Ghost',
+                backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                onPressed: () {},
+              ),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Danger Buttons', [
               FCPButton.small.danger(text: 'Small Danger', onPressed: () {}),
@@ -100,7 +111,6 @@ class _FCPButtonExamplesState extends State<FCPButtonExamples> {
               const SizedBox(height: 8),
               FCPButton.large.danger(text: 'Large Danger', onPressed: () {}),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Icon Buttons', [
               Row(
@@ -119,7 +129,6 @@ class _FCPButtonExamplesState extends State<FCPButtonExamples> {
                 ],
               ),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Icon with Text Buttons', [
               FCPButton.small.primary(
@@ -143,7 +152,6 @@ class _FCPButtonExamplesState extends State<FCPButtonExamples> {
                 onPressed: () {},
               ),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Floating Buttons', [
               FCPButton.small.floating(icon: Icons.add, onPressed: () {}),
@@ -160,7 +168,6 @@ class _FCPButtonExamplesState extends State<FCPButtonExamples> {
                 onPressed: () {},
               ),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Elevated Buttons', [
               FCPButton.small.elevated(
@@ -178,7 +185,6 @@ class _FCPButtonExamplesState extends State<FCPButtonExamples> {
                 onPressed: () {},
               ),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Contained Buttons', [
               FCPButton.small.contained(
@@ -196,7 +202,6 @@ class _FCPButtonExamplesState extends State<FCPButtonExamples> {
                 onPressed: () {},
               ),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Loading States', [
               FCPButton.medium.primary(
@@ -217,7 +222,6 @@ class _FCPButtonExamplesState extends State<FCPButtonExamples> {
                 onPressed: () {},
               ),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Disabled States', [
               FCPButton.medium.primary(
@@ -238,7 +242,6 @@ class _FCPButtonExamplesState extends State<FCPButtonExamples> {
                 onPressed: () {},
               ),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Custom Styling', [
               FCPButton.medium.primary(
@@ -263,7 +266,6 @@ class _FCPButtonExamplesState extends State<FCPButtonExamples> {
                 borderRadius: 50,
               ),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Full Width Buttons', [
               FCPButton.medium.primary(
@@ -276,7 +278,6 @@ class _FCPButtonExamplesState extends State<FCPButtonExamples> {
                 width: double.infinity,
               ),
             ]),
-
             const SizedBox(height: 24),
             _buildSection('Custom Padding & Margin', [
               FCPButton.medium.primary(

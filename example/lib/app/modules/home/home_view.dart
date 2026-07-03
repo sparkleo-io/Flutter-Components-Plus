@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:example/multi_inline_dropdown_examples.dart';
-import 'package:example/widgets/quadrant_chart_demo_page.dart';
 import 'package:get/get.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
 import 'home_controller.dart';
@@ -15,7 +14,6 @@ import '../../../pdf_viewer_examples.dart';
 import '../../../table_examples.dart';
 import '../../../switch_examples.dart';
 import '../../../chart_examples.dart';
-import '../../../quadrant_chart.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -173,9 +171,7 @@ class HomeView extends GetView<HomeController> {
             title: Text(
               title,
               style: TextStyle(
-                color: isSelected
-                    ? colorScheme.primary
-                    : colorScheme.onSurface,
+                color: isSelected ? colorScheme.primary : colorScheme.onSurface,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
               ),
             ),
@@ -210,10 +206,9 @@ class HomeView extends GetView<HomeController> {
             ),
           ],
         ),
-        child: SafeArea(
-          child: SizedBox(
-            height: 70,
-            child: SingleChildScrollView(
+        child: SizedBox(
+          height: 70,
+          child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
@@ -251,7 +246,6 @@ class HomeView extends GetView<HomeController> {
                   _buildBottomNavItem(context, 'PDF', Icons.picture_as_pdf, 10),
                   _buildBottomNavItem(context, 'Charts', Icons.bar_chart, 11),
                 ],
-              ),
             ),
           ),
         ),
@@ -367,10 +361,10 @@ class HomeView extends GetView<HomeController> {
           Text(
             'A comprehensive collection of reusable Flutter components',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: Theme.of(
-                context,
-              ).colorScheme.onSurface.withValues(alpha: 0.7),
-            ),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
+                ),
           ),
           const SizedBox(height: FCPConstants.spacingXl),
 
@@ -492,10 +486,10 @@ class HomeView extends GetView<HomeController> {
                 child: Text(
                   title,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.7),
-                  ),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.7),
+                      ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),
@@ -506,9 +500,9 @@ class HomeView extends GetView<HomeController> {
           Text(
             value,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
@@ -542,48 +536,6 @@ class HomeView extends GetView<HomeController> {
               text: 'All Components',
               onPressed: () => Get.toNamed('/components'),
               icon: Icons.widgets,
-              iconPosition: IconPosition.start,
-            ),
-            FCPButton.medium.outlined(
-              text: 'Multi-Select',
-              onPressed: () => controller.changeTab(5),
-              icon: Icons.checklist,
-              iconPosition: IconPosition.start,
-            ),
-            FCPButton.medium.outlined(
-              text: 'Inline Dropdowns',
-              onPressed: () => controller.changeTab(6),
-              icon: Icons.expand_more,
-              iconPosition: IconPosition.start,
-            ),
-            FCPButton.medium.outlined(
-              text: 'Charts',
-              onPressed: () => controller.changeTab(11),
-              icon: Icons.bar_chart,
-              iconPosition: IconPosition.start,
-            ),
-            FCPButton.medium.outlined(
-              text: 'Quadrant Chart',
-              onPressed: () => Get.to(() => const QuadrantChartDemo()),
-              icon: Icons.grid_4x4,
-              iconPosition: IconPosition.start,
-            ),
-            FCPButton.medium.outlined(
-              text: 'Quadrant Chart 2',
-              onPressed: () => Get.to(() => const QuadrantChartDemoPage()),
-              icon: Icons.grid_4x4,
-              iconPosition: IconPosition.start,
-            ),
-            FCPButton.medium.outlined(
-              text: 'Documentation',
-              onPressed: () {},
-              icon: Icons.description,
-              iconPosition: IconPosition.start,
-            ),
-            FCPButton.medium.ghost(
-              text: 'GitHub',
-              onPressed: () {},
-              icon: Icons.code,
               iconPosition: IconPosition.start,
             ),
           ],
@@ -715,10 +667,10 @@ class HomeView extends GetView<HomeController> {
         Text(
           'Try clicking the button below to see the loading state in action:',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Theme.of(
-              context,
-            ).colorScheme.onSurface.withValues(alpha: 0.7),
-          ),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
+              ),
         ),
         const SizedBox(height: FCPConstants.spacingMd),
         Wrap(
@@ -728,9 +680,8 @@ class HomeView extends GetView<HomeController> {
             Obx(
               () => FCPButton.medium.primary(
                 text: 'Start Loading (2s)',
-                onPressed: controller.isLoading
-                    ? null
-                    : controller.startLoading,
+                onPressed:
+                    controller.isLoading ? null : controller.startLoading,
                 isLoading: controller.isLoading,
                 icon: Icons.download,
                 iconPosition: IconPosition.start,
@@ -739,9 +690,8 @@ class HomeView extends GetView<HomeController> {
             Obx(
               () => FCPButton.medium.secondary(
                 text: 'Loading with Icon',
-                onPressed: controller.isLoading
-                    ? null
-                    : controller.startLoading,
+                onPressed:
+                    controller.isLoading ? null : controller.startLoading,
                 isLoading: controller.isLoading,
                 icon: Icons.refresh,
                 iconPosition: IconPosition.start,

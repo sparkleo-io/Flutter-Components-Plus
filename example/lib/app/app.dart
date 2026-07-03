@@ -21,12 +21,20 @@ class App extends StatelessWidget {
       }),
       debugShowCheckedModeBanner: false,
       builder: (context, child) {
+        final viewPadding = MediaQuery.viewPaddingOf(context);
+
         return GestureDetector(
           onTap: () {
-            // Unfocus to hide keyboard when tapping outside of input fields
             FocusScope.of(context).unfocus();
           },
-          child: child ?? const SizedBox.shrink(),
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: viewPadding.left,
+              right: viewPadding.right,
+              bottom: viewPadding.bottom,
+            ),
+            child: child ?? const SizedBox.shrink(),
+          ),
         );
       },
     );
