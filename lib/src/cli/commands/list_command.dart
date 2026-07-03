@@ -93,12 +93,6 @@ class ListCommand {
         'permissions': [],
       },
       {
-        'name': 'ble',
-        'description': 'Bluetooth Low Energy (BLE) device management',
-        'dependencies': ['flutter_blue_plus', 'permission_handler'],
-        'permissions': ['bluetooth', 'location'],
-      },
-      {
         'name': 'pdf_viewer',
         'description': 'PDF document viewer with zoom and navigation',
         'dependencies': ['syncfusion_flutter_pdfviewer'],
@@ -154,30 +148,6 @@ class ListCommand {
 
     final permissions = [
       {
-        'name': 'bluetooth',
-        'description': 'Bluetooth access for device communication',
-        'platforms': ['Android', 'iOS'],
-        'required_for': ['BLE component'],
-      },
-      {
-        'name': 'bluetooth_scan',
-        'description': 'Bluetooth scanning (Android 12+)',
-        'platforms': ['Android'],
-        'required_for': ['BLE component'],
-      },
-      {
-        'name': 'bluetooth_connect',
-        'description': 'Bluetooth connection (Android 12+)',
-        'platforms': ['Android'],
-        'required_for': ['BLE component'],
-      },
-      {
-        'name': 'location',
-        'description': 'Location access for BLE scanning and other features',
-        'platforms': ['Android', 'iOS'],
-        'required_for': ['BLE component'],
-      },
-      {
         'name': 'camera',
         'description': 'Camera access for photo capture',
         'platforms': ['Android', 'iOS'],
@@ -214,7 +184,6 @@ class ListCommand {
     }
 
     print('Usage: fcp add permissions          # Add all permissions');
-    print('       fcp add ble_permissions      # Add BLE-related permissions');
   }
 
   /// Show usage information for the list command

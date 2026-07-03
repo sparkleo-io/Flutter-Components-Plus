@@ -1,142 +1,12 @@
 # FCP Services
 
-A collection of powerful services for common app functionality including Bluetooth Low Energy, HTTP requests, logging, and storage.
+A collection of services for common app functionality including HTTP requests, logging, and storage.
 
 ## Services Overview
 
-- **BLE Service**: Bluetooth Low Energy operations and device management
 - **HTTP Service**: HTTP requests with retry logic and error handling
 - **Logging Service**: Structured logging with different levels
 - **Storage Service**: Local storage with encryption support
-
-## BLE Service
-
-### Features
-- Device scanning and connection management
-- Permission handling for Bluetooth and location
-- Service and characteristic discovery
-- Data transmission and reception
-- Connection state monitoring
-- Device storage and retrieval
-
-### Basic Usage
-
-#### Initialize BLE Service
-```dart
-final bleService = FcpBleService.instance;
-```
-
-#### Check Permissions
-```dart
-final permissionStatus = await bleService.checkPermissions();
-if (permissionStatus.allGranted) {
-  print('All permissions granted');
-} else {
-  print('Permissions missing: ${permissionStatus.error}');
-}
-```
-
-#### Start Scanning
-```dart
-final scanConfig = BleScanConfig(
-  scanTimeout: Duration(seconds: 10),
-  debugMode: true,
-  filterUnknownDevices: true,
-);
-
-final scanState = await bleService.startScan(config: scanConfig);
-print('Scan started: ${scanState.status}');
-```
-
-#### Connect to Device
-```dart
-final connectionConfig = BleConnectionConfig(
-  timeout: Duration(seconds: 30),
-  autoConnect: false,
-  saveDeviceOnConnect: true,
-);
-
-final connectionState = await bleService.connectToDevice(
-  device,
-  config: connectionConfig,
-  storageKey: 'connected_device',
-);
-print('Connection state: ${connectionState.status}');
-```
-
-#### Discover Services
-```dart
-final discoveryResult = await bleService.discoverServices(device);
-if (discoveryResult.error == null) {
-  print('Found ${discoveryResult.services.length} services');
-  for (final service in discoveryResult.services) {
-    print('Service: ${service.uuid}');
-    print('Characteristics: ${service.characteristics.length}');
-  }
-}
-```
-
-### Advanced Usage
-
-#### Custom Scan Configuration
-```dart
-final scanConfig = BleScanConfig(
-  scanTimeout: Duration(seconds: 15),
-  alwaysScan: false,
-  useFineLocation: true,
-  checkPermissionsBeforeScan: true,
-  filters: ['MyDevice', 'Sensor'],
-  debugMode: true,
-  filterUnknownDevices: true,
-);
-
-await bleService.startScan(config: scanConfig);
-```
-
-#### Listen to Scan Results
-```dart
-bleService.scanStateStream.listen((scanState) {
-  print('Scan status: ${scanState.status}');
-  print('Found ${scanState.devices.length} devices');
-  
-  for (final device in scanState.devices) {
-    print('Device: ${device.deviceName} (${device.deviceId})');
-    print('RSSI: ${device.rssi}');
-  }
-});
-```
-
-#### Listen to Connection State
-```dart
-bleService.connectionStateStream.listen((connectionState) {
-  print('Connection status: ${connectionState.status}');
-  print('Device: ${connectionState.device.platformName}');
-  
-  if (connectionState.status == BleConnectionStatus.connected) {
-    print('Connected to ${connectionState.device.platformName}');
-  } else if (connectionState.status == BleConnectionStatus.disconnected) {
-    print('Disconnected from ${connectionState.device.platformName}');
-  }
-});
-```
-
-#### Save and Retrieve Connected Device
-```dart
-// Save connected device
-await bleService.saveConnectedDevice(
-  'my_device',
-  device,
-  mtu: 512,
-);
-
-// Retrieve connected device
-final deviceInfo = await bleService.getConnectedDevice('my_device');
-if (deviceInfo != null) {
-  print('Saved device: ${deviceInfo.deviceName}');
-  print('Connected at: ${deviceInfo.connectedAt}');
-  print('MTU: ${deviceInfo.mtu}');
-}
-```
 
 ## HTTP Service
 
@@ -455,7 +325,6 @@ class ServicesExample extends StatefulWidget {
 }
 
 class _ServicesExampleState extends State<ServicesExample> {
-  final _bleService = FcpBleService.instance;
   final _httpService = FCPHttpService();
   final _loggingService = FCPLoggingService();
   final _storageService = FCPStorageService();
@@ -467,14 +336,8 @@ class _ServicesExampleState extends State<ServicesExample> {
   }
 
   void _initializeServices() async {
-    // Initialize logging
     _loggingService.info('Services initialized');
-    
-    // Check BLE permissions
-    final permissionStatus = await _bleService.checkPermissions();
-    _loggingService.info('BLE permissions: ${permissionStatus.allGranted}');
-    
-    // Load stored data
+
     final username = await _storageService.getString('username');
     if (username != null) {
       _loggingService.info('Loaded username: $username');
@@ -490,32 +353,6 @@ class _ServicesExampleState extends State<ServicesExample> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // BLE Service
-            Card(
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('BLE Service', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 8),
-                    Text('Bluetooth Low Energy operations'),
-                    SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: _startBLEScan,
-                      child: Text('Start BLE Scan'),
-                    ),
-                    SizedBox(height: 8),
-                    ElevatedButton(
-                      onPressed: _checkBLEPermissions,
-                      child: Text('Check Permissions'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
-            
             // HTTP Service
             Card(
               child: Padding(
@@ -584,34 +421,6 @@ class _ServicesExampleState extends State<ServicesExample> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _startBLEScan() async {
-    _loggingService.info('Starting BLE scan');
-    
-    final scanConfig = BleScanConfig(
-      scanTimeout: Duration(seconds: 10),
-      debugMode: true,
-    );
-    
-    final scanState = await _bleService.startScan(config: scanConfig);
-    _loggingService.info('BLE scan started: ${scanState.status}');
-    
-    // Listen to scan results
-    _bleService.scanStateStream.listen((state) {
-      _loggingService.info('BLE scan result: ${state.devices.length} devices found');
-    });
-  }
-
-  void _checkBLEPermissions() async {
-    final permissionStatus = await _bleService.checkPermissions();
-    _loggingService.info('BLE permissions: ${permissionStatus.allGranted}');
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('BLE permissions: ${permissionStatus.allGranted ? "Granted" : "Not granted"}'),
       ),
     );
   }

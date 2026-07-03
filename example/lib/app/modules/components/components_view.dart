@@ -13,7 +13,6 @@ import '../../../multi_inline_dropdown_examples.dart';
 import '../../../pdf_viewer_examples.dart';
 import '../../../switch_examples.dart';
 import '../../../chart_examples.dart';
-import '../../../ble_service_examples.dart';
 
 class ComponentsView extends GetView<ComponentsController> {
   const ComponentsView({super.key});
@@ -24,7 +23,7 @@ class ComponentsView extends GetView<ComponentsController> {
     Get.lazyPut<TableExamplesController>(() => TableExamplesController());
 
     return DefaultTabController(
-      length: 12,
+      length: 11,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Flutter Components Plus - Examples'),
@@ -55,7 +54,6 @@ class ComponentsView extends GetView<ComponentsController> {
                   ), // Shortened
                   Tab(text: 'Charts', icon: Icon(Icons.bar_chart)),
                   Tab(text: 'Tables', icon: Icon(Icons.table_chart)),
-                  Tab(text: 'BLE Service', icon: Icon(Icons.bluetooth)),
                 ],
                 indicatorColor: Colors.white,
                 labelColor: Colors.white,
@@ -77,7 +75,6 @@ class ComponentsView extends GetView<ComponentsController> {
             PdfViewerExamples(),
             FCPChartExamples(),
             TableExamples(),
-            BleServiceExamples(),
           ],
         ),
       ),

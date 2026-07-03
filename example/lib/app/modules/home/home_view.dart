@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:example/ble_service_examples.dart';
 import 'package:example/multi_inline_dropdown_examples.dart';
 import 'package:example/widgets/quadrant_chart_demo_page.dart';
 import 'package:get/get.dart';
@@ -97,7 +96,6 @@ class HomeView extends GetView<HomeController> {
         _buildSidebarItem(context, 'Switches', Icons.toggle_on, 9),
         _buildSidebarItem(context, 'PDF Viewer', Icons.picture_as_pdf, 10),
         _buildSidebarItem(context, 'Charts', Icons.bar_chart, 11),
-        _buildSidebarItem(context, 'Ble Services', Icons.bluetooth, 12),
       ],
     );
   }
@@ -203,12 +201,6 @@ class HomeView extends GetView<HomeController> {
                   _buildBottomNavItem(context, 'Switches', Icons.toggle_on, 9),
                   _buildBottomNavItem(context, 'PDF', Icons.picture_as_pdf, 10),
                   _buildBottomNavItem(context, 'Charts', Icons.bar_chart, 11),
-                  _buildBottomNavItem(
-                    context,
-                    'BLE Services',
-                    Icons.bluetooth,
-                    12,
-                  ),
                 ],
               ),
             ),
@@ -302,8 +294,6 @@ class HomeView extends GetView<HomeController> {
           return _buildPdfViewerTab(context);
         case 11:
           return _buildChartsTab(context);
-        case 12:
-          return _buildBleServicesTab(context);
 
         default:
           return _buildOverviewTab(context);
@@ -766,9 +756,5 @@ class HomeView extends GetView<HomeController> {
 
   Widget _buildChartsTab(BuildContext context) {
     return const FCPChartExamples();
-  }
-
-  Widget _buildBleServicesTab(BuildContext context) {
-    return const BleServiceExamples();
   }
 }

@@ -14,7 +14,6 @@
 * **FCPPdfViewer**: Comprehensive PDF viewer with zoom, navigation, and search features
 * **FCPChart**: Interactive charts (Area, Bar, Line, Histogram) with fluent API
 * **FCPLiveGraph**: Real-time live data visualization with smooth animations
-* **FCPBLEComponent**: Bluetooth Low Energy device management with scanning and connection
 * **FCPSwitch**: Customizable toggle switches with single/multi-select and toggle variants
 * **FCPBottomNavigationBar**: Modern bottom navigation with asset-based icons
 * **FCPDataTable**: Advanced data tables with sorting, filtering, and pagination
