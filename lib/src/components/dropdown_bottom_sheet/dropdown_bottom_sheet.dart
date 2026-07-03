@@ -262,7 +262,6 @@ class _BottomSheetContent extends StatefulWidget {
 
 class _BottomSheetContentState extends State<_BottomSheetContent> {
   List<String> _filteredItems = [];
-  String _searchQuery = '';
   Timer? _searchTimer;
 
   @override
@@ -344,7 +343,6 @@ class _BottomSheetContentState extends State<_BottomSheetContent> {
 
   /// Handle search input changes with debouncing
   void _onSearchChanged(String query) {
-    _searchQuery = query;
     widget.onSearchChanged?.call(query);
 
     _searchTimer?.cancel();

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 /// Example page demonstrating the FCPPdfViewer component
 class PdfViewerExamples extends StatefulWidget {
@@ -16,6 +15,7 @@ class _PdfViewerExamplesState extends State<PdfViewerExamples> {
   double _currentZoom = 1.0;
   String _selectedPdfType = 'network';
   String _searchText = '';
+  bool _enableDownload = true;
 
   @override
   void initState() {
@@ -101,6 +101,17 @@ class _PdfViewerExamplesState extends State<PdfViewerExamples> {
                     ),
                   ],
                 ),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text('Allow download to device'),
+                  subtitle: const Text(
+                    'Saves PDFs to the Downloads folder when supported',
+                  ),
+                  value: _enableDownload,
+                  onChanged: (value) {
+                    setState(() => _enableDownload = value);
+                  },
+                ),
               ],
             ),
           ),
@@ -128,11 +139,14 @@ class _PdfViewerExamplesState extends State<PdfViewerExamples> {
     return FCPPdfViewer(
       pdfType: FCPPdfType.network,
       pdfUrl:
-          'https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf',
+          'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
       controller: _controller,
       showZoomControls: true,
       showPageNavigationControls: true,
       showSearch: true,
+      showDownloadButton: _enableDownload,
+      downloadFileName: 'sample-network.pdf',
+      saveToPublicDownloads: true,
       searchText: _searchText.isNotEmpty ? _searchText : null,
       backgroundColor: FCPColorScheme.neutral50,
       onDocumentLoaded: () {
@@ -160,6 +174,31 @@ class _PdfViewerExamplesState extends State<PdfViewerExamples> {
         setState(() {
           _currentZoom = zoomLevel;
         });
+      },
+      onDownloadCompleted: (result) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Saved to ${result.filePath}'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      },
+      onDownloadFailed: (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error),
+            backgroundColor: Colors.red,
+            action: error.toLowerCase().contains('settings')
+                ? SnackBarAction(
+                    label: 'Settings',
+                    textColor: Colors.white,
+                    onPressed: () {
+                      FCPPdfDownloadService.instance.openStorageSettings();
+                    },
+                  )
+                : null,
+          ),
+        );
       },
     );
   }
@@ -330,9 +369,10 @@ class SimplePdfViewerExample extends StatelessWidget {
       body: const FCPPdfViewer(
         pdfType: FCPPdfType.network,
         pdfUrl:
-            'https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf',
+            'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
         showZoomControls: true,
         showPageNavigationControls: true,
+        showDownloadButton: true,
         enableTextSelection: true,
       ),
     );
@@ -450,13 +490,14 @@ class _CustomPdfViewerExampleState extends State<CustomPdfViewerExample> {
                 Expanded(
                   child: FCPPdfViewer(
                     pdfType: FCPPdfType.network,
-                    pdfUrl: 'https://heyzine.com/flip-book/94dbfed300.html',
-                    // pdfUrl:
-                    // 'https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf',
+                    pdfUrl:
+                        'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
                     controller: _controller,
                     showZoomControls: false,
                     showPageNavigationControls: false,
                     showSearch: false,
+                    showDownloadButton: true,
+                    downloadFileName: 'custom-viewer.pdf',
                     backgroundColor: Colors.white,
                     onDocumentLoaded: () {
                       // Get total pages when document is loaded
