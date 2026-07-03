@@ -838,7 +838,7 @@ class _FCPChartState extends State<FCPChart> with TickerProviderStateMixin {
     return LineTouchData(
       enabled: widget.showTooltips ?? true,
       touchTooltipData: LineTouchTooltipData(
-        tooltipRoundedRadius: 8,
+        tooltipBorderRadius: BorderRadius.circular(8),
         tooltipPadding: const EdgeInsets.all(8),
         getTooltipItems: (touchedSpots) {
           return touchedSpots.map((touchedSpot) {
@@ -857,7 +857,7 @@ class _FCPChartState extends State<FCPChart> with TickerProviderStateMixin {
     return BarTouchData(
       enabled: widget.showTooltips ?? true,
       touchTooltipData: BarTouchTooltipData(
-        tooltipRoundedRadius: 8,
+        tooltipBorderRadius: BorderRadius.circular(8),
         tooltipPadding: const EdgeInsets.all(8),
         getTooltipItem: (group, groupIndex, rod, rodIndex) {
           return BarTooltipItem(

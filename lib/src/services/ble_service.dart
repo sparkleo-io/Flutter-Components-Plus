@@ -509,6 +509,7 @@ class FcpBleService {
 
       // Connect to device
       await device.connect(
+        license: License.nonprofit,
         timeout: connectionConfig.timeout,
         autoConnect: connectionConfig.autoConnect,
         mtu: connectionConfig.mtu,
@@ -594,12 +595,6 @@ class FcpBleService {
         if (storageKey != null && config.removeDeviceOnDisconnect) {
           removeConnectedDevice(storageKey);
         }
-        break;
-      case BluetoothConnectionState.connecting:
-        status = BleConnectionStatus.connecting;
-        break;
-      case BluetoothConnectionState.disconnecting:
-        status = BleConnectionStatus.disconnecting;
         break;
     }
 

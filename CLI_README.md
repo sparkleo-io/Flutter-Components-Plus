@@ -278,11 +278,11 @@ The CLI tool automatically modifies the following files:
 
 ```yaml
 dependencies:
-  flutter_blue_plus: ^1.32.10
-  permission_handler: ^11.3.1
-  fl_chart: ^0.69.0
-  syncfusion_flutter_datagrid: ^30.2.7
-  syncfusion_flutter_pdfviewer: ^30.2.7
+  flutter_blue_plus: ^2.3.10
+  permission_handler: ^12.0.3
+  fl_chart: ^1.2.0
+  syncfusion_flutter_datagrid: ^33.2.15
+  syncfusion_flutter_pdfviewer: ^33.2.15
   # ... other dependencies
 ```
 
