@@ -3,11 +3,15 @@
 ### Added
 * **FCPPdfDownloadService**: Download PDFs to public Downloads (Android MediaStore) or app storage, with storage permission handling
 * **PDF viewer download UI**: Optional download button, filename override, and success/error callbacks on `FCPPdfViewer`
+* **PDF download customization**: `FCPPdfDownloadButtonAlignment`, `FCPPdfDownloadButtonStyle`, `downloadButtonBuilder`, and `FCPPdfDownloadMode` (internal vs external) on `FCPPdfViewer`
+* **FCPPdfDownloadRequest**: PDF metadata passed to app-owned `onDownload` handler when using external download mode
 
 ### Changed
 * **Flutter & dependencies**: Updated Flutter SDK constraints and package versions for latest Flutter support (including `fl_chart` 1.2.0, `syncfusion_flutter_*` 33.2.15, `permission_handler` 12.x, and related migrations)
 * **Example app**: Added example app demonstrating package usage
 * **PDF network loading**: Loads PDFs via `http` + `SfPdfViewer.memory` with header validation for reliable release builds
+* **Local PDF loading**: `FCPPdfType.local` loads a PDF from an absolute file path on the device; the viewer reloads when `pdfPath` changes. File selection is handled by the host app (example uses `file_selector`)
+* **Example local PDF demo**: Choose a PDF from device storage and preview it in the viewer
 * **Logging**: Runtime `print` calls replaced with `FCPLoggingService` (`dart:developer` `log()`)
 * **CLI**: Removed BLE component and `ble_permissions` commands; simplified permission manager
 * **Example app layout**: Edge-to-edge mode with system navigation bar insets so UI sits above Android nav buttons
@@ -18,6 +22,7 @@
 ### Fixed
 * **PDF viewer release builds**: `INTERNET` permission in main Android manifest; ProGuard rules for `media_store_plus` / Gson on Android release
 * **PDF download permissions**: MediaStore on Android 10+, clear user messages for denied storage access
+* **iOS PDF download**: Saves to app sandbox `Documents/Downloads/FCP/` instead of system Downloads (fixes `PathAccessException`)
 * **Charts**: `tooltipBorderRadius` migration for `fl_chart` 1.2.0
 * **Dropdown**: Removed unused `_searchQuery` field
 
