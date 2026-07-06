@@ -30,10 +30,12 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   flutter: {sdk: flutter}
-  cupertino_icons: ^1.0.8
-  get: ^4.6.6
-  google_fonts: ^6.2.1
+  cupertino_icons: ^1.0.9
+  get: ^4.7.3
+  google_fonts: ^8.1.0
   flutter_svg: ^2.3.0
+  file_selector: ^1.1.0
+  path_provider: ^2.1.6
   flutter_components_plus: {path: ../}
 
 
@@ -46,7 +48,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -65,6 +67,7 @@ flutter:
     - assets/quadrant/quadrant.png
     - assets/quadrant/circle.svg
     - assets/quadrant/square.svg
+    - assets/pdf/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

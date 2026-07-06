@@ -1,5 +1,17 @@
+import 'dart:io';
+
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_components_plus/flutter_components_plus.dart';
+import 'package:path_provider/path_provider.dart';
+
+const _pdfTypeGroup = XTypeGroup(
+  label: 'PDF documents',
+  extensions: ['pdf'],
+  mimeTypes: ['application/pdf'],
+  uniformTypeIdentifiers: ['com.adobe.pdf'],
+);
 
 /// Example page demonstrating the FCPPdfViewer component
 class PdfViewerExamples extends StatefulWidget {
@@ -16,6 +28,9 @@ class _PdfViewerExamplesState extends State<PdfViewerExamples> {
   String _selectedPdfType = 'network';
   String _searchText = '';
   bool _enableDownload = true;
+  String? _localPdfPath;
+  String? _localPdfName;
+  bool _isPickingLocalPdf = false;
 
   @override
   void initState() {
@@ -64,8 +79,37 @@ class _PdfViewerExamplesState extends State<PdfViewerExamples> {
                         });
                       },
                     ),
+                    if (_selectedPdfType == 'local' && _localPdfPath != null) ...[
+                      const SizedBox(width: 12),
+                      FilledButton.icon(
+                        onPressed: _isPickingLocalPdf ? null : _pickLocalPdf,
+                        icon: _isPickingLocalPdf
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            : const Icon(Icons.folder_open, size: 18),
+                        label: const Text('Change file'),
+                      ),
+                    ],
                   ],
                 ),
+                if (_selectedPdfType == 'local' && _localPdfName != null) ...[
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Selected: $_localPdfName',
+                      style: TextStyle(
+                        color: FCPColorScheme.neutral700,
+                        fontSize: 13,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 8),
                 // Page and Zoom Info
                 Row(
@@ -205,14 +249,127 @@ class _PdfViewerExamplesState extends State<PdfViewerExamples> {
     );
   }
 
+  Future<void> _pickLocalPdf() async {
+    if (_isPickingLocalPdf) {
+      return;
+    }
+
+    setState(() => _isPickingLocalPdf = true);
+
+    try {
+      // Let the current frame finish so iOS can present the picker cleanly.
+      await Future<void>.delayed(Duration.zero);
+      if (!mounted) {
+        return;
+      }
+
+      final file = await openFile(acceptedTypeGroups: const [_pdfTypeGroup]);
+
+      if (!mounted || file == null) {
+        return;
+      }
+
+      var path = file.path;
+      var name = file.name;
+
+      if (path.isEmpty) {
+        final bytes = await file.readAsBytes();
+        final tempDir = await getTemporaryDirectory();
+        name = name.isNotEmpty ? name : 'selected.pdf';
+        final tempFile = File('${tempDir.path}/$name');
+        await tempFile.writeAsBytes(bytes, flush: true);
+        path = tempFile.path;
+      }
+
+      setState(() {
+        _localPdfPath = path;
+        _localPdfName = name;
+        _currentPage = 1;
+        _currentZoom = 1.0;
+      });
+    } on PlatformException catch (error) {
+      if (!mounted) {
+        return;
+      }
+
+      if (error.code == 'cancel' || error.code == 'user_cancelled') {
+        return;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Could not open file picker: ${error.message}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isPickingLocalPdf = false);
+      }
+    }
+  }
+
   Widget _buildLocalPdfViewer() {
+    if (_localPdfPath == null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.picture_as_pdf_outlined,
+                size: 64,
+                color: FCPColorScheme.neutral400,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Pick a PDF from your device',
+                style: TextStyle(
+                  color: FCPColorScheme.neutral800,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Local mode loads a file from phone storage using its file path.',
+                style: TextStyle(
+                  color: FCPColorScheme.neutral600,
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              FilledButton.icon(
+                onPressed: _isPickingLocalPdf ? null : _pickLocalPdf,
+                icon: _isPickingLocalPdf
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.folder_open),
+                label: Text(_isPickingLocalPdf ? 'Opening...' : 'Choose PDF'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return FCPPdfViewer(
+      key: ValueKey(_localPdfPath),
       pdfType: FCPPdfType.local,
-      pdfPath: '/path/to/local/document.pdf', // This would need a real path
+      pdfPath: _localPdfPath,
       controller: _controller,
       showZoomControls: true,
       showPageNavigationControls: true,
       showSearch: false,
+      showDownloadButton: _enableDownload,
+      downloadFileName: _localPdfName,
+      downloadButtonAlignment: FCPPdfDownloadButtonAlignment.bottomRight,
       enableTextSelection: true,
       backgroundColor: Colors.grey[100],
       loadingWidget: Center(
@@ -283,7 +440,7 @@ class _PdfViewerExamplesState extends State<PdfViewerExamples> {
   Widget _buildAssetPdfViewer() {
     return FCPPdfViewer(
       pdfType: FCPPdfType.assets,
-      pdfPath: 'assets/documents/sample.pdf', // This would need a real asset
+      pdfPath: 'assets/pdf/sample_pdf.pdf',
       controller: _controller,
       showZoomControls: false,
       showPageNavigationControls: true,

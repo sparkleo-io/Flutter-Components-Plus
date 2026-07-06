@@ -14,7 +14,8 @@ class FCPPdfViewer extends StatefulWidget {
   /// URL for network PDF
   final String? pdfUrl;
 
-  /// Local file path or asset path for PDF
+  /// Absolute path to a PDF on the device ([FCPPdfType.local]), or an asset
+  /// path ([FCPPdfType.assets]).
   final String? pdfPath;
 
   /// Type of PDF source
@@ -185,6 +186,15 @@ class _FCPPdfViewerState extends State<FCPPdfViewer> {
     if (widget.pdfType == FCPPdfType.network &&
         widget.pdfUrl != oldWidget.pdfUrl) {
       _loadNetworkPdf();
+    }
+
+    if (widget.pdfType == FCPPdfType.local &&
+        widget.pdfPath != oldWidget.pdfPath) {
+      setState(() {
+        _isLoading = true;
+        _hasError = false;
+        _errorMessage = '';
+      });
     }
   }
 
@@ -423,10 +433,17 @@ class _FCPPdfViewerState extends State<FCPPdfViewer> {
   }
 
   Widget _buildLocalPdfViewer() {
-    final file = File(widget.pdfPath!);
+    final path = widget.pdfPath;
+    if (path == null || path.isEmpty) {
+      return _buildErrorWidget(
+        message: 'No local PDF selected. Pick a PDF file from the device.',
+      );
+    }
+
+    final file = File(path);
     if (!file.existsSync()) {
       return _buildErrorWidget(
-        message: 'PDF file not found: ${widget.pdfPath}',
+        message: 'PDF file not found: $path',
       );
     }
 
@@ -434,7 +451,7 @@ class _FCPPdfViewerState extends State<FCPPdfViewer> {
       children: [
         SfPdfViewer.file(
           file,
-          key: widget.pdfViewerKey,
+          key: widget.pdfViewerKey ?? ValueKey(path),
           controller: _controller,
           enableTextSelection: widget.enableTextSelection,
           enableDocumentLinkAnnotation: widget.enableDocumentLinkAnnotation,
@@ -558,7 +575,8 @@ class _FCPPdfViewerState extends State<FCPPdfViewer> {
   }
 
   Widget _buildDownloadControl() {
-    final style = widget.downloadButtonStyle ?? const FCPPdfDownloadButtonStyle();
+    final style =
+        widget.downloadButtonStyle ?? const FCPPdfDownloadButtonStyle();
     final state = FCPPdfDownloadButtonState(
       isDownloading: _isDownloading,
       onPressed: _isDownloading ? () {} : _handleDownload,

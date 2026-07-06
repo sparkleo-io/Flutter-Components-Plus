@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 /// Enum defining the different types of PDF sources
 enum FCPPdfType {
-  /// PDF from local file system
+  /// PDF from a file on the device (absolute path from a file picker or similar).
   local,
 
   /// PDF from network URL
@@ -53,8 +53,8 @@ class FCPPdfDownloadRequest {
 }
 
 /// Called when [FCPPdfDownloadMode.external] is used.
-typedef FCPPdfDownloadCallback =
-    Future<void> Function(FCPPdfDownloadRequest request);
+typedef FCPPdfDownloadCallback = Future<void> Function(
+    FCPPdfDownloadRequest request);
 
 /// Optional styling for the built-in download button.
 class FCPPdfDownloadButtonStyle {
