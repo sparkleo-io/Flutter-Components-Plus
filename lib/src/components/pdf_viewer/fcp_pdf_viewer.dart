@@ -6,19 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../core/theme/color_scheme.dart';
+import 'fcp_pdf_download_config.dart';
 import 'fcp_pdf_download_service.dart';
-
-/// Enum defining the different types of PDF sources
-enum FCPPdfType {
-  /// PDF from local file system
-  local,
-
-  /// PDF from network URL
-  network,
-
-  /// PDF from app assets
-  assets,
-}
 
 /// Custom PDF Viewer for Flutter Components Plus with enhanced features
 class FCPPdfViewer extends StatefulWidget {
@@ -94,6 +83,18 @@ class FCPPdfViewer extends StatefulWidget {
   /// Whether to show the download button
   final bool showDownloadButton;
 
+  /// Placement of the built-in download button
+  final FCPPdfDownloadButtonAlignment downloadButtonAlignment;
+
+  /// Visual styling for the built-in download button
+  final FCPPdfDownloadButtonStyle? downloadButtonStyle;
+
+  /// Custom download button widget (overrides default FAB styling)
+  final FCPPdfDownloadButtonBuilder? downloadButtonBuilder;
+
+  /// Who handles saving the PDF ([internal] = package, [external] = app)
+  final FCPPdfDownloadMode downloadMode;
+
   /// File name used when downloading a PDF
   final String? downloadFileName;
 
@@ -105,6 +106,9 @@ class FCPPdfViewer extends StatefulWidget {
 
   /// Callback when a download starts
   final VoidCallback? onDownloadStarted;
+
+  /// App-owned download handler when [downloadMode] is [FCPPdfDownloadMode.external]
+  final FCPPdfDownloadCallback? onDownload;
 
   /// Callback when a download completes
   final Function(FCPPdfDownloadResult result)? onDownloadCompleted;
@@ -139,10 +143,15 @@ class FCPPdfViewer extends StatefulWidget {
     this.showSearch = true,
     this.searchText,
     this.showDownloadButton = false,
+    this.downloadButtonAlignment = FCPPdfDownloadButtonAlignment.topLeft,
+    this.downloadButtonStyle,
+    this.downloadButtonBuilder,
+    this.downloadMode = FCPPdfDownloadMode.internal,
     this.downloadFileName,
     this.saveToPublicDownloads = true,
     this.networkHeaders,
     this.onDownloadStarted,
+    this.onDownload,
     this.onDownloadCompleted,
     this.onDownloadFailed,
   });
@@ -272,60 +281,19 @@ class _FCPPdfViewerState extends State<FCPPdfViewer> {
     widget.onDownloadStarted?.call();
 
     try {
-      if (widget.saveToPublicDownloads) {
-        final permission = await FCPPdfDownloadService.instance
-            .ensureStoragePermissionForDownload();
-        if (!permission.isGranted) {
-          throw FCPPdfDownloadException(permission.message);
-        }
-      }
-
-      final FCPPdfDownloadResult result;
-
-      switch (widget.pdfType) {
-        case FCPPdfType.network:
-          final url = widget.pdfUrl;
-          if (url == null || url.isEmpty) {
-            throw const FCPPdfDownloadException('PDF URL is missing');
-          }
-
-          if (_networkPdfBytes != null) {
-            result = await FCPPdfDownloadService.instance.saveBytes(
-              _networkPdfBytes!,
-              fileName: widget.downloadFileName ?? 'document.pdf',
-              saveToPublicDownloads: widget.saveToPublicDownloads,
-            );
-          } else {
-            result = await FCPPdfDownloadService.instance.downloadFromUrl(
-              url,
-              fileName: widget.downloadFileName,
-              headers: widget.networkHeaders,
-              saveToPublicDownloads: widget.saveToPublicDownloads,
-            );
-          }
-        case FCPPdfType.local:
-          final path = widget.pdfPath;
-          if (path == null || path.isEmpty) {
-            throw const FCPPdfDownloadException('Local PDF path is missing');
-          }
-
-          final file = File(path);
-          if (!file.existsSync()) {
-            throw FCPPdfDownloadException('Local PDF not found: $path');
-          }
-
-          result = await FCPPdfDownloadService.instance.saveBytes(
-            await file.readAsBytes(),
-            fileName: widget.downloadFileName ?? file.uri.pathSegments.last,
-            saveToPublicDownloads: widget.saveToPublicDownloads,
-          );
-        case FCPPdfType.assets:
+      if (widget.downloadMode == FCPPdfDownloadMode.external) {
+        final callback = widget.onDownload;
+        if (callback == null) {
           throw const FCPPdfDownloadException(
-            'Asset PDFs must be copied to the app before downloading',
+            'onDownload is required when downloadMode is external',
           );
+        }
+
+        await callback(_buildDownloadRequest());
+        return;
       }
 
-      widget.onDownloadCompleted?.call(result);
+      await _handleInternalDownload();
     } catch (error) {
       widget.onDownloadFailed?.call(error.toString());
     } finally {
@@ -333,6 +301,95 @@ class _FCPPdfViewerState extends State<FCPPdfViewer> {
         setState(() => _isDownloading = false);
       }
     }
+  }
+
+  FCPPdfDownloadRequest _buildDownloadRequest() {
+    final suggestedName = widget.downloadFileName ?? _defaultDownloadFileName();
+
+    return FCPPdfDownloadRequest(
+      pdfType: widget.pdfType,
+      pdfUrl: widget.pdfUrl,
+      pdfPath: widget.pdfPath,
+      pdfBytes: widget.pdfType == FCPPdfType.network ? _networkPdfBytes : null,
+      suggestedFileName: suggestedName,
+      networkHeaders: widget.networkHeaders,
+    );
+  }
+
+  String _defaultDownloadFileName() {
+    switch (widget.pdfType) {
+      case FCPPdfType.network:
+        return 'document.pdf';
+      case FCPPdfType.local:
+        final path = widget.pdfPath;
+        if (path == null || path.isEmpty) {
+          return 'document.pdf';
+        }
+        return File(path).uri.pathSegments.last;
+      case FCPPdfType.assets:
+        final path = widget.pdfPath;
+        if (path == null || path.isEmpty) {
+          return 'document.pdf';
+        }
+        return path.split('/').last;
+    }
+  }
+
+  Future<void> _handleInternalDownload() async {
+    if (widget.saveToPublicDownloads) {
+      final permission = await FCPPdfDownloadService.instance
+          .ensureStoragePermissionForDownload();
+      if (!permission.isGranted) {
+        throw FCPPdfDownloadException(permission.message);
+      }
+    }
+
+    final FCPPdfDownloadResult result;
+
+    switch (widget.pdfType) {
+      case FCPPdfType.network:
+        final url = widget.pdfUrl;
+        if (url == null || url.isEmpty) {
+          throw const FCPPdfDownloadException('PDF URL is missing');
+        }
+
+        if (_networkPdfBytes != null) {
+          result = await FCPPdfDownloadService.instance.saveBytes(
+            _networkPdfBytes!,
+            fileName: widget.downloadFileName ?? 'document.pdf',
+            saveToPublicDownloads: widget.saveToPublicDownloads,
+          );
+        } else {
+          result = await FCPPdfDownloadService.instance.downloadFromUrl(
+            url,
+            fileName: widget.downloadFileName,
+            headers: widget.networkHeaders,
+            saveToPublicDownloads: widget.saveToPublicDownloads,
+          );
+        }
+      case FCPPdfType.local:
+        final path = widget.pdfPath;
+        if (path == null || path.isEmpty) {
+          throw const FCPPdfDownloadException('Local PDF path is missing');
+        }
+
+        final file = File(path);
+        if (!file.existsSync()) {
+          throw FCPPdfDownloadException('Local PDF not found: $path');
+        }
+
+        result = await FCPPdfDownloadService.instance.saveBytes(
+          await file.readAsBytes(),
+          fileName: widget.downloadFileName ?? file.uri.pathSegments.last,
+          saveToPublicDownloads: widget.saveToPublicDownloads,
+        );
+      case FCPPdfType.assets:
+        throw const FCPPdfDownloadException(
+          'Asset PDFs must be copied to the app before downloading',
+        );
+    }
+
+    widget.onDownloadCompleted?.call(result);
   }
 
   @override
@@ -501,25 +558,97 @@ class _FCPPdfViewerState extends State<FCPPdfViewer> {
   }
 
   Widget _buildDownloadControl() {
-    return Positioned(
-      top: 16,
-      left: 16,
-      child: FloatingActionButton.small(
-        onPressed: _isDownloading ? null : _handleDownload,
-        backgroundColor: FCPColorScheme.primary,
-        foregroundColor: Colors.white,
-        child: _isDownloading
-            ? const SizedBox(
-                width: 18,
-                height: 18,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.white,
-                ),
-              )
-            : const Icon(Icons.download),
-      ),
+    final style = widget.downloadButtonStyle ?? const FCPPdfDownloadButtonStyle();
+    final state = FCPPdfDownloadButtonState(
+      isDownloading: _isDownloading,
+      onPressed: _isDownloading ? () {} : _handleDownload,
     );
+
+    final button = widget.downloadButtonBuilder?.call(context, state) ??
+        _buildDefaultDownloadButton(style, state);
+
+    return _positionByAlignment(
+      alignment: widget.downloadButtonAlignment,
+      padding: style.padding,
+      child: button,
+    );
+  }
+
+  Widget _buildDefaultDownloadButton(
+    FCPPdfDownloadButtonStyle style,
+    FCPPdfDownloadButtonState state,
+  ) {
+    final fab = FloatingActionButton.small(
+      heroTag: style.heroTag,
+      tooltip: style.tooltip,
+      elevation: style.elevation,
+      onPressed: state.isDownloading ? null : state.onPressed,
+      backgroundColor: style.backgroundColor ?? FCPColorScheme.primary,
+      foregroundColor: style.foregroundColor ?? Colors.white,
+      child: state.isDownloading
+          ? SizedBox(
+              width: style.loadingIndicatorSize,
+              height: style.loadingIndicatorSize,
+              child: CircularProgressIndicator(
+                strokeWidth: style.loadingStrokeWidth,
+                color: style.loadingIndicatorColor ??
+                    style.foregroundColor ??
+                    Colors.white,
+              ),
+            )
+          : Icon(style.icon),
+    );
+
+    return fab;
+  }
+
+  Widget _positionByAlignment({
+    required FCPPdfDownloadButtonAlignment alignment,
+    required EdgeInsetsGeometry padding,
+    required Widget child,
+  }) {
+    final resolved = padding.resolve(Directionality.of(context));
+
+    switch (alignment) {
+      case FCPPdfDownloadButtonAlignment.topLeft:
+        return Positioned(
+          top: resolved.top,
+          left: resolved.left,
+          child: child,
+        );
+      case FCPPdfDownloadButtonAlignment.topRight:
+        return Positioned(
+          top: resolved.top,
+          right: resolved.right,
+          child: child,
+        );
+      case FCPPdfDownloadButtonAlignment.bottomLeft:
+        return Positioned(
+          bottom: resolved.bottom,
+          left: resolved.left,
+          child: child,
+        );
+      case FCPPdfDownloadButtonAlignment.bottomRight:
+        return Positioned(
+          bottom: resolved.bottom,
+          right: resolved.right,
+          child: child,
+        );
+      case FCPPdfDownloadButtonAlignment.topCenter:
+        return Positioned(
+          top: resolved.top,
+          left: 0,
+          right: 0,
+          child: Align(alignment: Alignment.topCenter, child: child),
+        );
+      case FCPPdfDownloadButtonAlignment.bottomCenter:
+        return Positioned(
+          bottom: resolved.bottom,
+          left: 0,
+          right: 0,
+          child: Align(alignment: Alignment.bottomCenter, child: child),
+        );
+    }
   }
 
   Widget _buildZoomControls() {

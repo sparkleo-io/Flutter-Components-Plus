@@ -145,7 +145,9 @@ class _PdfViewerExamplesState extends State<PdfViewerExamples> {
       showPageNavigationControls: true,
       showSearch: true,
       showDownloadButton: _enableDownload,
+      downloadButtonAlignment: FCPPdfDownloadButtonAlignment.bottomRight,
       downloadFileName: 'sample-network.pdf',
+      downloadMode: FCPPdfDownloadMode.internal,
       saveToPublicDownloads: true,
       searchText: _searchText.isNotEmpty ? _searchText : null,
       backgroundColor: FCPColorScheme.neutral50,
@@ -374,6 +376,55 @@ class SimplePdfViewerExample extends StatelessWidget {
         showPageNavigationControls: true,
         showDownloadButton: true,
         enableTextSelection: true,
+      ),
+    );
+  }
+}
+
+/// Example that lets the host app own the download flow.
+class ExternalDownloadPdfViewerExample extends StatelessWidget {
+  const ExternalDownloadPdfViewerExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: FCPPdfViewer(
+        pdfType: FCPPdfType.network,
+        pdfUrl:
+            'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+        showDownloadButton: true,
+        downloadButtonAlignment: FCPPdfDownloadButtonAlignment.bottomLeft,
+        downloadButtonStyle: const FCPPdfDownloadButtonStyle(
+          backgroundColor: Colors.deepPurple,
+          foregroundColor: Colors.white,
+          icon: Icons.save_alt,
+        ),
+        downloadMode: FCPPdfDownloadMode.external,
+        onDownload: (request) async {
+          final bytes = request.pdfBytes;
+          if (bytes == null) {
+            throw const FCPPdfDownloadException('PDF is not loaded yet');
+          }
+
+          final result = await FCPPdfDownloadService.instance.saveBytes(
+            bytes,
+            fileName: request.suggestedFileName,
+            saveToPublicDownloads: true,
+          );
+
+          if (!context.mounted) {
+            return;
+          }
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Saved to ${result.filePath}')),
+          );
+        },
+        onDownloadFailed: (error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(error), backgroundColor: Colors.red),
+          );
+        },
       ),
     );
   }
