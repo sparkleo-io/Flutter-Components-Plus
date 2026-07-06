@@ -1,3 +1,26 @@
+## 1.2.0
+
+### Added
+* **FCPPdfDownloadService**: Download PDFs to public Downloads (Android MediaStore) or app storage, with storage permission handling
+* **PDF viewer download UI**: Optional download button, filename override, and success/error callbacks on `FCPPdfViewer`
+
+### Changed
+* **Flutter & dependencies**: Updated Flutter SDK constraints and package versions for latest Flutter support (including `fl_chart` 1.2.0, `syncfusion_flutter_*` 33.2.15, `permission_handler` 12.x, and related migrations)
+* **Example app**: Added example app demonstrating package usage
+* **PDF network loading**: Loads PDFs via `http` + `SfPdfViewer.memory` with header validation for reliable release builds
+* **Logging**: Runtime `print` calls replaced with `FCPLoggingService` (`dart:developer` `log()`)
+* **CLI**: Removed BLE component and `ble_permissions` commands; simplified permission manager
+* **Example app layout**: Edge-to-edge mode with system navigation bar insets so UI sits above Android nav buttons
+
+### Removed
+* **BLE support**: `FcpBleService`, `flutter_blue_plus`, `location`, BLE examples, and Bluetooth/location permissions from the example app
+
+### Fixed
+* **PDF viewer release builds**: `INTERNET` permission in main Android manifest; ProGuard rules for `media_store_plus` / Gson on Android release
+* **PDF download permissions**: MediaStore on Android 10+, clear user messages for denied storage access
+* **Charts**: `tooltipBorderRadius` migration for `fl_chart` 1.2.0
+* **Dropdown**: Removed unused `_searchQuery` field
+
 ## 1.1.0
 
 ### Added
