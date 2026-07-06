@@ -51,6 +51,7 @@ class FCPPdfDownloadService {
   static final FCPPdfDownloadService instance = FCPPdfDownloadService._();
 
   static const String _androidDownloadFolder = 'FCP';
+  static const String _iosDownloadFolder = 'Downloads/FCP';
   bool _mediaStoreInitialized = false;
 
   /// Initializes Android MediaStore support. Safe to call multiple times.
@@ -212,15 +213,13 @@ class FCPPdfDownloadService {
       return _saveToAndroidDownloads(bytes, fileName);
     }
 
-    final directory = saveToPublicDownloads
-        ? await _resolvePublicDownloadDirectory()
-        : await getApplicationDocumentsDirectory();
+    final directory = await _resolveSaveDirectory(
+      saveToPublicDownloads: saveToPublicDownloads,
+    );
+    await _ensureDirectoryExists(directory);
 
-    if (!directory.existsSync()) {
-      directory.createSync(recursive: true);
-    }
-
-    final file = File(p.join(directory.path, fileName));
+    final safeName = _safeFileName(fileName);
+    final file = File(p.join(directory.path, safeName));
     await file.writeAsBytes(bytes, flush: true);
     return file;
   }
@@ -229,7 +228,7 @@ class FCPPdfDownloadService {
     await initialize();
 
     final tempDir = await getTemporaryDirectory();
-    final safeName = fileName.replaceAll(RegExp(r'[^\w.\-]'), '_');
+    final safeName = _safeFileName(fileName);
     final tempFile = File(p.join(tempDir.path, safeName));
     await tempFile.writeAsBytes(bytes, flush: true);
 
@@ -255,15 +254,43 @@ class FCPPdfDownloadService {
     return File(saveInfo.uri.toString());
   }
 
-  Future<Directory> _resolvePublicDownloadDirectory() async {
-    if (Platform.isIOS) {
-      final downloads = await getDownloadsDirectory();
-      if (downloads != null) {
-        return downloads;
-      }
+  Future<Directory> _resolveSaveDirectory({
+    required bool saveToPublicDownloads,
+  }) async {
+    if (!saveToPublicDownloads) {
+      return getApplicationDocumentsDirectory();
     }
 
-    return getApplicationDocumentsDirectory();
+    if (Platform.isIOS) {
+      final appDir = await getApplicationDocumentsDirectory();
+      return Directory(p.join(appDir.path, _iosDownloadFolder));
+    }
+
+    final downloads = await getDownloadsDirectory();
+    if (downloads != null) {
+      return Directory(p.join(downloads.path, _androidDownloadFolder));
+    }
+
+    final appDir = await getApplicationDocumentsDirectory();
+    return Directory(p.join(appDir.path, 'Downloads'));
+  }
+
+  Future<void> _ensureDirectoryExists(Directory directory) async {
+    if (await directory.exists()) {
+      return;
+    }
+
+    try {
+      await directory.create(recursive: true);
+    } on FileSystemException catch (error) {
+      throw FCPPdfDownloadException(
+        'Failed to create download folder: ${error.message}',
+      );
+    }
+  }
+
+  String _safeFileName(String fileName) {
+    return fileName.replaceAll(RegExp(r'[^\w.\-]'), '_');
   }
 
   Future<int> _androidSdkInt() async {

@@ -209,43 +209,43 @@ class HomeView extends GetView<HomeController> {
         child: SizedBox(
           height: 70,
           child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  _buildBottomNavItem(context, 'Overview', Icons.dashboard, 0),
-                  _buildBottomNavItem(
-                    context,
-                    'Buttons',
-                    Icons.smart_button,
-                    1,
-                  ),
-                  _buildBottomNavItem(context, 'Cards', Icons.credit_card, 2),
-                  _buildBottomNavItem(context, 'Inputs', Icons.input, 3),
-                  _buildBottomNavItem(
-                    context,
-                    'Dropdowns',
-                    Icons.arrow_drop_down,
-                    4,
-                  ),
-                  _buildBottomNavItem(
-                    context,
-                    'Multi-Select',
-                    Icons.checklist,
-                    5,
-                  ),
-                  _buildBottomNavItem(context, 'Inline', Icons.expand_more, 6),
-                  _buildBottomNavItem(
-                    context,
-                    'Multi-Inline',
-                    Icons.expand_more,
-                    7,
-                  ),
-                  _buildBottomNavItem(context, 'Tables', Icons.table_chart, 8),
-                  _buildBottomNavItem(context, 'Switches', Icons.toggle_on, 9),
-                  _buildBottomNavItem(context, 'PDF', Icons.picture_as_pdf, 10),
-                  _buildBottomNavItem(context, 'Charts', Icons.bar_chart, 11),
-                ],
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                _buildBottomNavItem(context, 'Overview', Icons.dashboard, 0),
+                _buildBottomNavItem(
+                  context,
+                  'Buttons',
+                  Icons.smart_button,
+                  1,
+                ),
+                _buildBottomNavItem(context, 'Cards', Icons.credit_card, 2),
+                _buildBottomNavItem(context, 'Inputs', Icons.input, 3),
+                _buildBottomNavItem(
+                  context,
+                  'Dropdowns',
+                  Icons.arrow_drop_down,
+                  4,
+                ),
+                _buildBottomNavItem(
+                  context,
+                  'Multi-Select',
+                  Icons.checklist,
+                  5,
+                ),
+                _buildBottomNavItem(context, 'Inline', Icons.expand_more, 6),
+                _buildBottomNavItem(
+                  context,
+                  'Multi-Inline',
+                  Icons.expand_more,
+                  7,
+                ),
+                _buildBottomNavItem(context, 'Tables', Icons.table_chart, 8),
+                _buildBottomNavItem(context, 'Switches', Icons.toggle_on, 9),
+                _buildBottomNavItem(context, 'PDF', Icons.picture_as_pdf, 10),
+                _buildBottomNavItem(context, 'Charts', Icons.bar_chart, 11),
+              ],
             ),
           ),
         ),
@@ -390,7 +390,7 @@ class HomeView extends GetView<HomeController> {
         if (constraints.maxWidth < 400) {
           // Very small mobile
           crossAxisCount = 1;
-          childAspectRatio = 3.5;
+          childAspectRatio = 1.8;
           spacing = 8.0;
         } else if (constraints.maxWidth < 600) {
           // Small mobile
