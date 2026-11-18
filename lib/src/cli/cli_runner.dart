@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'commands/add_command.dart';
 import 'commands/remove_command.dart';
 import 'commands/list_command.dart';

@@ -101,7 +101,7 @@ class FCPDropdownBottomSheet extends StatelessWidget {
 
   /// Custom builder for items (overrides default item appearance)
   final Widget Function(String item, int index, bool isSelected)?
-  customItemBuilder;
+      customItemBuilder;
 
   /// Callback for search changes
   final Function(String)? onSearchChanged;
@@ -119,8 +119,8 @@ class FCPDropdownBottomSheet extends StatelessWidget {
       border: enableBorder
           ? Border.all(
               color: isDark
-                  ? colorScheme.outline.withOpacity(0.2)
-                  : colorScheme.outline.withOpacity(0.1),
+                  ? colorScheme.outline.withValues(alpha: 0.2)
+                  : colorScheme.outline.withValues(alpha: 0.1),
             )
           : null,
       borderRadius: FCPConstants.radiusSm,
@@ -135,7 +135,7 @@ class FCPDropdownBottomSheet extends StatelessWidget {
             if (prefixIcon != null) ...[
               Icon(
                 prefixIcon,
-                color: colorScheme.onSurface.withOpacity(0.6),
+                color: colorScheme.onSurface.withValues(alpha: 0.6),
                 size: 20,
               ),
               const SizedBox(width: FCPConstants.spacingMd),
@@ -145,7 +145,7 @@ class FCPDropdownBottomSheet extends StatelessWidget {
                 _getDisplayText(),
                 style: (titleStyle ?? FCPTextStyles.getBodyMedium()).copyWith(
                   color: selectedIndex == null
-                      ? colorScheme.onSurface.withOpacity(0.6)
+                      ? colorScheme.onSurface.withValues(alpha: 0.6)
                       : null,
                 ),
               ),
@@ -153,7 +153,7 @@ class FCPDropdownBottomSheet extends StatelessWidget {
             if (!disabled)
               Icon(
                 Icons.keyboard_arrow_down,
-                color: colorScheme.onSurface.withOpacity(0.6),
+                color: colorScheme.onSurface.withValues(alpha: 0.6),
                 size: 20,
               ),
           ],
@@ -252,7 +252,7 @@ class _BottomSheetContent extends StatefulWidget {
   final String emptyStateText;
   final bool showEmptyState;
   final Widget Function(String item, int index, bool isSelected)?
-  customItemBuilder;
+      customItemBuilder;
   final Function(String)? onSearchChanged;
   final Duration searchDebounceDuration;
 
@@ -262,7 +262,6 @@ class _BottomSheetContent extends StatefulWidget {
 
 class _BottomSheetContentState extends State<_BottomSheetContent> {
   List<String> _filteredItems = [];
-  String _searchQuery = '';
   Timer? _searchTimer;
 
   @override
@@ -304,7 +303,7 @@ class _BottomSheetContentState extends State<_BottomSheetContent> {
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: theme.dividerColor.withOpacity(0.1),
+            color: theme.dividerColor.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -344,7 +343,6 @@ class _BottomSheetContentState extends State<_BottomSheetContent> {
 
   /// Handle search input changes with debouncing
   void _onSearchChanged(String query) {
-    _searchQuery = query;
     widget.onSearchChanged?.call(query);
 
     _searchTimer?.cancel();
@@ -384,7 +382,7 @@ class _BottomSheetContentState extends State<_BottomSheetContent> {
           padding: EdgeInsets.only(bottom: widget.itemSpacing),
           child:
               widget.customItemBuilder?.call(item, originalIndex, isSelected) ??
-              _buildDefaultItem(item, originalIndex, isSelected),
+                  _buildDefaultItem(item, originalIndex, isSelected),
         );
       },
     );
@@ -394,14 +392,12 @@ class _BottomSheetContentState extends State<_BottomSheetContent> {
   Widget _buildDefaultItem(String item, int index, bool isSelected) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDark = theme.brightness == Brightness.dark;
 
     return FCPCard(
       height: widget.itemHeight,
       padding: const EdgeInsets.symmetric(horizontal: FCPConstants.spacingMd),
-      backgroundColor: isSelected
-          ? colorScheme.primaryContainer.withOpacity(0.1)
-          : null,
+      backgroundColor:
+          isSelected ? colorScheme.primaryContainer.withValues(alpha: 0.1) : null,
       // border: isSelected
       //     ? Border.all(color: colorScheme.primary.withOpacity(0.3), width: 1)
       //     : null,
@@ -414,8 +410,7 @@ class _BottomSheetContentState extends State<_BottomSheetContent> {
           Expanded(
             child: Text(
               item,
-              style:
-                  (isSelected
+              style: (isSelected
                       ? widget.selectedItemTextStyle
                       : widget.itemTextStyle) ??
                   FCPTextStyles.getBodyMedium().copyWith(
@@ -448,13 +443,13 @@ class _BottomSheetContentState extends State<_BottomSheetContent> {
             Icon(
               Icons.search_off,
               size: 48,
-              color: theme.colorScheme.onSurface.withOpacity(0.4),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
             ),
             const SizedBox(height: FCPConstants.spacingMd),
             Text(
               widget.emptyStateText,
               style: FCPTextStyles.getBodyMedium().copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
               textAlign: TextAlign.center,
             ),

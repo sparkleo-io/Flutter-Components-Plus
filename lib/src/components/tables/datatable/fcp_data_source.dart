@@ -20,14 +20,14 @@ class FCPDataSource extends DataGridSource {
   int _rowsPerPage = 10;
   final FilterManager _filterManager = FilterManager();
   bool Function(String columnName, dynamic value, String filterValue)?
-  _customFilterFunction;
+      _customFilterFunction;
 
   FCPDataSource(
     this.context, {
     required this.dataList,
     this.themeConfig,
     bool Function(String columnName, dynamic value, String filterValue)?
-    customFilterFunction,
+        customFilterFunction,
   }) {
     _customFilterFunction = customFilterFunction;
     _buildDataList();
@@ -69,10 +69,10 @@ class FCPDataSource extends DataGridSource {
         if (filter.isEmpty) return true;
 
         final cell = row.getCells().firstWhere(
-          (cell) => cell.columnName == filter.columnName,
-          orElse: () =>
-              DataGridCell(columnName: filter.columnName, value: null),
-        );
+              (cell) => cell.columnName == filter.columnName,
+              orElse: () =>
+                  DataGridCell(columnName: filter.columnName, value: null),
+            );
 
         return _applyColumnFilter(filter, cell.value);
       });
@@ -82,13 +82,13 @@ class FCPDataSource extends DataGridSource {
     if (_sortField != null && _sortOrder != null) {
       filtered.sort((a, b) {
         final aCell = a.getCells().firstWhere(
-          (cell) => cell.columnName == _sortField,
-          orElse: () => DataGridCell(columnName: _sortField!, value: ''),
-        );
+              (cell) => cell.columnName == _sortField,
+              orElse: () => DataGridCell(columnName: _sortField!, value: ''),
+            );
         final bCell = b.getCells().firstWhere(
-          (cell) => cell.columnName == _sortField,
-          orElse: () => DataGridCell(columnName: _sortField!, value: ''),
-        );
+              (cell) => cell.columnName == _sortField,
+              orElse: () => DataGridCell(columnName: _sortField!, value: ''),
+            );
 
         final aValue = aCell.value;
         final bValue = bCell.value;
@@ -159,8 +159,8 @@ class FCPDataSource extends DataGridSource {
     switch (filter.filterType) {
       case 'text':
         return value?.toString().toLowerCase().contains(
-              filter.filterValue.toLowerCase(),
-            ) ??
+                  filter.filterValue.toLowerCase(),
+                ) ??
             false;
 
       case 'select':
@@ -168,15 +168,16 @@ class FCPDataSource extends DataGridSource {
         return filter.filterOptions!.contains(value);
 
       case 'number':
-        final numValue = value is num
-            ? value
-            : double.tryParse(value?.toString() ?? '');
+        final numValue =
+            value is num ? value : double.tryParse(value?.toString() ?? '');
         if (numValue == null) return false;
 
-        if (filter.minValue != null && numValue < filter.minValue!)
+        if (filter.minValue != null && numValue < filter.minValue!) {
           return false;
-        if (filter.maxValue != null && numValue > filter.maxValue!)
+        }
+        if (filter.maxValue != null && numValue > filter.maxValue!) {
           return false;
+        }
         return true;
 
       case 'date':
@@ -189,10 +190,12 @@ class FCPDataSource extends DataGridSource {
           value = date;
         }
 
-        if (filter.startDate != null && value.isBefore(filter.startDate!))
+        if (filter.startDate != null && value.isBefore(filter.startDate!)) {
           return false;
-        if (filter.endDate != null && value.isAfter(filter.endDate!))
+        }
+        if (filter.endDate != null && value.isAfter(filter.endDate!)) {
           return false;
+        }
         return true;
 
       default:

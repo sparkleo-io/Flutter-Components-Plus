@@ -12,8 +12,8 @@ class TableLoader extends StatelessWidget {
       visible: isBusy,
       child: Container(
         color: context.isDark
-            ? Colors.grey.withOpacity(0.05)
-            : Colors.grey.withOpacity(0.1),
+            ? Colors.grey.withValues(alpha: 0.05)
+            : Colors.grey.withValues(alpha: 0.1),
         child: FCPProgressIndicator(isBusy, loaderType: LoaderType.circular),
       ),
     );

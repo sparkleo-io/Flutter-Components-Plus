@@ -41,7 +41,6 @@ export 'src/utils/extensions/date_extensions.dart';
 export 'src/services/http_service.dart';
 export 'src/services/storage_service.dart';
 export 'src/services/logging_service.dart';
-export 'src/services/ble_service.dart';
 
 // Infrastructure
 export 'src/infrastructure/environment_config.dart';

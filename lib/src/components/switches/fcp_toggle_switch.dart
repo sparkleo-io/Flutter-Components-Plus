@@ -85,7 +85,7 @@ class FCPToggleSwitch<T> extends StatefulWidget {
   final String? subtitle;
 
   const FCPToggleSwitch({
-    Key? key,
+    super.key,
     required this.states,
     this.activeValue,
     required this.onChanged,
@@ -113,7 +113,7 @@ class FCPToggleSwitch<T> extends StatefulWidget {
     this.descriptionStyle,
     this.title,
     this.subtitle,
-  }) : super(key: key);
+  });
 
   @override
   State<FCPToggleSwitch<T>> createState() => _FCPToggleSwitchState<T>();
@@ -143,18 +143,17 @@ class _FCPToggleSwitchState<T> extends State<FCPToggleSwitch<T>> {
         if (widget.title != null)
           Text(
             widget.title!,
-            style:
-                widget.textStyle?.copyWith(
+            style: widget.textStyle?.copyWith(
                   color: widget.enabled
                       ? widget.inactiveTextColor
-                      : widget.inactiveTextColor.withOpacity(0.5),
+                      : widget.inactiveTextColor.withValues(alpha: 0.5),
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ) ??
                 TextStyle(
                   color: widget.enabled
                       ? widget.inactiveTextColor
-                      : widget.inactiveTextColor.withOpacity(0.5),
+                      : widget.inactiveTextColor.withValues(alpha: 0.5),
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
@@ -163,17 +162,16 @@ class _FCPToggleSwitchState<T> extends State<FCPToggleSwitch<T>> {
           const SizedBox(height: 4),
           Text(
             widget.subtitle!,
-            style:
-                widget.descriptionStyle?.copyWith(
+            style: widget.descriptionStyle?.copyWith(
                   color: widget.enabled
-                      ? widget.inactiveTextColor.withOpacity(0.7)
-                      : widget.inactiveTextColor.withOpacity(0.5),
+                      ? widget.inactiveTextColor.withValues(alpha: 0.7)
+                      : widget.inactiveTextColor.withValues(alpha: 0.5),
                   fontSize: 14,
                 ) ??
                 TextStyle(
                   color: widget.enabled
-                      ? widget.inactiveTextColor.withOpacity(0.7)
-                      : widget.inactiveTextColor.withOpacity(0.5),
+                      ? widget.inactiveTextColor.withValues(alpha: 0.7)
+                      : widget.inactiveTextColor.withValues(alpha: 0.5),
                   fontSize: 14,
                 ),
           ),
@@ -238,8 +236,8 @@ class _FCPToggleSwitchState<T> extends State<FCPToggleSwitch<T>> {
                     color: isActive
                         ? widget.activeTextColor
                         : (isEnabled
-                              ? widget.inactiveTextColor
-                              : widget.inactiveTextColor.withOpacity(0.5)),
+                            ? widget.inactiveTextColor
+                            : widget.inactiveTextColor.withValues(alpha: 0.5)),
                     size: 20,
                   ),
                   if (widget.showLabels && state.label.isNotEmpty)
@@ -248,31 +246,28 @@ class _FCPToggleSwitchState<T> extends State<FCPToggleSwitch<T>> {
                 if (widget.showLabels && state.label.isNotEmpty)
                   Text(
                     state.label,
-                    style:
-                        widget.textStyle?.copyWith(
+                    style: widget.textStyle?.copyWith(
                           color: isActive
                               ? widget.activeTextColor
                               : (isEnabled
-                                    ? widget.inactiveTextColor
-                                    : widget.inactiveTextColor.withOpacity(
-                                        0.5,
-                                      )),
-                          fontWeight: isActive
-                              ? FontWeight.w600
-                              : FontWeight.w500,
+                                  ? widget.inactiveTextColor
+                                  : widget.inactiveTextColor.withValues(alpha: 
+                                      0.5,
+                                    )),
+                          fontWeight:
+                              isActive ? FontWeight.w600 : FontWeight.w500,
                         ) ??
                         TextStyle(
                           color: isActive
                               ? widget.activeTextColor
                               : (isEnabled
-                                    ? widget.inactiveTextColor
-                                    : widget.inactiveTextColor.withOpacity(
-                                        0.5,
-                                      )),
+                                  ? widget.inactiveTextColor
+                                  : widget.inactiveTextColor.withValues(alpha: 
+                                      0.5,
+                                    )),
                           fontSize: 14,
-                          fontWeight: isActive
-                              ? FontWeight.w600
-                              : FontWeight.w500,
+                          fontWeight:
+                              isActive ? FontWeight.w600 : FontWeight.w500,
                         ),
                     textAlign: TextAlign.center,
                   ),
@@ -280,24 +275,23 @@ class _FCPToggleSwitchState<T> extends State<FCPToggleSwitch<T>> {
                   const SizedBox(height: 2),
                   Text(
                     state.description!,
-                    style:
-                        widget.descriptionStyle?.copyWith(
+                    style: widget.descriptionStyle?.copyWith(
                           color: isActive
-                              ? widget.activeTextColor.withOpacity(0.8)
+                              ? widget.activeTextColor.withValues(alpha: 0.8)
                               : (isEnabled
-                                    ? widget.inactiveTextColor.withOpacity(0.7)
-                                    : widget.inactiveTextColor.withOpacity(
-                                        0.5,
-                                      )),
+                                  ? widget.inactiveTextColor.withValues(alpha: 0.7)
+                                  : widget.inactiveTextColor.withValues(alpha: 
+                                      0.5,
+                                    )),
                         ) ??
                         TextStyle(
                           color: isActive
-                              ? widget.activeTextColor.withOpacity(0.8)
+                              ? widget.activeTextColor.withValues(alpha: 0.8)
                               : (isEnabled
-                                    ? widget.inactiveTextColor.withOpacity(0.7)
-                                    : widget.inactiveTextColor.withOpacity(
-                                        0.5,
-                                      )),
+                                  ? widget.inactiveTextColor.withValues(alpha: 0.7)
+                                  : widget.inactiveTextColor.withValues(alpha: 
+                                      0.5,
+                                    )),
                           fontSize: 10,
                         ),
                     textAlign: TextAlign.center,

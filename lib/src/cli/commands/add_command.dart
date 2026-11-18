@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'dart:io';
 import '../permission_manager.dart';
 import '../component_manager.dart';
@@ -18,9 +19,6 @@ class AddCommand {
     final subArguments = arguments.skip(1).toList();
 
     switch (subcommand) {
-      case 'ble_permissions':
-        await _addBLEPermissions();
-        break;
       case 'permissions':
         await _addAllPermissions();
         break;
@@ -29,32 +27,6 @@ class AddCommand {
         break;
       default:
         _showAddUsage();
-    }
-  }
-
-  /// Add BLE permissions to the Flutter app
-  Future<void> _addBLEPermissions() async {
-    print('🔧 Adding BLE permissions to your Flutter app...');
-
-    try {
-      await _permissionManager.addBLEPermissions();
-      print('✅ BLE permissions added successfully!');
-      print('');
-      print('The following permissions have been added:');
-      print('  • Bluetooth');
-      print('  • Bluetooth Scan (Android 12+)');
-      print('  • Bluetooth Connect (Android 12+)');
-      print('  • Location (required for BLE scanning)');
-      print('');
-      print('Next steps:');
-      print('  1. Run "flutter pub get" to install dependencies');
-      print('  2. Test your app on a physical device');
-      print(
-        '  3. The permissions will be requested automatically when using BLE features',
-      );
-    } catch (e) {
-      print('❌ Error adding BLE permissions: $e');
-      exit(1);
     }
   }
 
@@ -67,10 +39,6 @@ class AddCommand {
       print('✅ All permissions added successfully!');
       print('');
       print('The following permissions have been added:');
-      print('  • Bluetooth');
-      print('  • Bluetooth Scan (Android 12+)');
-      print('  • Bluetooth Connect (Android 12+)');
-      print('  • Location');
       print('  • Camera');
       print('  • Microphone');
       print('  • Storage');
@@ -104,7 +72,6 @@ class AddCommand {
       print('  • inline_dropdown');
       print('  • multi_select');
       print('  • input_field');
-      print('  • ble');
       print('  • pdf_viewer');
       print('  • switch');
       print('  • navigation');
@@ -136,16 +103,13 @@ class AddCommand {
 Usage: fcp add <subcommand> [arguments]
 
 Available subcommands:
-  ble_permissions    Add BLE (Bluetooth Low Energy) permissions
   permissions        Add all necessary permissions
   component          Add a specific component
 
 Examples:
-  fcp add ble_permissions          # Add BLE permissions
   fcp add permissions              # Add all permissions
   fcp add component chart          # Add chart component
   fcp add component quadrant_chart # Add quadrant chart component
-  fcp add component ble            # Add BLE component
 
 Run "fcp help" for more information.
 ''');

@@ -7,11 +7,11 @@ class FilterChips extends StatelessWidget {
   final Function() onClearAllFilters;
 
   const FilterChips({
-    Key? key,
+    super.key,
     required this.filterManager,
     required this.onRemoveFilter,
     required this.onClearAllFilters,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class FilterChips extends StatelessWidget {
     return Chip(
       label: Text(_getFilterDisplayText(columnName, filter)),
       onDeleted: () => onRemoveFilter(columnName),
-      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+      backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
       labelStyle: TextStyle(
         fontSize: 12,
         color: Theme.of(context).primaryColor,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'logging_service.dart';
 
 /// HTTP service for making API requests
 class FCPHttpService {
@@ -374,10 +375,13 @@ class FCPLoggingInterceptor implements FCPHttpInterceptor {
   @override
   Future<FCPHttpRequest> onRequest(FCPHttpRequest request) async {
     if (enabled) {
-      print('🌐 HTTP ${request.method} ${request.url}');
-      if (request.body != null) {
-        print('📦 Body: ${request.body}');
-      }
+      FCPLoggingService.instance.logHttpRequest(
+        request.method,
+        request.url,
+        data: request.body == null
+            ? null
+            : {'body': request.body.toString()},
+      );
     }
     return request;
   }
@@ -385,8 +389,11 @@ class FCPLoggingInterceptor implements FCPHttpInterceptor {
   @override
   Future<FCPHttpResponse> onResponse(FCPHttpResponse response) async {
     if (enabled) {
-      print('📥 HTTP ${response.statusCode} ${response.url}');
-      print('📄 Response: ${response.body}');
+      FCPLoggingService.instance.logHttpResponse(
+        response.statusCode,
+        response.url,
+        data: {'body': response.body},
+      );
     }
     return response;
   }

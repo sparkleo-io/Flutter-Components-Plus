@@ -72,7 +72,7 @@ class FCPSwitch extends StatefulWidget {
   final Widget? inactiveWidget;
 
   const FCPSwitch({
-    Key? key,
+    super.key,
     required this.value,
     required this.onChanged,
     this.enabled = true,
@@ -96,7 +96,7 @@ class FCPSwitch extends StatefulWidget {
     this.customThumb,
     this.activeWidget,
     this.inactiveWidget,
-  }) : super(key: key);
+  });
 
   @override
   State<FCPSwitch> createState() => _FCPSwitchState();
@@ -198,9 +198,8 @@ class _FCPSwitchState extends State<FCPSwitch>
               // Thumb
               AnimatedAlign(
                 duration: widget.animationDuration,
-                alignment: widget.value
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
+                alignment:
+                    widget.value ? Alignment.centerRight : Alignment.centerLeft,
                 child: Container(
                   height: widget.thumbSize,
                   width: widget.thumbSize,
@@ -220,7 +219,7 @@ class _FCPSwitchState extends State<FCPSwitch>
                     boxShadow: widget.showShadow
                         ? [
                             BoxShadow(
-                              color: widget.shadowColor.withOpacity(0.3),
+                              color: widget.shadowColor.withValues(alpha: 0.3),
                               blurRadius: widget.shadowBlurRadius / 2,
                               offset: widget.shadowOffset,
                             ),

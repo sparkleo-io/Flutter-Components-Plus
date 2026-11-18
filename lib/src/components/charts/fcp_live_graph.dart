@@ -316,7 +316,8 @@ class _FcpLiveGraphState extends State<FcpLiveGraph>
       handleBuiltInTouches: true,
       enabled: widget.config.showTooltips,
       touchTooltipData: LineTouchTooltipData(
-        tooltipRoundedRadius: widget.config.tooltipBorderRadius,
+        tooltipBorderRadius:
+            BorderRadius.circular(widget.config.tooltipBorderRadius),
         tooltipPadding: const EdgeInsets.all(8),
         getTooltipItems: (touchedSpots) {
           return touchedSpots.map((touchedSpot) {

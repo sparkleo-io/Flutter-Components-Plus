@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../constants.dart';
-import 'color_scheme.dart';
 
 /// Text styles for the Flutter Components Plus package
 class FCPTextStyles {

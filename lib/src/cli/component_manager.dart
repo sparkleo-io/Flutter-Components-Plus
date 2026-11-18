@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'file_utils.dart';
@@ -38,9 +39,6 @@ class ComponentManager {
         break;
       case 'input_field':
         await _addInputFieldComponent();
-        break;
-      case 'ble':
-        await _addBLEComponent();
         break;
       case 'pdf_viewer':
         await _addPDFViewerComponent();
@@ -91,9 +89,6 @@ class ComponentManager {
         break;
       case 'input_field':
         await _removeInputFieldComponent();
-        break;
-      case 'ble':
-        await _removeBLEComponent();
         break;
       case 'pdf_viewer':
         await _removePDFViewerComponent();
@@ -193,13 +188,6 @@ class ComponentManager {
     print('✅ Input field component added');
   }
 
-  /// Add BLE component
-  Future<void> _addBLEComponent() async {
-    await _addPubspecDependencies(['flutter_blue_plus', 'permission_handler']);
-    await _createExampleFile('ble_example.dart', _getBLEExampleContent());
-    print('✅ BLE component added');
-  }
-
   /// Add PDF viewer component
   Future<void> _addPDFViewerComponent() async {
     await _addPubspecDependencies(['syncfusion_flutter_pdfviewer']);
@@ -292,16 +280,6 @@ class ComponentManager {
   Future<void> _removeInputFieldComponent() async {
     await _removeExampleFile('input_field_example.dart');
     print('✅ Input field component removed');
-  }
-
-  /// Remove BLE component
-  Future<void> _removeBLEComponent() async {
-    await _removePubspecDependencies([
-      'flutter_blue_plus',
-      'permission_handler',
-    ]);
-    await _removeExampleFile('ble_example.dart');
-    print('✅ BLE component removed');
   }
 
   /// Remove PDF viewer component
@@ -516,31 +494,6 @@ class DropdownExample extends StatelessWidget {
           title: 'Select Option',
           items: ['Option 1', 'Option 2', 'Option 3'],
           onChanged: null,
-        ),
-      ),
-    );
-  }
-}
-''';
-  }
-
-  /// Get BLE example content
-  String _getBLEExampleContent() {
-    return '''
-import 'package:flutter/material.dart';
-import 'package:flutter_components_plus/flutter_components_plus.dart';
-
-class BLEExample extends StatelessWidget {
-  const BLEExample({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('BLE Example')),
-      body: const FCPBLEComponent(
-        config: BLEComponentConfig(
-          scanDuration: Duration(seconds: 10),
-          usePrefs: true,
         ),
       ),
     );

@@ -15,7 +15,6 @@ A comprehensive Flutter package providing highly customizable widgets, themes, a
 - **FCPChart** - Interactive charts (Area, Bar, Line, Histogram) with fluent API
 - **FCPQuadrantChart** - Configurable 2x2 quadrant chart with threshold-based positioning
 - **FCPLiveGraph** - Real-time live data visualization with smooth animations
-- **FCPBLEComponent** - Bluetooth Low Energy device management with scanning and connection
 - **FCPSwitch** - Customizable toggle switches with single/multi-select and toggle variants
 - **FCPBottomNavigationBar** - Modern bottom navigation with asset-based icons
 - **FCPDataTable** - Advanced data tables with sorting, filtering, and pagination
@@ -65,7 +64,7 @@ fcp add component quadrant_chart
 fcp add component themes
 
 # Add permissions
-fcp add ble_permissions
+fcp add permissions
 
 # List available components
 fcp list components
@@ -84,7 +83,6 @@ fcp remove component button
 - `table` - Data tables with sorting and filtering
 - `dropdown` - Professional dropdown with search
 - `input_field` - Customizable input fields
-- `ble` - Bluetooth Low Energy management
 - `pdf_viewer` - PDF document viewer
 - `themes` - Complete theme system with light/dark variants
 
@@ -209,21 +207,6 @@ FCPLiveGraph(
   showDots: true,
   lineColor: Colors.blue,
   fillColor: Colors.blue.withOpacity(0.1),
-)
-```
-
-### FCPBLEComponent - Bluetooth Low Energy
-```dart
-FCPBLEComponent(
-  config: BLEComponentConfig(
-    scanDuration: Duration(seconds: 10),
-    autoConnect: false,
-    deviceFilters: ['MyDevice'],
-    usePrefs: true,
-    showPermissionDialog: true,
-  ),
-  onDeviceSelected: (device) => print('Device selected: ${device.name}'),
-  onConnectionStateChanged: (state) => print('Connection state: $state'),
 )
 ```
 
@@ -379,20 +362,9 @@ FCPConstants.durationNormal // 300ms
 
 ## 🚀 Latest Updates
 
-### FcpBleService - Complete BLE Solution
-- **Permission Management** - Bluetooth and location services control
-- **Device Discovery** - Configurable scanning with filtering and debug options
-- **Device Connection** - Customizable timeout, MTU, and auto-connect
-- **Device Persistence** - Save and retrieve device information
-- **Service Discovery** - Complete service and characteristic discovery
+Check out the comprehensive example app in the `example` directory to see all components in action.
 
-**25 methods across 5 categories providing a complete BLE solution!**
-
-## 📱 Example App
-
-Check out the comprehensive example app in the `flutter_component_plus_example` directory to see all components in action.
-
-**🔗 [View Example App on GitHub](https://github.com/sparkleo-io/Reusable-Flutter-Components-Package/tree/main/flutter_component_plus_example)**
+**🔗 [View Example App on GitHub](https://github.com/sparkleo-io/Reusable-Flutter-Components-Package/tree/main/example)**
 
 ## 🤝 Contributing
 

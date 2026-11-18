@@ -68,8 +68,8 @@ class TableThemeConfig {
     if (useAppTheme) {
       final isDark = theme.brightness == Brightness.dark;
       return isDark
-          ? theme.colorScheme.surfaceVariant.withOpacity(0.3)
-          : theme.colorScheme.surfaceVariant.withOpacity(0.1);
+          ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3)
+          : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.1);
     }
 
     return Colors.grey[300]!;
@@ -84,8 +84,8 @@ class TableThemeConfig {
     if (useAppTheme) {
       final isDark = theme.brightness == Brightness.dark;
       return isDark
-          ? theme.colorScheme.surfaceVariant.withOpacity(0.1)
-          : theme.colorScheme.surfaceVariant.withOpacity(0.05);
+          ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.1)
+          : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.05);
     }
 
     return Colors.grey[100]!;

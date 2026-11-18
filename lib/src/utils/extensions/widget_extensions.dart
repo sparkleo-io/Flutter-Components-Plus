@@ -92,7 +92,7 @@ extension WidgetExtensions on Widget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: color ?? Colors.black.withOpacity(0.1),
+            color: color ?? Colors.black.withValues(alpha: 0.1),
             blurRadius: blurRadius ?? 4,
             spreadRadius: spreadRadius ?? 0,
             offset: offset ?? const Offset(0, 2),

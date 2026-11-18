@@ -330,7 +330,7 @@ class _FCPChartState extends State<FCPChart> with TickerProviderStateMixin {
             : null,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -435,7 +435,7 @@ class _FCPChartState extends State<FCPChart> with TickerProviderStateMixin {
                 (series.first.areaColor ??
                         config?.areaColor ??
                         FCPColorScheme.primary)
-                    .withOpacity(config?.areaOpacity ?? 0.3),
+                    .withValues(alpha: config?.areaOpacity ?? 0.3),
           ),
         );
       }).toList();
@@ -462,7 +462,7 @@ class _FCPChartState extends State<FCPChart> with TickerProviderStateMixin {
           ),
           belowBarData: BarAreaData(
             show: true,
-            color: (config?.areaColor ?? FCPColorScheme.primary).withOpacity(
+            color: (config?.areaColor ?? FCPColorScheme.primary).withValues(alpha: 
               config?.areaOpacity ?? 0.3,
             ),
           ),
@@ -838,7 +838,7 @@ class _FCPChartState extends State<FCPChart> with TickerProviderStateMixin {
     return LineTouchData(
       enabled: widget.showTooltips ?? true,
       touchTooltipData: LineTouchTooltipData(
-        tooltipRoundedRadius: 8,
+        tooltipBorderRadius: BorderRadius.circular(8),
         tooltipPadding: const EdgeInsets.all(8),
         getTooltipItems: (touchedSpots) {
           return touchedSpots.map((touchedSpot) {
@@ -857,7 +857,7 @@ class _FCPChartState extends State<FCPChart> with TickerProviderStateMixin {
     return BarTouchData(
       enabled: widget.showTooltips ?? true,
       touchTooltipData: BarTouchTooltipData(
-        tooltipRoundedRadius: 8,
+        tooltipBorderRadius: BorderRadius.circular(8),
         tooltipPadding: const EdgeInsets.all(8),
         getTooltipItem: (group, groupIndex, rod, rodIndex) {
           return BarTooltipItem(

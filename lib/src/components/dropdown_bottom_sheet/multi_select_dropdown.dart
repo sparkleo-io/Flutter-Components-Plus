@@ -168,8 +168,7 @@ class FCPMultiSelectDropdown extends StatefulWidget {
     int index,
     bool isSelected,
     Function(bool?) onChanged,
-  )?
-  customItemBuilder;
+  )? customItemBuilder;
 
   @override
   State<FCPMultiSelectDropdown> createState() => _FCPMultiSelectDropdownState();
@@ -177,15 +176,12 @@ class FCPMultiSelectDropdown extends StatefulWidget {
 
 class _FCPMultiSelectDropdownState extends State<FCPMultiSelectDropdown> {
   late List<FCPMultiSelectItem> _items;
-  List<FCPMultiSelectItem> _filteredItems = [];
-  String _searchQuery = '';
   Timer? _searchTimer;
 
   @override
   void initState() {
     super.initState();
     _items = List.from(widget.items);
-    _filteredItems = List.from(_items);
   }
 
   @override
@@ -199,7 +195,6 @@ class _FCPMultiSelectDropdownState extends State<FCPMultiSelectDropdown> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.items != widget.items) {
       _items = List.from(widget.items);
-      _filteredItems = List.from(_items);
     }
   }
 
@@ -241,10 +236,10 @@ class _FCPMultiSelectDropdownState extends State<FCPMultiSelectDropdown> {
                 _getDisplayText(selectedCount),
                 style: (widget.titleStyle ?? FCPTextStyles.getBodyMedium())
                     .copyWith(
-                      color: selectedCount == 0
-                          ? colorScheme.onSurface.withValues(alpha: 0.6)
-                          : null,
-                    ),
+                  color: selectedCount == 0
+                      ? colorScheme.onSurface.withValues(alpha: 0.6)
+                      : null,
+                ),
               ),
             ),
             if (!widget.disabled)
@@ -387,8 +382,7 @@ class _MultiSelectBottomSheetContent extends StatefulWidget {
     int index,
     bool isSelected,
     Function(bool?) onChanged,
-  )?
-  customItemBuilder;
+  )? customItemBuilder;
 
   @override
   State<_MultiSelectBottomSheetContent> createState() =>
@@ -585,8 +579,7 @@ class _MultiSelectBottomSheetContentState
 
         return Padding(
           padding: EdgeInsets.only(bottom: widget.itemSpacing),
-          child:
-              widget.customItemBuilder?.call(
+          child: widget.customItemBuilder?.call(
                 item,
                 originalIndex,
                 item.isSelected,
@@ -615,23 +608,20 @@ class _MultiSelectBottomSheetContentState
               width: 1,
             )
           : null,
-      onTap: item.disabled
-          ? null
-          : () => _onItemChanged(index, !item.isSelected),
+      onTap:
+          item.disabled ? null : () => _onItemChanged(index, !item.isSelected),
       child: Row(
         children: [
           Checkbox(
             value: item.isSelected,
-            onChanged: item.disabled
-                ? null
-                : (value) => _onItemChanged(index, value),
+            onChanged:
+                item.disabled ? null : (value) => _onItemChanged(index, value),
           ),
           const SizedBox(width: FCPConstants.spacingSm),
           Expanded(
             child: Text(
               item.label,
-              style:
-                  (item.isSelected
+              style: (item.isSelected
                       ? widget.selectedItemTextStyle
                       : widget.itemTextStyle) ??
                   FCPTextStyles.getBodyMedium().copyWith(
@@ -787,8 +777,7 @@ extension FCPMultiSelectDropdownExtension on BuildContext {
       int index,
       bool isSelected,
       Function(bool?) onChanged,
-    )?
-    customItemBuilder,
+    )? customItemBuilder,
   }) {
     return showModalBottomSheet<List<FCPMultiSelectItem>>(
       isScrollControlled: true,
